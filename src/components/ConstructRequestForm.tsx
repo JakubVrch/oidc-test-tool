@@ -13,6 +13,7 @@ export interface FormValues {
   state?: string;
   nonce?: string;
   prompt?: string;
+  token_endpoint: string;
 }
 
 interface ConstructRequestFormProps {
@@ -58,6 +59,11 @@ const ConstructRequestForm: React.FC<ConstructRequestFormProps> = ({ onSubmit })
         <label htmlFor="redirect_uri">Redirect URI</label>
         <input id="redirect_uri" type="url" {...register('redirect_uri', { required: true })} />
         {errors.redirect_uri && <span>This field is required</span>}
+      </div>
+      <div>
+        <label htmlFor="token_endpoint">Token Endpoint</label>
+        <input id="token_endpoint" type="url" {...register('token_endpoint', { required: true })} />
+        {errors.token_endpoint && <span>This field is required</span>}
       </div>
       <div>
         <label htmlFor="scope">Scope</label>
@@ -120,7 +126,7 @@ const ConstructRequestForm: React.FC<ConstructRequestFormProps> = ({ onSubmit })
         <label htmlFor="prompt">Prompt</label>
         <input id="prompt" type="text" {...register('prompt')} defaultValue="" />
       </div>
-      <button type="submit">Submit</button>
+      <button type="submit">Redirect</button>
     </form>
   );
 };

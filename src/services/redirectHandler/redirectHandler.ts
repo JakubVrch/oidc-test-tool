@@ -12,6 +12,7 @@ export interface FormValues {
   state?: string;
   nonce?: string;
   prompt?: string;
+  token_endpoint?: string;
 }
 
 export const redirectToOidcProvider = ({
@@ -25,7 +26,8 @@ export const redirectToOidcProvider = ({
   response_mode,
   state,
   nonce,
-  prompt
+  prompt,
+  token_endpoint
 }: FormValues) => {
   // Validate inputs
   if (!auth_endpoint) {
@@ -55,6 +57,9 @@ export const redirectToOidcProvider = ({
   const oidcParams: OidcParams = {
     nonce: nonce ?? null,
     state: state ?? null,
+    token_endpoint: token_endpoint ?? null,
+    client_id,
+    redirect_uri
   };
   storeOidcParams(oidcParams);
 
