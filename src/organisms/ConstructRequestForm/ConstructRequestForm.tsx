@@ -101,9 +101,6 @@ const ConstructRequestForm: React.FC<ConstructRequestFormProps> = ({ onSubmit })
             id_token
           </label>
         </div>
-        {errors.response_type_code && <span>This field is required</span>}
-        {errors.response_type_token && <span>This field is required</span>}
-        {errors.response_type_id_token && <span>This field is required</span>}
       </div>
       <div>
         <label htmlFor="response_mode">Response Mode</label>

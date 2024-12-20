@@ -1,5 +1,5 @@
 import React from 'react';
-import ConstructRequestForm, { FormValues } from '../../components/ConstructRequestForm';
+import ConstructRequestForm, { FormValues } from '../../organisms/ConstructRequestForm/ConstructRequestForm';
 import { redirectToOidcProvider } from '../../services/redirectHandler/redirectHandler';
 
 const ConstructRequestPage: React.FC = () => {

@@ -32,6 +32,7 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
+      '@typescript-eslint/no-misused-promises': ['error', { 'checksVoidReturn': { 'attributes': false } }],
     },
   },
 )
