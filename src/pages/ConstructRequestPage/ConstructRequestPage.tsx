@@ -1,21 +1,17 @@
 import React from 'react';
-import RedirectHandler from '../../services/RedirectHandler';
+import ConstructRequestForm, { FormValues } from '../../components/ConstructRequestForm';
+import { redirectToOidcProvider } from '../../services/redirectHandler/redirectHandler';
 
 const ConstructRequestPage: React.FC = () => {
+  const onSubmit = (data: FormValues) => {
+    redirectToOidcProvider(data);
+  };
+
   return (
-    <RedirectHandler>
-      {(url, setUrl, redirect) => (
-        <div>
-          <input
-            type="text"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            placeholder="Enter URL"
-          />
-          <button onClick={redirect}>Go</button>
-        </div>
-      )}
-    </RedirectHandler>
+    <div>
+      <h1>Construct Request Page</h1>
+      <ConstructRequestForm onSubmit={onSubmit} />
+    </div>
   );
 };
 
