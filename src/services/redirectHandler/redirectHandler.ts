@@ -1,3 +1,5 @@
+import { storeOidcParams, OidcParams } from '../storageService/storageService';
+
 export interface FormValues {
   auth_endpoint: string;
   client_id: string;
@@ -49,6 +51,13 @@ export const redirectToOidcProvider = ({
     throw new Error('Response Type is required');
   }
 
+  // Store nonce and state in localStorage
+  const oidcParams: OidcParams = {
+    nonce: nonce ?? null,
+    state: state ?? null,
+  };
+  storeOidcParams(oidcParams);
+
   // Construct the URL
   const url = new URL(auth_endpoint);
   url.searchParams.append('client_id', client_id);
@@ -60,6 +69,5 @@ export const redirectToOidcProvider = ({
   if (nonce) url.searchParams.append('nonce', nonce);
   if (prompt) url.searchParams.append('prompt', prompt);
 
-  // Redirect to the constructed URL
   window.location.href = url.toString();
 };

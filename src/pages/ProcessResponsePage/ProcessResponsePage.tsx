@@ -1,8 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
+import { getStoredOidcParams, clearStoredOidcParams, OidcParams } from '../../services/storageService/storageService';
 
 const ProcessResponsePage: React.FC = () => {
   const location = useLocation();
+  const [storedParams, setStoredParams] = useState<OidcParams>({ nonce: null, state: null });
+  const effectRan = useRef(false);
+
+  useEffect(() => {
+    if (effectRan.current === false) {
+      const params = getStoredOidcParams();
+      setStoredParams(params);
+      clearStoredOidcParams();
+      effectRan.current = true;
+    }
+  }, []);
 
   const queryParams = new URLSearchParams(location.search);
   const fragmentParams = new URLSearchParams(location.hash.slice(1));
@@ -61,6 +73,13 @@ const ProcessResponsePage: React.FC = () => {
           </ul>
         </div>
       )}
+      <div>
+        <h2>Stored Parameters:</h2>
+        <ul>
+          <li><strong>Nonce:</strong> {storedParams.nonce}</li>
+          <li><strong>State:</strong> {storedParams.state}</li>
+        </ul>
+      </div>
     </div>
   );
 };
