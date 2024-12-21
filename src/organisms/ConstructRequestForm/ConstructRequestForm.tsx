@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { constructUrl } from '../../services/urlManager/urlManager';
 
 export interface FormValues {
   auth_endpoint: string;
@@ -20,9 +21,9 @@ interface ConstructRequestFormProps {
   onSubmit: SubmitHandler<FormValues>;
 }
 
-// TODO: Handle autofill better, it probably has something to do with (un)controlled components, so it will be better to handle it when I implement some UI component library
 const ConstructRequestForm: React.FC<ConstructRequestFormProps> = ({ onSubmit }) => {
-  const { register, handleSubmit, formState: { errors }, setValue, getValues } = useForm<FormValues>();
+  const { register, handleSubmit, formState: { errors }, setValue, getValues, watch } = useForm<FormValues>();
+  const [constructedUrl, setConstructedUrl] = useState<string | null>(null);
 
   useEffect(() => {
     // Register autofilled values for text inputs and selects
@@ -42,7 +43,19 @@ const ConstructRequestForm: React.FC<ConstructRequestFormProps> = ({ onSubmit })
     });
   }, [setValue]);
 
-  //TODO: handleSubmit need handling for errors, but it is working fine for now
+  useEffect(() => {
+    const subscription = watch((values) => {
+      const result = constructUrl(values);
+      if (result.url) {
+        setConstructedUrl(result.url.toString());
+      } else {
+        setConstructedUrl(null);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
+
+    //TODO: handleSubmit need handling for errors, but it is working fine for now
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div>
@@ -124,6 +137,12 @@ const ConstructRequestForm: React.FC<ConstructRequestFormProps> = ({ onSubmit })
         <input id="prompt" type="text" {...register('prompt')} defaultValue="" />
       </div>
       <button type="submit">Redirect</button>
+      {constructedUrl && (
+        <div>
+          <h3>Constructed URL</h3>
+          <p>{constructedUrl}</p>
+        </div>
+      )}
     </form>
   );
 };

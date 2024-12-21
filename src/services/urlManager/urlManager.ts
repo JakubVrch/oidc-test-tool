@@ -1,8 +1,8 @@
 export interface UrlParams {
-  auth_endpoint: string;
-  client_id: string;
-  redirect_uri: string;
-  scope: string;
+  auth_endpoint?: string;
+  client_id?: string;
+  redirect_uri?: string;
+  scope?: string;
   response_type_code?: boolean;
   response_type_token?: boolean;
   response_type_id_token?: boolean;
@@ -31,23 +31,25 @@ const validateMandatoryParams = (params: Partial<UrlParams>): string | null => {
   return null;
 };
 
-export const constructUrl = ({
-  auth_endpoint,
-  client_id,
-  redirect_uri,
-  scope,
-  response_type_code,
-  response_type_token,
-  response_type_id_token,
-  response_mode,
-  state,
-  nonce,
-  prompt,
-  token_endpoint
-}: UrlParams): UrlResult => {
-  const error = validateMandatoryParams({ auth_endpoint, client_id, redirect_uri, scope });
-  if (error) return { error };
+export const constructUrl = (params: UrlParams): UrlResult => {
+  const error = validateMandatoryParams(params);
+  if (error)
+    return { error: error };
 
+  const {
+    auth_endpoint,
+    client_id,
+    redirect_uri,
+    scope,
+    response_type_code,
+    response_type_token,
+    response_type_id_token,
+    response_mode,
+    state,
+    nonce,
+    prompt,
+    token_endpoint
+  } = params
   const responseTypeArray = [];
   if (response_type_code) responseTypeArray.push('code');
   if (response_type_token) responseTypeArray.push('token');
@@ -57,10 +59,10 @@ export const constructUrl = ({
     return { error: 'Response Type is required' };
   }
 
-  const url = new URL(auth_endpoint);
-  url.searchParams.append('client_id', client_id);
-  url.searchParams.append('redirect_uri', redirect_uri);
-  url.searchParams.append('scope', scope);
+  const url = new URL(auth_endpoint ?? '');
+  url.searchParams.append('client_id', client_id!);
+  url.searchParams.append('redirect_uri', redirect_uri!);
+  url.searchParams.append('scope', scope!);
   url.searchParams.append('response_type', responseTypeArray.join(' '));
   if (response_mode) url.searchParams.append('response_mode', response_mode);
   if (state) url.searchParams.append('state', state);
@@ -69,6 +71,8 @@ export const constructUrl = ({
   if (token_endpoint) url.searchParams.append('token_endpoint', token_endpoint);
 
   return { url: url.toString() };
+
+
 };
 
 export const parseUrl = (urlString: string): ParseResult => {
