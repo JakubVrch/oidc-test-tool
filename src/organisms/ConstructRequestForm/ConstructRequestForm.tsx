@@ -25,6 +25,11 @@ const ConstructRequestForm: React.FC<ConstructRequestFormProps> = ({ onSubmit })
   const { register, handleSubmit, formState: { errors }, setValue, getValues, watch } = useForm<FormValues>();
   const [constructedUrl, setConstructedUrl] = useState<string | null>(null);
 
+  const validateResponseType = () => {
+    const values = getValues(['response_type_code', 'response_type_token', 'response_type_id_token']);
+    return values.some(value => value);
+  };
+
   useEffect(() => {
     // Register autofilled values for text inputs and selects
     const inputs = document.querySelectorAll('input[type="text"], input[type="url"], select');
@@ -54,8 +59,8 @@ const ConstructRequestForm: React.FC<ConstructRequestFormProps> = ({ onSubmit })
     });
     return () => subscription.unsubscribe();
   }, [watch]);
-    //TODO: Add another params field that gets added to the constructed URL
-    //TODO: handleSubmit need handling for errors, but it is working fine for now
+  //TODO: Add another params field that gets added to the constructed URL
+  //TODO: handleSubmit need handling for errors, but it is working fine for now
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div>
@@ -75,7 +80,7 @@ const ConstructRequestForm: React.FC<ConstructRequestFormProps> = ({ onSubmit })
       </div>
       <div>
         <label htmlFor="token_endpoint">Token Endpoint</label>
-        <input id="token_endpoint" type="url" {...register('token_endpoint', { required: true })} />
+        <input id="token_endpoint" type="url" {...register('token_endpoint')} />
         {errors.token_endpoint && <span>This field is required</span>}
       </div>
       <div>
@@ -89,8 +94,7 @@ const ConstructRequestForm: React.FC<ConstructRequestFormProps> = ({ onSubmit })
           <label>
             <input
               type="checkbox"
-              value="code"
-              {...register('response_type_code')}
+              {...register('response_type_code', { validate: validateResponseType })}
               defaultChecked={getValues('response_type_code')}
             />
             code
@@ -98,8 +102,7 @@ const ConstructRequestForm: React.FC<ConstructRequestFormProps> = ({ onSubmit })
           <label>
             <input
               type="checkbox"
-              value="token"
-              {...register('response_type_token')}
+              {...register('response_type_token', { validate: validateResponseType })}
               defaultChecked={getValues('response_type_token')}
             />
             token
@@ -107,12 +110,12 @@ const ConstructRequestForm: React.FC<ConstructRequestFormProps> = ({ onSubmit })
           <label>
             <input
               type="checkbox"
-              value="id_token"
-              {...register('response_type_id_token')}
+              {...register('response_type_id_token', { validate: validateResponseType })}
               defaultChecked={getValues('response_type_id_token')}
             />
             id_token
           </label>
+          {errors.response_type_code && <span>At least one response type is required</span>}
         </div>
       </div>
       <div>
