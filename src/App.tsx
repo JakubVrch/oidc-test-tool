@@ -8,7 +8,7 @@ function App() {
       <div>
         <Routes>
           <Route path="/" element={<ConstructRequest />} />
-          <Route path="/redirect/:path*" element={<ProcessResponsePage />} />
+          <Route path="/redirect/:path/*" element={<ProcessResponsePage />} />
           <Route path="/redirect" element={<ProcessResponsePage />} />
         </Routes>
       </div>
