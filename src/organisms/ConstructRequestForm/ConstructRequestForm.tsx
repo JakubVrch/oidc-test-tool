@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import { FormProvider, SubmitHandler, useForm, useFieldArray } from 'react-hook-form';
 import ConstructedUrlDisplay from '../../atoms/ConstructedUrlDisplay/ConstructedUrlDisplay';
 import CheckboxInput from '../../molecules/CheckboxInput/CheckboxInput';
 import SelectInput from '../../molecules/SelectInput/SelectInput';
@@ -20,6 +20,7 @@ export interface FormValues {
   nonce?: string;
   prompt?: string;
   token_endpoint: string;
+  additional_params: { name: string; value: string }[];
 }
 
 interface ConstructRequestFormProps {
@@ -29,7 +30,12 @@ interface ConstructRequestFormProps {
 const ConstructRequestForm: React.FC<ConstructRequestFormProps> = ({ onSubmit }) => {
 
   const methods= useForm<FormValues>();
-  const { handleSubmit, formState: { errors }, setValue, getValues, watch } = methods;
+  const { handleSubmit, formState: { errors }, setValue, getValues, watch, register, control } = methods;
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'additional_params',
+  });
 
   useAutofill(setValue);
   const constructedUrl = useConstructedUrl(watch);
@@ -68,6 +74,25 @@ const ConstructRequestForm: React.FC<ConstructRequestFormProps> = ({ onSubmit })
         <TextInput id="state" label="State" type="text"/>
         <TextInput id="nonce" label="Nonce" type="text"/>
         <TextInput id="prompt" label="Prompt" type="text"/>
+        <div>
+        <h3>Additional Parameters</h3>
+        {fields.map((field, index) => (
+          <div key={field.id}>
+            <label htmlFor={`additional_params.${index}.name`}>Name</label>
+            <input
+              id={`additional_params.${index}.name`}
+              {...register(`additional_params.${index}.name` as const, { required: true })}
+            />
+            <label htmlFor={`additional_params.${index}.value`}>Value</label>
+            <input
+              id={`additional_params.${index}.value`}
+              {...register(`additional_params.${index}.value` as const, { required: true })}
+            />
+            <button type="button" onClick={() => remove(index)}>Remove</button>
+          </div>
+        ))}
+        <button type="button" onClick={() => append({ name: '', value: '' })}>Add Parameter</button>
+      </div>
         <ConstructedUrlDisplay url={constructedUrl} />
         <button type="submit">Redirect</button>
       </form>

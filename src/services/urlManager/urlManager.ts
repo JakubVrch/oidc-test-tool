@@ -10,6 +10,7 @@ export interface UrlParams {
   state?: string;
   nonce?: string;
   prompt?: string;
+  additional_params?: ({ name?: string; value?: string } | undefined)[] | undefined;
 }
 
 export interface UrlResult {
@@ -44,7 +45,9 @@ export const constructUrl = (params: UrlParams): UrlResult => {
     state,
     nonce,
     prompt,
-  } = params
+    additional_params,
+  } = params;
+
   const responseTypeArray = [];
   if (response_type_code) responseTypeArray.push('code');
   if (response_type_token) responseTypeArray.push('token');
@@ -63,6 +66,14 @@ export const constructUrl = (params: UrlParams): UrlResult => {
   if (state) url.searchParams.append('state', state);
   if (nonce) url.searchParams.append('nonce', nonce);
   if (prompt) url.searchParams.append('prompt', prompt);
+
+  if (additional_params && Array.isArray(additional_params)) {
+    additional_params.forEach(param => {
+      if (param?.name && param.value) {
+        url.searchParams.append(param.name, param.value);
+      }
+    });
+  }
 
   return { url: url.toString() };
 };
