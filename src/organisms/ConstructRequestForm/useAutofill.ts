@@ -20,6 +20,8 @@ const useAutofill = (setValue: UseFormSetValue<FormValues>) => {
       setValue(element.name as keyof FormValues, element.checked);
     });
   }, [setValue]);
+
+  //TODO: Add autofill for FieldArray
 };
 
 export default useAutofill;

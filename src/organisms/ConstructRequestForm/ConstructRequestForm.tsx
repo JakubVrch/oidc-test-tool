@@ -1,5 +1,5 @@
-import React from 'react';
-import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import React, { forwardRef } from 'react';
+import { FieldValues, FormProvider, SubmitHandler, useForm, UseFormSetValue } from 'react-hook-form';
 import ConstructedUrlDisplay from '../../atoms/ConstructedUrlDisplay/ConstructedUrlDisplay';
 import CheckboxInput from '../../molecules/CheckboxInput/CheckboxInput';
 import SelectInput from '../../molecules/SelectInput/SelectInput';
@@ -29,7 +29,7 @@ interface ConstructRequestFormProps {
   onSubmit: SubmitHandler<FormValues>;
 }
 
-const ConstructRequestForm: React.FC<ConstructRequestFormProps> = ({ onSubmit }) => {
+const ConstructRequestForm = forwardRef(({ onSubmit }, ref) => {
 
   const methods= useForm<FormValues>();
   const { handleSubmit, formState: { errors }, setValue, getValues, watch, control } = methods;
@@ -42,6 +42,20 @@ const ConstructRequestForm: React.FC<ConstructRequestFormProps> = ({ onSubmit })
     const values = getValues(['response_type_code', 'response_type_token', 'response_type_id_token']);
     return values.some(value => value);
   };
+
+  // TODO: Fix the type of setValue
+  const prefillFormData = function <T extends FieldValues>(setValue: UseFormSetValue<T>, data: T):void {
+    for (const key in data) {
+      setValue(key , data[key]);
+    }
+  };
+
+  React.useImperativeHandle(ref, () => ({
+    prefill: (data) => {
+      prefillFormData(setValue, data);
+    },
+  }));
+
 
   //TODO: handleSubmit need handling for errors, but it is working fine for now
   return (
@@ -77,6 +91,7 @@ const ConstructRequestForm: React.FC<ConstructRequestFormProps> = ({ onSubmit })
       </form>
     </FormProvider>
   );
-};
+});
+
 
 export default ConstructRequestForm;
