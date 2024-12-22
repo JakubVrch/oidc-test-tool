@@ -1,11 +1,13 @@
 import React from 'react';
-import { FormProvider, SubmitHandler, useForm, useFieldArray } from 'react-hook-form';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import ConstructedUrlDisplay from '../../atoms/ConstructedUrlDisplay/ConstructedUrlDisplay';
 import CheckboxInput from '../../molecules/CheckboxInput/CheckboxInput';
 import SelectInput from '../../molecules/SelectInput/SelectInput';
 import TextInput from '../../molecules/TextInput/TextInput';
+import AdditionalParameters from '../AdditionalParametersFormPart/AdditionalParameters';
 import useAutofill from './useAutofill';
 import useConstructedUrl from './useConstructedUrl';
+import { DevTool } from '@hookform/devtools';
 
 export interface FormValues {
   auth_endpoint: string;
@@ -30,12 +32,7 @@ interface ConstructRequestFormProps {
 const ConstructRequestForm: React.FC<ConstructRequestFormProps> = ({ onSubmit }) => {
 
   const methods= useForm<FormValues>();
-  const { handleSubmit, formState: { errors }, setValue, getValues, watch, register, control } = methods;
-
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: 'additional_params',
-  });
+  const { handleSubmit, formState: { errors }, setValue, getValues, watch, control } = methods;
 
   useAutofill(setValue);
   const constructedUrl = useConstructedUrl(watch);
@@ -46,11 +43,11 @@ const ConstructRequestForm: React.FC<ConstructRequestFormProps> = ({ onSubmit })
     return values.some(value => value);
   };
 
-  //TODO: Add another params field that gets added to the constructed URL
   //TODO: handleSubmit need handling for errors, but it is working fine for now
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
+        <DevTool control={control} /> {/* Enable DevTools */}
         <TextInput id="auth_endpoint" label="Authorization Endpoint" type="url" required/>
         <TextInput id="client_id" label="Client ID" type="text" required/>
         <TextInput id="redirect_uri" label="Redirect URI" type="url" required/>
@@ -74,25 +71,7 @@ const ConstructRequestForm: React.FC<ConstructRequestFormProps> = ({ onSubmit })
         <TextInput id="state" label="State" type="text"/>
         <TextInput id="nonce" label="Nonce" type="text"/>
         <TextInput id="prompt" label="Prompt" type="text"/>
-        <div>
-        <h3>Additional Parameters</h3>
-        {fields.map((field, index) => (
-          <div key={field.id}>
-            <label htmlFor={`additional_params.${index}.name`}>Name</label>
-            <input
-              id={`additional_params.${index}.name`}
-              {...register(`additional_params.${index}.name` as const, { required: true })}
-            />
-            <label htmlFor={`additional_params.${index}.value`}>Value</label>
-            <input
-              id={`additional_params.${index}.value`}
-              {...register(`additional_params.${index}.value` as const, { required: true })}
-            />
-            <button type="button" onClick={() => remove(index)}>Remove</button>
-          </div>
-        ))}
-        <button type="button" onClick={() => append({ name: '', value: '' })}>Add Parameter</button>
-      </div>
+        <AdditionalParameters name="additional_params" />
         <ConstructedUrlDisplay url={constructedUrl} />
         <button type="submit">Redirect</button>
       </form>
