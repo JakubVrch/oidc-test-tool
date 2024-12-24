@@ -1,5 +1,5 @@
-import React, { forwardRef } from 'react';
-import { FieldValues, FormProvider, SubmitHandler, useForm, UseFormSetValue } from 'react-hook-form';
+import { forwardRef, useImperativeHandle } from 'react';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import ConstructedUrlDisplay from '../../atoms/ConstructedUrlDisplay/ConstructedUrlDisplay';
 import CheckboxInput from '../../molecules/CheckboxInput/CheckboxInput';
 import SelectInput from '../../molecules/SelectInput/SelectInput';
@@ -8,6 +8,7 @@ import AdditionalParameters from '../AdditionalParametersFormPart/AdditionalPara
 import useAutofill from './useAutofill';
 import useConstructedUrl from './useConstructedUrl';
 import { DevTool } from '@hookform/devtools';
+import { prefillFormData } from '../../services/prefillFormData/prefillFormData';
 
 export interface FormValues {
   auth_endpoint: string;
@@ -29,7 +30,11 @@ interface ConstructRequestFormProps {
   onSubmit: SubmitHandler<FormValues>;
 }
 
-const ConstructRequestForm = forwardRef(({ onSubmit }, ref) => {
+interface FormRef {
+  prefill: (data: FormValues) => void;
+}
+
+const ConstructRequestForm = forwardRef<FormValues, ConstructRequestFormProps>(({ onSubmit }, ref) => {
 
   const methods= useForm<FormValues>();
   const { handleSubmit, formState: { errors }, setValue, getValues, watch, control } = methods;
@@ -43,19 +48,11 @@ const ConstructRequestForm = forwardRef(({ onSubmit }, ref) => {
     return values.some(value => value);
   };
 
-  // TODO: Fix the type of setValue
-  const prefillFormData = function <T extends FieldValues>(setValue: UseFormSetValue<T>, data: T):void {
-    for (const key in data) {
-      setValue(key , data[key]);
-    }
-  };
-
-  React.useImperativeHandle(ref, () => ({
-    prefill: (data) => {
-      prefillFormData(setValue, data);
+  useImperativeHandle<unknown, FormRef>(ref, () => ({
+    prefill: (data: FormValues) => {
+        prefillFormData<FormValues>(setValue, data);
     },
   }));
-
 
   //TODO: handleSubmit need handling for errors, but it is working fine for now
   return (
@@ -93,5 +90,6 @@ const ConstructRequestForm = forwardRef(({ onSubmit }, ref) => {
   );
 });
 
+ConstructRequestForm.displayName = 'ConstructRequestForm'; 
 
 export default ConstructRequestForm;
