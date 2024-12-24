@@ -5,6 +5,8 @@ const config: Config = {
   collectCoverageFrom: ["src/**/*.{ts,tsx}", "!src/**/*.d.ts", "!**/vendor/**"],
   coverageDirectory: "coverage",
   testEnvironment: "jsdom",
+  resetMocks: true,
+  clearMocks: true,
   transform: {
     ".(ts|tsx)": ["ts-jest", { tsconfig: "tsconfig.app.json" }],
   },
