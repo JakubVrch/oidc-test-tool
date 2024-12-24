@@ -26,15 +26,15 @@ export interface FormValues {
   additional_params: { name: string; value: string }[];
 }
 
+export interface FormRef {
+  prefill: (data: FormValues) => void;
+}
+
 interface ConstructRequestFormProps {
   onSubmit: SubmitHandler<FormValues>;
 }
 
-interface FormRef {
-  prefill: (data: FormValues) => void;
-}
-
-const ConstructRequestForm = forwardRef<FormValues, ConstructRequestFormProps>(({ onSubmit }, ref) => {
+const ConstructRequestForm = forwardRef<FormRef, ConstructRequestFormProps>(({ onSubmit }, ref) => {
 
   const methods= useForm<FormValues>();
   const { handleSubmit, formState: { errors }, setValue, getValues, watch, control } = methods;

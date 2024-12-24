@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import ConstructRequestForm, { FormValues } from '../../organisms/ConstructRequestForm/ConstructRequestForm';
+import ConstructRequestForm, { FormRef, FormValues } from '../../organisms/ConstructRequestForm/ConstructRequestForm';
 import { redirectToOidcProvider } from '../../services/redirectHandler/redirectHandler';
 import Prefill from '../../organisms/PrefillComponent/PrefillComponent';
 
@@ -8,10 +8,10 @@ const ConstructRequestPage: React.FC = () => {
     redirectToOidcProvider(data);
   };
 
-  const formRef = useRef(null);
+  const formRef = useRef<FormRef>(null);
 
-  const handlePrefill = (data) => {
-    if (formRef.current) {
+  const handlePrefill = (data: FormValues) => {
+    if (formRef.current?.prefill) {
       formRef.current.prefill(data);
     }
   };
