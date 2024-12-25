@@ -7,6 +7,7 @@ import Prefill, { PrefillConfig } from '../../molecules/PrefillComponent/Prefill
 const prefillConfigs: PrefillConfig<FormValues> = [
   {
     label: 'Config 1',
+    description: 'This is a sample config.',
     data: {
       auth_endpoint: 'https://auth.example.com',
       client_id: 'client_id_1',
@@ -14,6 +15,23 @@ const prefillConfigs: PrefillConfig<FormValues> = [
       scope: 'scope1',
       response_type_code: true,
       response_type_token: false,
+      response_type_id_token: false,
+      token_endpoint: 'https://token.example.com',
+      additional_params: [
+        { name: 'param1', value: 'value1' },
+        { name: 'param2', value: 'value2' },
+      ],
+    },
+  },
+  {
+    label: 'Config 2',
+    data: {
+      auth_endpoint: 'https://auth.example.com',
+      client_id: 'client_id_2',
+      redirect_uri: 'https://redirect.example.com',
+      scope: 'scope2',
+      response_type_code: true,
+      response_type_token: true,
       response_type_id_token: false,
       token_endpoint: 'https://token.example.com',
       additional_params: [

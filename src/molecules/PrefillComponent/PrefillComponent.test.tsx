@@ -8,6 +8,7 @@ import Prefill from './PrefillComponent';
 const mockPrefillConfig = [
   {
     label: 'Config 1',
+    description: 'This is a sample config.',
     data: {
       auth_endpoint: 'https://auth.example.com',
       client_id: 'client_id_1',
@@ -44,7 +45,9 @@ describe('PrefillComponent', () => {
 
     fireEvent.change(screen.getByLabelText('Select Config:'), { target: { value: 'Config 1' } });
     fireEvent.click(screen.getByText('Prefill'));
-
+    
+    expect(screen.getByLabelText('Select Config:')).toHaveValue('Config 1');
+    expect(screen.getByText('This is a sample config.')).toBeInTheDocument();
     expect(mockOnPrefill).toHaveBeenCalledWith(mockPrefillConfig[0].data);
   });
 
