@@ -1,5 +1,5 @@
-import { ReactNode, useState } from 'react';
-import { FieldValues } from 'react-hook-form';
+import { useForm, FieldValues, FormProvider } from 'react-hook-form';
+import SelectInput from '../SelectInput/SelectInput';
 
 interface ConfigItem<T extends FieldValues> {
   label: string;
@@ -14,46 +14,49 @@ interface PrefillProps<T extends FieldValues> {
   onPrefill?: (data: T) => void;
 }
 
-const Prefill = <T extends FieldValues,>({ onPrefill, prefillConfig }: PrefillProps<T>): ReactNode | Promise<ReactNode> => {
-  const [selectedConfig, setSelectedConfig] = useState<ConfigItem<T> | null>(null);
+interface FormValues {
+  selectedConfig?: string
+}
 
-  const handleConfigChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedValue = event.target.value;
-    const config = selectedValue 
-      ? prefillConfig.find(c => c.label === selectedValue) ?? null
-      : null; 
-    setSelectedConfig(config); 
-  };
+const Prefill = <T extends FieldValues>({ onPrefill, prefillConfig }: PrefillProps<T>) => {
+  const methods = useForm<FormValues>();
+  const { handleSubmit, watch } = methods;
+  const selectedConfigLabel = watch('selectedConfig');
+  const dropdownOptions = [
+    { value: '', label: 'Select a config' }, // Add default option
+    ...prefillConfig.map((config) => ({
+      value: config.label,
+      label: config.label,
+    })),
+  ];
 
-  const handlePrefillClick = () => {
+  const findSelectedConfig = (label?: string) =>
+    label
+      ? prefillConfig.find((config) => config.label === label)
+      : null;
+
+  const selectedConfig = findSelectedConfig(selectedConfigLabel);
+
+  const onSubmit = (data: FormValues) => {
+    const selectedConfig = findSelectedConfig(data.selectedConfig);
     if (selectedConfig?.data && onPrefill) {
       onPrefill(selectedConfig.data);
     }
   };
 
   return (
-    <div>
-      <div>
-        <label htmlFor="config-select">Select Config:</label>
-        <select id="config-select" value={selectedConfig?.label} onChange={handleConfigChange}>
-          <option value="">Select a config</option> {/* Default option */}
-          {prefillConfig.map((config) => (
-            <option key={config.label} value={config.label}>
-              {config.label}
-            </option>
-          ))}
-        </select>
-        {selectedConfig?.description && 
-        <div>
-          <label>Description:</label>
-          <p>{selectedConfig.description}</p>
-        </div>
-        }
-        <button type="button" onClick={handlePrefillClick}>
-          Prefill
-        </button>
-      </div>
-    </div>
+    <FormProvider {...methods}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <SelectInput id="selectedConfig" label="Select Config:" options={dropdownOptions} />
+        {selectedConfig?.description && (
+          <div>
+            <label>Description:</label>
+            <p>{selectedConfig.description}</p>
+          </div>
+        )}
+        <button type="submit">Prefill</button>
+      </form>
+    </FormProvider>
   );
 };
 

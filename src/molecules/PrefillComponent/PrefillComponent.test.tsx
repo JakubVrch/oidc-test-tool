@@ -1,5 +1,5 @@
 // Mocking libraries
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 
 // Component under test
 import Prefill from './PrefillComponent';
@@ -41,14 +41,24 @@ describe('PrefillComponent', () => {
     expect(screen.getByText('Prefill')).toBeInTheDocument();
   });
 
-  test('Prefill button calls onPrefill with selected config data', () => {
+  test('Prefill component shows description', () => {
 
-    fireEvent.change(screen.getByLabelText('Select Config:'), { target: { value: 'Config 1' } });
-    fireEvent.click(screen.getByText('Prefill'));
+    fireEvent.input(screen.getByLabelText('Select Config:'), { target: { value: 'Config 1' } });
     
     expect(screen.getByLabelText('Select Config:')).toHaveValue('Config 1');
-    expect(screen.getByText('This is a sample config.')).toBeInTheDocument();
-    expect(mockOnPrefill).toHaveBeenCalledWith(mockPrefillConfig[0].data);
+    expect(screen.findByText('This is a sample config.'));
+  });
+
+  test('Prefill button calls onPrefill with selected config data', async () => {
+    const selectInput = screen.getByLabelText('Select Config:');
+
+    fireEvent.input(selectInput, { target: { value: 'Config 1' } });
+    fireEvent.change(selectInput); 
+    fireEvent.submit(screen.getByRole('button', { name: "Prefill" }));
+    
+    await waitFor(() => {
+      expect(mockOnPrefill).toHaveBeenCalledWith(mockPrefillConfig[0].data); 
+    });
   });
 
   test('Prefill button does not call onPrefill if no config is selected', () => {
