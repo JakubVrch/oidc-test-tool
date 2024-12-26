@@ -22,8 +22,8 @@ export interface FormValues {
   state?: string;
   nonce?: string;
   prompt?: string;
-  token_endpoint: string;
-  additional_params: { name: string; value: string }[];
+  token_endpoint?: string;
+  additional_params?: { name: string; value: string }[];
 }
 
 export interface FormRef {

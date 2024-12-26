@@ -1,3 +1,6 @@
+# Configuration files
+src/config/prefillConfig.ts
+
 # Logs
 logs
 *.log
