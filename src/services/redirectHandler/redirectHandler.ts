@@ -1,7 +1,8 @@
+import { FormValues } from '../../organisms/ConstructRequestForm/ConstructRequestForm';
 import { storeOidcParams, OidcParams } from '../storageService/storageService';
-import {constructUrl, UrlParams } from '../urlManager/urlManager';
+import {constructUrl } from '../urlManager/urlManager';
 
-export const redirectToOidcProvider = (params: UrlParams) => {
+export const redirectToOidcProvider = (params: FormValues) => {
   const result = constructUrl(params);
 
   if (result.error || !result.url) {
