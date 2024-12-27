@@ -1,15 +1,27 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import TokenViewer from "../../molecules/TokenViewer/TokenViewer";
 
 interface GetTokenComponentProps {
-  code: string | null;
-  token_endpoint: string | null;
-  redirect_uri: string | null;
-  client_id: string | null;
-};
+  storedParams: {
+    token_endpoint: string | null;
+    redirect_uri: string | null;
+    client_id: string | null;
+  };
+  responseData: {
+    code: string | null;
+  };
+}
 
-const GetTokenComponent: React.FC<GetTokenComponentProps> = ({ code, token_endpoint, redirect_uri, client_id }: GetTokenComponentProps) => {
+const GetTokenComponent: React.FC<GetTokenComponentProps> = ({
+  responseData: { code },
+  storedParams: { token_endpoint, redirect_uri, client_id },
+}) => {
+  if (!code || !token_endpoint || !redirect_uri || !client_id) {
+    return null;
+  }
   const [clientSecret, setClientSecret] = useState('');
-  const [tokenResponse, setTokenResponse] = useState<{ success: boolean, message?: string } | null>(null);
+  const [tokenResponse, setTokenResponse] = useState<
+    { success: boolean; message?: string; id_token?: string; access_token?: string } | null>(null);
 
   const handleExchangeCode = async () => {
     if (!token_endpoint || !code || !redirect_uri || !client_id || !clientSecret) {
@@ -25,15 +37,20 @@ const GetTokenComponent: React.FC<GetTokenComponentProps> = ({ code, token_endpo
         },
         body: new URLSearchParams({
           grant_type: 'authorization_code',
-          code: code,
-          redirect_uri: redirect_uri,
-          client_id: client_id,
-          client_secret: clientSecret,
+          code,
+          redirect_uri,
+          client_id,
+          clientSecret,
         }),
       });
       const data: unknown = await response.json();
       if (data) {
-        setTokenResponse({ success: true, message: JSON.stringify(data) });
+        setTokenResponse({
+          success: true,
+          message: data,
+          id_token: data?.id_token, // Assuming presence of id_token in response
+          access_token: data?.access_token, // Assuming presence of access_token in response
+        });
       } else {
         setTokenResponse({ success: false, message: 'Invalid response format' });
       }
@@ -44,13 +61,11 @@ const GetTokenComponent: React.FC<GetTokenComponentProps> = ({ code, token_endpo
         setTokenResponse({ success: false, message: 'Failed to retrieve token: Unknown error' });
       }
     }
-    return
   };
 
   return (
     <div>
       {code && (
-        // display button to exchange code for tokens and display curl command to get it manually
         <div>
           <h2>Exchange Authorization Code for Tokens</h2>
           <label>
@@ -62,17 +77,6 @@ const GetTokenComponent: React.FC<GetTokenComponentProps> = ({ code, token_endpo
               onChange={(e) => setClientSecret(e.target.value)}
             />
           </label>
-          <div>
-            <h3>cURL Command</h3>
-            <pre>
-              {`curl -X POST ${token_endpoint ?? 'TOKEN_ENDPOINT'} \\
-        -d 'grant_type=authorization_code' \\
-        -d 'code=${code ?? 'AUTHORIZATION_CODE'}' \\
-        -d 'redirect_uri=${redirect_uri ?? 'REDIRECT_URI'}' \\
-        -d 'client_id=${client_id ?? 'CLIENT_ID'}' \\
-        -d 'client_secret=CLIENT_SECRET'`}
-            </pre>
-          </div>
           <button onClick={handleExchangeCode}>Exchange Code</button>
           {tokenResponse && (
             <div>
@@ -81,14 +85,8 @@ const GetTokenComponent: React.FC<GetTokenComponentProps> = ({ code, token_endpo
                 <div>
                   <h4>Raw Response:</h4>
                   <pre>{JSON.stringify(tokenResponse.message, null, 2)}</pre>
-                  <h4>Parsed Response:</h4>
-                  <ul>
-                    {Object.entries(JSON.parse(tokenResponse.message ?? '{}') as Record<string, unknown>).map(([key, value]) => (
-                      <li key={key}>
-                        <strong>{key}:</strong> {String(value)}
-                      </li>
-                    ))}
-                  </ul>
+                  <TokenViewer token={tokenResponse.id_token ?? null} tokenName="ID Token" />
+                  <TokenViewer token={tokenResponse.access_token ?? null} tokenName="Access Token" />
                 </div>
               ) : (
                 <p style={{ color: 'red' }}>{tokenResponse.message}</p>
@@ -98,7 +96,7 @@ const GetTokenComponent: React.FC<GetTokenComponentProps> = ({ code, token_endpo
         </div>
       )}
     </div>
-  );
+  )
 }
 
 export default GetTokenComponent;

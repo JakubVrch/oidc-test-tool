@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { getStoredOidcParams, clearStoredOidcParams, OidcParams } from '../../services/storageService/storageService';
+import { getStoredOidcParams, OidcParams } from '../../services/storageService/storageService';
 
 function useStoredOidcParams() {
   const [storedParams, setStoredParams] = useState<OidcParams>({
@@ -15,7 +15,6 @@ function useStoredOidcParams() {
     if (effectRan.current === false) {
       const params = getStoredOidcParams();
       setStoredParams(params);
-      clearStoredOidcParams();
       effectRan.current = true;
     }
   }, []);

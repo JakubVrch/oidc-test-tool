@@ -6,7 +6,7 @@ export enum ResponseType {
   Hybrid = 'Hybrid',
 }
 
-export enum ResponseMode { Query = 'query', Fragment = 'fragment' }
+export enum ResponseMode { Query = 'Query', Fragment = 'Fragment' }
 
 export function useOIDCResponseData() {
   const location = useLocation();

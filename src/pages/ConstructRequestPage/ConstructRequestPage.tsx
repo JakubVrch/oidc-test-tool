@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import ConstructRequestForm, { FormRef, FormValues } from '../../organisms/ConstructRequestForm/ConstructRequestForm';
 import { redirectToOidcProvider } from '../../services/redirectHandler/redirectHandler';
 import Prefill from '../../molecules/PrefillComponent/PrefillComponent';
-import { prefillConfig } from '../../config/exampleConfig';
+import { prefillConfig } from '../../config/prefillConfig';
 
 const ConstructRequestPage: React.FC = () => {
   const onSubmit = (data: FormValues) => {
