@@ -1,15 +1,11 @@
 import React from 'react';
 
 interface ReceivedParametersProps {
-  storedParams: { state?: string | null; };
-  responseData: { params?: URLSearchParams | null; };
+  state: string | null;
+  params: URLSearchParams;
 }
 
-const ReceivedParameters: React.FC<ReceivedParametersProps> = ({ storedParams: { state }, responseData: { params } }) => {
-  if (!params) {
-    return null; // No parameters to display
-  }
-
+const ReceivedParameters: React.FC<ReceivedParametersProps> = ( { state, params }) => {
   const paramEntries = Array.from(params.entries()); 
 
   return (

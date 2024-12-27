@@ -8,7 +8,7 @@ export enum ResponseType {
 
 export enum ResponseMode { Query = 'Query', Fragment = 'Fragment' }
 
-export function useOIDCResponseData() {
+function useOIDCResponseData() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const fragmentParams = new URLSearchParams(location.hash.slice(1));
@@ -47,3 +47,5 @@ export function useOIDCResponseData() {
 
   return { mode: responseMode, responseType, code, id_token, access_token, params };
 }
+
+export default useOIDCResponseData;
