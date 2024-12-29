@@ -15,7 +15,7 @@ const ExchangeCodeForm: React.FC<ExchangeCodeFormProps> = ({ onSubmit }) => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
-        <TextInput id="clientSecret" label="Client Secret:" type="password" required />
+        <TextInput id="clientSecret" label="Client Secret:" type="password"  registerOptions={{required: "This field is required"}} />
         <button type="submit">Exchange Code</button>
       </form>
     </FormProvider>
