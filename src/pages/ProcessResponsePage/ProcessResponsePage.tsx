@@ -1,6 +1,6 @@
 import React from 'react';
 import ReceivedParameters from '../../atoms/ReceivedParameters/ReceivedParameters';
-import ResponseDetails from '../../atoms/ResponseSummary/ResponseSummary';
+import ResponseSummary from '../../atoms/ResponseSummary/ResponseSummary';
 import TokenViewer from '../../molecules/TokenViewer/TokenViewer';
 import GetTokenComponent from '../../organisms/GetTokenComponent/GetTokenComponent';
 import useOIDCResponseData from './useOIDCResponseData';
@@ -13,7 +13,7 @@ const ProcessResponsePage: React.FC = () => {
   return (
     <div>
       <h1>Redirect Page</h1>
-      <ResponseDetails { ...{mode, responseType}} />
+      <ResponseSummary { ...{mode, responseType}} />
       { params && 
         <ReceivedParameters { ...{state, params}} />
       }

@@ -1,6 +1,7 @@
 import { FormValues } from '../../organisms/ConstructRequestForm/ConstructRequestForm';
 import { storeOidcParams, OidcParams } from '../storageService/storageService';
 import {constructUrl } from '../urlManager/urlManager';
+import { setLocationHref } from './setLocationHref';
 
 export const redirectToOidcProvider = (params: FormValues) => {
   const result = constructUrl(params);
@@ -27,7 +28,7 @@ export const redirectToOidcProvider = (params: FormValues) => {
   storeOidcParams(oidcParams);
 
   // Redirect to OIDC provider
-  window.location.href = result.url.toString();
+  setLocationHref( result.url.toString() );
   return;
   }
 };

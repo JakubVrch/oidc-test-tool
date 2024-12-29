@@ -1,12 +1,12 @@
 import React from 'react';
 import { ResponseMode, ResponseType } from '../../pages/ProcessResponsePage/useOIDCResponseData';
 
-interface ResponseDetailsProps {
+interface ResponseSummaryProps {
   mode: ResponseMode | null;
   responseType: ResponseType | null;
 }
 
-const ResponseDetails: React.FC<ResponseDetailsProps> = ({ mode, responseType }) => {
+const ResponseSummary: React.FC<ResponseSummaryProps> = ({ mode, responseType }) => {
   return (
     <>
       {(mode && responseType) ? (
@@ -22,4 +22,4 @@ const ResponseDetails: React.FC<ResponseDetailsProps> = ({ mode, responseType })
   );
 };
 
-export default ResponseDetails;
+export default ResponseSummary;
