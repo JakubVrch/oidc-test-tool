@@ -24,22 +24,16 @@ const TokenViewer: React.FC<TokenProps> = ({ token, tokenName }) => {
   return (
     <div>
       <h3>{tokenName} Information</h3>
-      {token ? (
-        <>
-          {tokenHeader || tokenBody ? (
-            <pre>
-              Header: <br />
-              {JSON.stringify(tokenHeader, null, 2)}
-              <br />
-              Body: <br />
-              {JSON.stringify(tokenBody, null, 2)}
-            </pre>
-          ) : (
-            <p>Token: {token}</p>
-          )}
-        </>
+      {tokenHeader || tokenBody ? (
+        <pre>
+          Header: <br />
+          {JSON.stringify(tokenHeader, null, 2)}
+          <br />
+          Body: <br />
+          {JSON.stringify(tokenBody, null, 2)}
+        </pre>
       ) : (
-        <p>No token provided.</p>
+        <p>Token: {token}</p>
       )}
     </div>
   );
