@@ -8,7 +8,7 @@ interface CheckboxInputProps {
 }
 
 const CheckboxInput: React.FC<CheckboxInputProps> = ({ name, label, validate }) => {
-  const { register, getValues, formState: { errors } } = useFormContext();
+  const { register, getValues } = useFormContext();
 
   return (
     <label>
@@ -18,7 +18,6 @@ const CheckboxInput: React.FC<CheckboxInputProps> = ({ name, label, validate }) 
         defaultChecked={getValues(name) as boolean}
       />
       {label}
-      {errors[name] && <span>{typeof errors[name].message === 'string' ? errors[name].message : JSON.stringify(errors[name].message)}</span>}
     </label>
   );
 };

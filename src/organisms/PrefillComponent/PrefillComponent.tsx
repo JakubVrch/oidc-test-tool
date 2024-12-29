@@ -1,5 +1,5 @@
 import { useForm, FieldValues, FormProvider } from 'react-hook-form';
-import SelectInput from '../SelectInput/SelectInput';
+import SelectInput from '../../molecules/SelectInput/SelectInput';
 
 interface ConfigItem<T extends FieldValues> {
   label: string;

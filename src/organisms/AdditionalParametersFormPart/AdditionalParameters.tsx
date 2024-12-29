@@ -18,8 +18,8 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({ name }) => 
       <h3>Additional Parameters</h3>
       {fields.map((field, index) => (
         <div key={field.id}>
-          <TextInput id={`${name}.${index}.name`} label="Name" type='text' required />
-          <TextInput id={`${name}.${index}.value`} label="Value" type='text' required />
+          <TextInput id={`${name}.${index}.name`} label="Name" type='text' registerOptions={{required: "Please fill in this field"}} />
+          <TextInput id={`${name}.${index}.value`} label="Value" type='text' registerOptions={{required: "Please fill in this field"}}   />
           <button type="button" onClick={() => remove(index)}>Remove</button>
         </div>
       ))}

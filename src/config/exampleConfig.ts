@@ -1,4 +1,4 @@
-import { PrefillConfig } from "../molecules/PrefillComponent/PrefillComponent";
+import { PrefillConfig } from "../organisms/PrefillComponent/PrefillComponent";
 import { FormValues } from "../organisms/ConstructRequestForm/ConstructRequestForm";
 
 export const prefillConfig: PrefillConfig<FormValues> = [

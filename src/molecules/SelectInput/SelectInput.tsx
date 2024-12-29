@@ -1,5 +1,6 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
+import FormControl from '../FormControl/FormControl';
 
 interface SelectInputProps {
   id: string;
@@ -12,8 +13,7 @@ const SelectInput: React.FC<SelectInputProps> = ({ id, label, options, defaultVa
   const { register } = useFormContext();
 
   return (
-    <div>
-      <label htmlFor={id}>{label}</label>
+    <FormControl id={id} label={label}>
       <select id={id} {...register(id)} defaultValue={defaultValue}>
         {options.map(option => (
           <option key={option.value} value={option.value}>
@@ -21,7 +21,7 @@ const SelectInput: React.FC<SelectInputProps> = ({ id, label, options, defaultVa
           </option>
         ))}
       </select>
-    </div>
+    </FormControl>
   );
 };
 

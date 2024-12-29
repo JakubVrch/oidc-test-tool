@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import ConstructRequestForm, { FormRef, FormValues } from '../../organisms/ConstructRequestForm/ConstructRequestForm';
 import { redirectToOidcProvider } from '../../services/redirectHandler/redirectHandler';
-import Prefill from '../../molecules/PrefillComponent/PrefillComponent';
+import Prefill from '../../organisms/PrefillComponent/PrefillComponent';
 import { prefillConfig } from '../../config/exampleConfig';
 
 const ConstructRequestPage: React.FC = () => {

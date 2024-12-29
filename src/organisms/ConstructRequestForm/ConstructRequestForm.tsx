@@ -9,6 +9,7 @@ import useAutofill from './useAutofill';
 import useConstructedUrl from './useConstructedUrl';
 import { DevTool } from '@hookform/devtools';
 import { prefillFormData } from '../../services/prefillFormData/prefillFormData';
+import FormControl from '../../molecules/FormControl/FormControl';
 
 export interface FormValues {
   auth_endpoint: string;
@@ -37,7 +38,7 @@ interface ConstructRequestFormProps {
 const ConstructRequestForm = forwardRef<FormRef, ConstructRequestFormProps>(({ onSubmit }, ref) => {
 
   const methods= useForm<FormValues>();
-  const { handleSubmit, formState: { errors }, setValue, getValues, watch, control } = methods;
+  const { handleSubmit, setValue, getValues, watch, control } = methods;
 
   useAutofill(setValue);
   const constructedUrl = useConstructedUrl(watch);
@@ -45,7 +46,7 @@ const ConstructRequestForm = forwardRef<FormRef, ConstructRequestFormProps>(({ o
   // TODO: Checkbox array should be refactored after we implement UI library together with the CheckboxInput component and validation
   const validateResponseType = () => {
     const values = getValues(['response_type_code', 'response_type_token', 'response_type_id_token']);
-    return values.some(value => value);
+    return values.some(value => value) || 'At least one response type is required';
   };
 
   useImperativeHandle<unknown, FormRef>(ref, () => ({
@@ -59,20 +60,16 @@ const ConstructRequestForm = forwardRef<FormRef, ConstructRequestFormProps>(({ o
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <DevTool control={control} /> {/* Enable DevTools */}
-        <TextInput id="auth_endpoint" label="Authorization Endpoint" type="url" required/>
-        <TextInput id="client_id" label="Client ID" type="text" required/>
-        <TextInput id="redirect_uri" label="Redirect URI" type="url" required/>
+        <TextInput id="auth_endpoint" label="Authorization Endpoint" type="url"  registerOptions={{required: "This field is required"}} />
+        <TextInput id="client_id" label="Client ID" type="text"  registerOptions={{required: "This field is required"}} />
+        <TextInput id="redirect_uri" label="Redirect URI" type="url"  registerOptions={{required: "This field is required"}} />
         <TextInput id="token_endpoint" label="Token Endpoint" type="url"/>
-        <TextInput id="scope" label="Scope" type="text" required/>
-        <div>
-          <label>Response Type</label>
-          <div>
+        <TextInput id="scope" label="Scope" type="text"  registerOptions={{required: "This field is required"}} />
+        <FormControl id='response_type_code' label='Response Type'>
             <CheckboxInput name="response_type_code" label="code" validate={validateResponseType} />
             <CheckboxInput name="response_type_token" label="token" validate={validateResponseType} />
             <CheckboxInput name="response_type_id_token" label="id_token" validate={validateResponseType} />
-            {errors.response_type_code && <span>At least one response type is required</span>}
-          </div>
-        </div>
+        </FormControl>
         <SelectInput id="response_mode" label="Response Mode" options={[
           { value: '', label: 'None' },
           { value: 'query', label: 'query' },
