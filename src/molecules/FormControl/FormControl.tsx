@@ -1,6 +1,7 @@
 import React from 'react';
 import { RegisterOptions, useFormContext } from 'react-hook-form';
 import { get } from 'lodash';
+import Field from '@/atoms/Field/Field';
 
 interface FormControlProps {
   id: string;
@@ -9,16 +10,18 @@ interface FormControlProps {
   children: React.ReactNode;
 }
 
-const FormControl: React.FC<FormControlProps> = ({id, label, children }) => {
+const FormControl: React.FC<FormControlProps> = ({ id, label, children }) => {
   const { formState: { errors } } = useFormContext();
   const error = get(errors, id);
 
   return (
-    <div>
-      <label htmlFor={id}>{label}</label>
-      {children}
-      {error && <span>{typeof error.message === 'string' ? error.message : JSON.stringify(error.message)}</span>}
-    </div>
+      <Field
+        label={label}
+        invalid={error ? true : false}
+        errorText={error && typeof error.message === 'string' ? error.message : JSON.stringify(error?.message)}
+      >
+        {children}
+      </Field>
   );
 };
 

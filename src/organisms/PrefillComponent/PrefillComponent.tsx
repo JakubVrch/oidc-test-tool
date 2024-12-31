@@ -1,5 +1,7 @@
 import { useForm, FieldValues, FormProvider } from 'react-hook-form';
 import SelectInput from '../../molecules/SelectInput/SelectInput';
+import Button from '@/atoms/Button/Button';
+import { createListCollection } from '@chakra-ui/react';
 
 interface ConfigItem<T extends FieldValues> {
   label: string;
@@ -22,14 +24,16 @@ const Prefill = <T extends FieldValues>({ onPrefill, prefillConfig }: PrefillPro
   const methods = useForm<FormValues>();
   const { handleSubmit, watch } = methods;
   const selectedConfigLabel = watch('selectedConfig');
-  const dropdownOptions = [
-    { value: '', label: 'Select a config' }, // Add default option
-    ...prefillConfig.map((config) => ({
-      value: config.label,
-      label: config.label,
-    })),
-  ];
 
+  const dropdownOptions = createListCollection({
+    items: [
+      ...prefillConfig.map((config) => ({
+        value: config.label,
+        label: config.label,
+      }))
+    ]
+  })
+ 
   const findSelectedConfig = (label?: string) =>
     label
       ? prefillConfig.find((config) => config.label === label)
@@ -54,7 +58,7 @@ const Prefill = <T extends FieldValues>({ onPrefill, prefillConfig }: PrefillPro
             <p>{selectedConfig.description}</p>
           </div>
         )}
-        <button type="submit">Prefill</button>
+        <Button type="submit">Prefill</Button>
       </form>
     </FormProvider>
   );

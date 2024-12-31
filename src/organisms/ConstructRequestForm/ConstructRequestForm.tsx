@@ -10,6 +10,7 @@ import useConstructedUrl from './useConstructedUrl';
 import { DevTool } from '@hookform/devtools';
 import { prefillFormData } from '../../services/prefillFormData/prefillFormData';
 import FormControl from '../../molecules/FormControl/FormControl';
+import { createListCollection } from '@chakra-ui/react';
 
 export interface FormValues {
   auth_endpoint: string;
@@ -55,6 +56,14 @@ const ConstructRequestForm = forwardRef<FormRef, ConstructRequestFormProps>(({ o
     },
   }));
 
+  const options = createListCollection({
+    items: [
+      { value: 'query', label: 'query' },
+      { value: 'fragment', label: 'fragment' },
+      { value: 'form_post', label: 'form_post' },
+    ],
+  })
+
   //TODO: handleSubmit need handling for errors, but it is working fine for now
   return (
     <FormProvider {...methods}>
@@ -70,12 +79,7 @@ const ConstructRequestForm = forwardRef<FormRef, ConstructRequestFormProps>(({ o
             <CheckboxInput name="response_type_token" label="token" validate={validateResponseType} />
             <CheckboxInput name="response_type_id_token" label="id_token" validate={validateResponseType} />
         </FormControl>
-        <SelectInput id="response_mode" label="Response Mode" options={[
-          { value: '', label: 'None' },
-          { value: 'query', label: 'query' },
-          { value: 'fragment', label: 'fragment' },
-          { value: 'form_post', label: 'form_post' },
-        ]} />
+        <SelectInput id="response_mode" label="Response Mode" options={options} />
         <TextInput id="state" label="State" type="text"/>
         <TextInput id="nonce" label="Nonce" type="text"/>
         <TextInput id="prompt" label="Prompt" type="text"/>
