@@ -1,5 +1,10 @@
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
+import { Controller, useController, useFormContext } from 'react-hook-form'
+import { get } from 'lodash';
+import { Fieldset } from '@chakra-ui/react/fieldset';
+import { CheckboxGroup } from '@chakra-ui/react';
+import { Checkbox } from './checkbox';
+
 
 interface CheckboxInputProps {
   name: string;
@@ -7,19 +12,40 @@ interface CheckboxInputProps {
   validate: (value: boolean) => boolean | string;
 }
 
-const CheckboxInput: React.FC<CheckboxInputProps> = ({ name, label, validate }) => {
-  const { register, getValues } = useFormContext();
+const CheckboxField: React.FC<CheckboxInputProps> = ({ name, label, validate, items }) => {
+  const { formState: { errors } } = useFormContext();
+  const error = get(errors, name);
+  const invalid = !!error
+
+  const group = useController({
+    name: name,
+    defaultValue: [],
+  })
 
   return (
-    <label>
-      <input
-        type="checkbox"
-        {...register(name, { validate })}
-        defaultChecked={getValues(name) as boolean}
-      />
-      {label}
-    </label>
+    <Fieldset.Root invalid={invalid}>
+      <Fieldset.Legend>{label}</Fieldset.Legend>
+      <CheckboxGroup
+        invalid={invalid}
+        value={group.field.value ? group.field.value : []}
+        onValueChange={(value) => {console.log("change value",value); group.field.onChange(value)}}
+        name={group.field.name}
+      >
+        <Fieldset.Content>
+          {items.map((item) => (
+            <Checkbox key={item.value} value={item.value}>
+              {item.label}
+            </Checkbox>
+          ))}
+        </Fieldset.Content>
+      </CheckboxGroup>
+
+      {error && (
+        <Fieldset.ErrorText>{typeof error.message === 'string' ? error.message : JSON.stringify(error?.message)}</Fieldset.ErrorText>
+      )}
+    </Fieldset.Root>
+
   );
 };
 
-export default CheckboxInput;
+export default CheckboxField;

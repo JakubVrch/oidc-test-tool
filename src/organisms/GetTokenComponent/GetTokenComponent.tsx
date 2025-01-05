@@ -4,22 +4,22 @@ import ExchangeCodeForm from "../ExchangeCodeForm/ExchangeCodeForm";
 import useTokenExchange from "./useTokenExchange";
 
 interface GetTokenComponentProps {
-  token_endpoint: string;
-  redirect_uri: string;
-  client_id: string;
+  tokenEndpoint: string;
+  redirectUri: string;
+  clientId: string;
   code: string;
 };
 
 const GetTokenComponent: React.FC<GetTokenComponentProps> = ({
-  code, token_endpoint, redirect_uri, client_id,
+  code, tokenEndpoint, redirectUri, clientId,
 }) => {
   const {
     tokenResponse,
     handleExchangeCode
   } = useTokenExchange({
-    token_endpoint,
-    redirect_uri,
-    client_id,
+    tokenEndpoint,
+    redirectUri,
+    clientId,
     code
   });
 

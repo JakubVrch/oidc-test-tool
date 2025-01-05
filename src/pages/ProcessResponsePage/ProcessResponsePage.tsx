@@ -8,7 +8,7 @@ import useStoredOidcParams from './useStoredOIDCParams';
 
 const ProcessResponsePage: React.FC = () => {
   const { mode, responseType, code, id_token, access_token, params } = useOIDCResponseData();
-  const { token_endpoint, redirect_uri, client_id, state} = useStoredOidcParams();
+  const { tokenEndpoint, redirectUri, clientId, state} = useStoredOidcParams();
 
   return (
     <div>
@@ -19,8 +19,8 @@ const ProcessResponsePage: React.FC = () => {
       }
       <TokenViewer token={id_token} tokenName="ID Token" />
       <TokenViewer token={access_token} tokenName="Access Token" />
-      {code && token_endpoint && redirect_uri && client_id && 
-        <GetTokenComponent {...{token_endpoint, redirect_uri,client_id, code}} />
+      {code && tokenEndpoint && redirectUri && clientId && 
+        <GetTokenComponent {...{tokenEndpoint, redirectUri,clientId, code}} />
       }
     </div>
   );

@@ -1,9 +1,9 @@
 import { useState, useCallback } from 'react';
 
 interface TokenExchangeProps {
-  token_endpoint: string;
-  redirect_uri: string;
-  client_id: string;
+  tokenEndpoint: string;
+  redirectUri: string;
+  clientId: string;
   code: string;
 }
 
@@ -15,16 +15,16 @@ interface TokenResponse {
 }
 
 const useTokenExchange = ({ 
-  token_endpoint, 
-  redirect_uri, 
-  client_id, 
+  tokenEndpoint, 
+  redirectUri, 
+  clientId, 
   code,
 }: TokenExchangeProps) => {
   const [tokenResponse, setTokenResponse] = useState<TokenResponse | null>(null);
 
   const handleExchangeCode = useCallback(async ({ clientSecret }: { clientSecret: string }) => {
     try {
-      const response = await fetch(token_endpoint, {
+      const response = await fetch(tokenEndpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -32,8 +32,8 @@ const useTokenExchange = ({
         body: new URLSearchParams({
           grant_type: 'authorization_code',
           code,
-          redirect_uri: redirect_uri,
-          client_id: client_id,
+          redirectUri: redirectUri,
+          clientId: clientId,
           client_secret: clientSecret, 
         }),
       });
@@ -60,7 +60,7 @@ const useTokenExchange = ({
         message: `Failed to retrieve token: ${(error as Error).message}`, 
       });
     }
-  }, [token_endpoint, redirect_uri, client_id, code]); 
+  }, [tokenEndpoint, redirectUri, clientId, code]); 
 
   return { tokenResponse, handleExchangeCode };
 };
