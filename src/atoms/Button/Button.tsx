@@ -1,15 +1,15 @@
 import React from "react"
-import { Button as ChakraButton } from '@chakra-ui/react';
+import { Button as ChakraButton, ButtonProps as ChakraButtonProps } from '@chakra-ui/react';
 
-interface ButtonProps {
+interface ButtonProps extends ChakraButtonProps {
   children: React.ReactNode
 }
 
 const Button: React.FC<ButtonProps> = (props) => {
-  const {children} = props
+  const {children, ...rest} = props
 
   return (
-    <ChakraButton {...props}>{children}</ChakraButton>
+    <ChakraButton {...rest}>{children}</ChakraButton>
   );
 };
 

@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import ConstructRequest from './pages/ConstructRequestPage/ConstructRequestPage';
 import ProcessResponsePage from './pages/ProcessResponsePage/ProcessResponsePage';
-import TestChackraPage from './pages/testChackra/testChackra'
 
 function App() {
   return (
@@ -11,7 +10,6 @@ function App() {
           <Route path="/" element={<ConstructRequest />} />
           <Route path="/redirect/:path/*" element={<ProcessResponsePage />} />
           <Route path="/redirect" element={<ProcessResponsePage />} />
-          <Route path="/chackra"  element={<TestChackraPage/>} />
         </Routes>
       </div>
     </Router>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Controller, useController, useFormContext } from 'react-hook-form'
+import { RegisterOptions, useController, useFormContext } from 'react-hook-form'
 import { get } from 'lodash';
 import { Fieldset } from '@chakra-ui/react/fieldset';
 import { CheckboxGroup } from '@chakra-ui/react';
@@ -9,10 +9,11 @@ import { Checkbox } from './checkbox';
 interface CheckboxInputProps {
   name: string;
   label: string;
-  validate: (value: boolean) => boolean | string;
+  registerOptions?: RegisterOptions;
+  items: { value: string; label: string }[];
 }
 
-const CheckboxField: React.FC<CheckboxInputProps> = ({ name, label, validate, items }) => {
+const CheckboxField: React.FC<CheckboxInputProps> = ({ name, label, registerOptions, items }) => {
   const { formState: { errors } } = useFormContext();
   const error = get(errors, name);
   const invalid = !!error
@@ -20,6 +21,7 @@ const CheckboxField: React.FC<CheckboxInputProps> = ({ name, label, validate, it
   const group = useController({
     name: name,
     defaultValue: [],
+    rules: registerOptions,
   })
 
   return (
@@ -27,8 +29,8 @@ const CheckboxField: React.FC<CheckboxInputProps> = ({ name, label, validate, it
       <Fieldset.Legend>{label}</Fieldset.Legend>
       <CheckboxGroup
         invalid={invalid}
-        value={group.field.value ? group.field.value : []}
-        onValueChange={(value) => {console.log("change value",value); group.field.onChange(value)}}
+        value={Array.isArray(group.field.value) ? group.field.value : []}
+        onValueChange={(value) => group.field.onChange(value)}
         name={group.field.name}
       >
         <Fieldset.Content>

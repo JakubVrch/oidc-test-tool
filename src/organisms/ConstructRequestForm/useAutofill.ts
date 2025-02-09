@@ -12,13 +12,6 @@ const useAutofill = (setValue: UseFormSetValue<FormValues>) => {
         setValue(element.name as keyof FormValues, element.value);
       }
     });
-
-    // Handle checkboxes separately
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    checkboxes.forEach(checkbox => {
-      const element = checkbox as HTMLInputElement;
-      setValue(element.name as keyof FormValues, element.checked);
-    });
   }, [setValue]);
 
   //TODO: Add autofill for FieldArray

@@ -1,12 +1,15 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom';
+import { screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { render } from "@/testing/render"
 import ConstructRequestForm from './ConstructRequestForm';
 
 const mockOnSubmit = jest.fn();
 
 describe('ConstructRequestForm', () => {
   beforeEach(() => {
-    render(<ConstructRequestForm onSubmit={mockOnSubmit} />);
+    render(
+        <ConstructRequestForm onSubmit={mockOnSubmit} />
+    );
   });
 
   it('renders the form fields', () => {
@@ -18,42 +21,40 @@ describe('ConstructRequestForm', () => {
     expect(screen.getByLabelText(/code/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/id_token/i)).toBeInTheDocument();
     expect(screen.getAllByLabelText(/token/i).length).toBeGreaterThanOrEqual(1);
-    expect(screen.getByLabelText(/Response Mode/i)).toBeInTheDocument();
+    expect(screen.getByRole('combobox', { name: /Response Mode/i })).toBeInTheDocument();
     expect(screen.getByLabelText(/State/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Nonce/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Prompt/i)).toBeInTheDocument();
   });
 
   it('submits the form with minimal valid data', async () => {
-    fireEvent.input(screen.getByLabelText(/Authorization Endpoint/i), { target: { value: 'http://example.com/auth' } });
-    fireEvent.input(screen.getByLabelText(/Client ID/i), { target: { value: 'client' } });
-    fireEvent.input(screen.getByLabelText(/Redirect URI/i), { target: { value: 'http://localhost' } });
-    fireEvent.input(screen.getByLabelText(/Scope/i), { target: { value: 'openid' } });
-    fireEvent.click(screen.getByLabelText(/code/i));
+    await userEvent.type(screen.getByLabelText(/Authorization Endpoint/i), 'http://example.com/auth');
+    await userEvent.type(screen.getByLabelText(/Client ID/i), 'client');
+    await userEvent.type(screen.getByLabelText(/Redirect URI/i), 'http://localhost');
+    await userEvent.type(screen.getByLabelText(/Scope/i), 'openid');
+    await userEvent.click(screen.getByLabelText(/code/i));
 
-    fireEvent.submit(screen.getByRole('button', { name: /Redirect/i }));
+    await userEvent.click(screen.getByRole('button', { name: /Redirect/i }));
 
     await waitFor(() => {
       expect(mockOnSubmit).toHaveBeenCalledWith({
-        auth_endpoint: 'http://example.com/auth',
-        client_id: 'client',
-        redirect_uri: 'http://localhost',
+        authEndpoint: 'http://example.com/auth',
+        clientId: 'client',
+        redirectUri: 'http://localhost',
         scope: 'openid',
-        response_type_code: true,
-        response_type_token: false,
-        response_type_id_token: false,
-        response_mode: '',
+        responseType: ["code"],
+        responseMode: undefined,
         state: '',
         nonce: '',
         prompt: '',
-        token_endpoint: '',
-        additional_params: []
+        tokenEndpoint: '',
+        additionalParams: []
       }, expect.anything());
     });
   });
 
   it('shows error messages for missing required fields', async () => {
-    fireEvent.submit(screen.getByRole('button', { name: /Redirect/i }));
+    await userEvent.click(screen.getByRole('button', { name: /Redirect/i }));
 
     await waitFor(() => {
       const errorMessagesRequired = screen.getAllByText(/This field is required/i);
@@ -63,70 +64,70 @@ describe('ConstructRequestForm', () => {
   });
 
   it('constructs URL based on minimal form input changes', async () => {
-    fireEvent.input(screen.getByLabelText(/Authorization Endpoint/i), { target: { value: 'http://example.com/auth' } });
-    fireEvent.input(screen.getByLabelText(/Client ID/i), { target: { value: 'client' } });
-    fireEvent.input(screen.getByLabelText(/Redirect URI/i), { target: { value: 'http://localhost' } });
-    fireEvent.input(screen.getByLabelText(/Scope/i), { target: { value: 'openid' } });
-    fireEvent.click(screen.getByLabelText(/code/i));
-
+    await userEvent.type(screen.getByLabelText(/Authorization Endpoint/i), 'http://example.com/auth');
+    await userEvent.type(screen.getByLabelText(/Client ID/i), 'client');
+    await userEvent.type(screen.getByLabelText(/Redirect URI/i), 'http://localhost');
+    await userEvent.type(screen.getByLabelText(/Scope/i), 'openid');
+    await userEvent.click(screen.getByLabelText(/code/i));
+    
     await waitFor(() => {
       expect(screen.getByText(/Constructed URL/i)).toBeInTheDocument();
       expect(screen.getByText(/http:\/\/example\.com\/auth\?client_id=client&redirect_uri=http%3A%2F%2Flocalhost&scope=openid&response_type=code/i)).toBeInTheDocument();
     });
   });
+
   it('submits the form with optional parameters', async () => {
-    fireEvent.input(screen.getByLabelText(/Authorization Endpoint/i), { target: { value: 'http://example.com/auth' } });
-    fireEvent.input(screen.getByLabelText(/Client ID/i), { target: { value: 'client' } });
-    fireEvent.input(screen.getByLabelText(/Redirect URI/i), { target: { value: 'http://localhost' } });
-    fireEvent.input(screen.getByLabelText(/Scope/i), { target: { value: 'openid' } });
-    fireEvent.click(screen.getByLabelText(/code/i));
-    fireEvent.click(screen.getByLabelText(/id_token/i));
-    fireEvent.input(screen.getByLabelText(/Token Endpoint/i), { target: { value: 'http://example.com/token' } });
-    fireEvent.input(screen.getByLabelText(/State/i), { target: { value: 'state' } });
-    fireEvent.input(screen.getByLabelText(/Nonce/i), { target: { value: 'nonce' } });
-    fireEvent.input(screen.getByLabelText(/Prompt/i), { target: { value: 'prompt' } });
-
-    fireEvent.click(screen.getByRole('button', { name: /Add Parameter/i }));
-    fireEvent.click(screen.getByRole('button', { name: /Add Parameter/i }));
-    fireEvent.input(screen.getAllByLabelText(/Name/i)[0], { target: { value: 'name1' } });
-    fireEvent.input(screen.getAllByLabelText(/Value/i)[0], { target: { value: 'value1' } });
-    fireEvent.input(screen.getAllByLabelText(/Name/i)[1], { target: { value: 'name2' } });
-    fireEvent.input(screen.getAllByLabelText(/Value/i)[1], { target: { value: 'value2' } });
-
-    fireEvent.submit(screen.getByRole('button', { name: /Redirect/i }));
-
+    await userEvent.type(screen.getByLabelText(/Authorization Endpoint/i), 'http://example.com/auth');
+    await userEvent.type(screen.getByLabelText(/Client ID/i), 'client');
+    await userEvent.type(screen.getByLabelText(/Redirect URI/i), 'http://localhost');
+    await userEvent.type(screen.getByLabelText(/Scope/i), 'openid');
+    await userEvent.click(screen.getByLabelText(/code/i));
+    await userEvent.click(screen.getByLabelText(/id_token/i));
+    await userEvent.type(screen.getByLabelText(/Token Endpoint/i), 'http://example.com/token');
+    await userEvent.type(screen.getByLabelText(/State/i), 'state');
+    await userEvent.type(screen.getByLabelText(/Nonce/i), 'nonce');
+    await userEvent.type(screen.getByLabelText(/Prompt/i), 'prompt');
+    
+    await userEvent.click(screen.getByRole('button', { name: /Add Parameter/i }));
+    await userEvent.click(screen.getByRole('button', { name: /Add Parameter/i }));
+    await userEvent.type(screen.getAllByLabelText(/Name/i)[0], 'name1');
+    await userEvent.type(screen.getAllByLabelText(/Value/i)[0], 'value1');
+    await userEvent.type(screen.getAllByLabelText(/Name/i)[1], 'name2');
+    await userEvent.type(screen.getAllByLabelText(/Value/i)[1], 'value2');
+    
+    await userEvent.click(screen.getByRole('button', { name: /Redirect/i }));
+    
     await waitFor(() => {
       expect(mockOnSubmit).toHaveBeenCalledWith({
-        auth_endpoint: 'http://example.com/auth',
-        client_id: 'client',
-        redirect_uri: 'http://localhost',
+        authEndpoint: 'http://example.com/auth',
+        clientId: 'client',
+        redirectUri: 'http://localhost',
         scope: 'openid',
-        response_type_code: true,
-        response_type_token: false,
-        response_type_id_token: true,
-        response_mode: '',
+        responseType: ["code", "id_token"],
+        responseMode: undefined,
         state: 'state',
         nonce: 'nonce',
         prompt: 'prompt',
-        token_endpoint: 'http://example.com/token',
-        additional_params: [
+        tokenEndpoint: 'http://example.com/token',
+        additionalParams: [
           { name: 'name1', value: 'value1' },
           { name: 'name2', value: 'value2' },
         ]
       }, expect.anything());
     });
   });
+
   it('removes additional parameters', async () => {
-    fireEvent.input(screen.getByLabelText(/Authorization Endpoint/i), { target: { value: 'http://example.com/auth' } });
-    fireEvent.input(screen.getByLabelText(/Client ID/i), { target: { value: 'client' } });
-    fireEvent.input(screen.getByLabelText(/Redirect URI/i), { target: { value: 'http://localhost' } });
-    fireEvent.input(screen.getByLabelText(/Scope/i), { target: { value: 'openid' } });
-    fireEvent.click(screen.getByLabelText(/code/i));
+    await userEvent.type(screen.getByLabelText(/Authorization Endpoint/i), 'http://example.com/auth');
+    await userEvent.type(screen.getByLabelText(/Client ID/i), 'client');
+    await userEvent.type(screen.getByLabelText(/Redirect URI/i), 'http://localhost');
+    await userEvent.type(screen.getByLabelText(/Scope/i), 'openid');
+    await userEvent.click(screen.getByLabelText(/code/i));
 
-    fireEvent.click(screen.getByRole('button', { name: /Add Parameter/i }));
-    fireEvent.click(screen.getByRole('button', { name: /Add Parameter/i }));
+    await userEvent.click(screen.getByRole('button', { name: /Add Parameter/i }));
+    await userEvent.click(screen.getByRole('button', { name: /Add Parameter/i }));
 
-    fireEvent.click(screen.getAllByRole('button', { name: /Remove/i })[0]);
+    await userEvent.click(screen.getAllByRole('button', { name: /Remove/i })[0]);
 
     await waitFor(() => {
       expect(screen.getAllByLabelText(/Name/i).length).toBe(1);

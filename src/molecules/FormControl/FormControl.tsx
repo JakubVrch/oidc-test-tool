@@ -1,7 +1,7 @@
 import React from 'react';
 import { RegisterOptions, useFormContext } from 'react-hook-form';
 import { get } from 'lodash';
-import Field from '@/atoms/Field/Field';
+import Field from './Field';
 
 interface FormControlProps {
   id: string;

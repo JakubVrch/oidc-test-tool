@@ -5,7 +5,7 @@ export interface UrlParams {
   clientId?: string;
   redirectUri?: string;
   scope?: string;
-  responseType?: ResponseTypeValue[];
+  responseType?: (ResponseTypeValue | undefined)[];
   responseMode?: ResponseModeValue;
   state?: string;
   nonce?: string;

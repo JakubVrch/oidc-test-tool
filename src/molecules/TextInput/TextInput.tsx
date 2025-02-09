@@ -1,7 +1,7 @@
 import React from 'react';
 import { RegisterOptions, useFormContext } from 'react-hook-form';
 import FormControl from '../FormControl/FormControl';
-import Input from '@/atoms/Input/Input';
+import { Input  as ChakraInput } from '@chakra-ui/react';
 
 interface TextInputProps {
   id: string;
@@ -16,7 +16,7 @@ const TextInput: React.FC<TextInputProps> = ({ id, label, type = 'text', default
 
   return (
     <FormControl id={id} label={label}>
-      <Input register = {register(id, { ...registerOptions })} defaultValue={defaultValue} />
+      <ChakraInput {...register(id, { ...registerOptions })} type = {type} defaultValue={defaultValue} />
     </FormControl>
   );
 };
