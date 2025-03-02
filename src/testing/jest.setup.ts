@@ -48,6 +48,10 @@ window.requestAnimationFrame = (cb) => setTimeout(cb, 1000 / 60);
 window.URL.createObjectURL = () => "https://i.pravatar.cc/300";
 window.URL.revokeObjectURL = () => {};
 
+// scrollTo mock
+window.HTMLElement.prototype.scrollTo = function() {};
+global.HTMLElement.prototype.scrollTo = function() {};
+
 // matchMedia mock
 const matchMediaMock = jest.fn().mockImplementation((query) => ({
   matches: false,

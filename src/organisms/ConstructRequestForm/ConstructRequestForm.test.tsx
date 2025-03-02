@@ -12,6 +12,10 @@ describe('ConstructRequestForm', () => {
     );
   });
 
+  afterEach(() => {
+    mockOnSubmit.mockClear();
+  });
+
   it('renders the form fields', () => {
     expect(screen.getByLabelText(/Authorization Endpoint/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Client ID/i)).toBeInTheDocument();
@@ -88,6 +92,7 @@ describe('ConstructRequestForm', () => {
     await userEvent.type(screen.getByLabelText(/Nonce/i), 'nonce');
     await userEvent.type(screen.getByLabelText(/Prompt/i), 'prompt');
     
+    //TODO: Add response mode
     await userEvent.click(screen.getByRole('button', { name: /Add Parameter/i }));
     await userEvent.click(screen.getByRole('button', { name: /Add Parameter/i }));
     await userEvent.type(screen.getAllByLabelText(/Name/i)[0], 'name1');

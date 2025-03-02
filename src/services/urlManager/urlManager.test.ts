@@ -1,26 +1,28 @@
+import { ResponseModeValue, ResponseTypeValue } from '../types/responseTypeAndValue';
 import { constructUrl, UrlParams, UrlResult } from './urlManager';
 
 describe('constructUrl', () => {
   it('should return error if mandatory params are missing', () => {
-    const params: UrlParams = { client_id: 'client', redirect_uri: 'http://localhost', scope: 'openid' };
+    const params: UrlParams = {
+      clientId: 'client', 
+      redirectUri: 'http://localhost', scope: 'openid'
+    };
     const result: UrlResult = constructUrl(params);
     expect(result.error).toBe('Authorization Endpoint is required');
   });
 
   it('should construct URL with all params', () => {
     const params: UrlParams = {
-      auth_endpoint: 'http://example.com/auth',
-      client_id: 'client',
-      redirect_uri: 'http://localhost',
+      authEndpoint: 'http://example.com/auth',
+      clientId: 'client',
+      redirectUri: 'http://localhost',
       scope: 'openid',
-      response_type_code: true,
-      response_type_token: true,
-      response_type_id_token: true,
-      response_mode: 'query',
+      responseType: [ResponseTypeValue.CODE, ResponseTypeValue.TOKEN, ResponseTypeValue.ID_TOKEN],
+      responseMode: ResponseModeValue.QUERY,
       state: 'state',
       nonce: 'nonce',
       prompt: 'login',
-      additional_params: [
+      additionalParams: [
         { name: 'param1', value: 'value1' },
         { name: 'param2', value: 'value2' }
       ]
@@ -31,11 +33,11 @@ describe('constructUrl', () => {
 
   it('should construct URL with minimal params', () => {
     const params: UrlParams = {
-      auth_endpoint: 'http://example.com/auth',
-      client_id: 'client',
-      redirect_uri: 'http://localhost',
+      authEndpoint: 'http://example.com/auth',
+      clientId: 'client',
+      redirectUri: 'http://localhost',
       scope: 'openid',
-      response_type_code: true
+      responseType: [ResponseTypeValue.CODE]
     };
     const result: UrlResult = constructUrl(params);
     expect(result.url).toBe('http://example.com/auth?client_id=client&redirect_uri=http%3A%2F%2Flocalhost&scope=openid&response_type=code');
