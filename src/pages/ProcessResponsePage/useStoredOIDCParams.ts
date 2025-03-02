@@ -5,9 +5,9 @@ function useStoredOidcParams() {
   const [storedParams, setStoredParams] = useState<OidcParams>({
     nonce: null,
     state: null,
-    token_endpoint: null,
-    client_id: null,
-    redirect_uri: null,
+    tokenEndpoint: null,
+    clientId: null,
+    redirectUri: null,
   });
   const effectRan = useRef(false);
 

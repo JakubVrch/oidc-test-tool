@@ -1,6 +1,7 @@
 import React from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import TextInput from '../../molecules/TextInput/TextInput';
+import Button from '@/atoms/Button/Button';
 
 interface ExchangeCodeFormData {
   clientSecret: string;
@@ -16,7 +17,7 @@ const ExchangeCodeForm: React.FC<ExchangeCodeFormProps> = ({ onSubmit }) => {
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
         <TextInput id="clientSecret" label="Client Secret:" type="password"  registerOptions={{required: "This field is required"}} />
-        <button type="submit">Exchange Code</button>
+        <Button type="submit">Exchange Code</Button>
       </form>
     </FormProvider>
   );

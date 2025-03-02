@@ -1,26 +1,28 @@
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import FormControl from '../FormControl/FormControl';
+import { ListCollection } from '@chakra-ui/react';
+import Select from '@/atoms/Select/Select';
 
 interface SelectInputProps {
   id: string;
   label: string;
-  options: { value: string; label: string }[];
-  defaultValue?: string;
+  options: ListCollection;
 }
 
-const SelectInput: React.FC<SelectInputProps> = ({ id, label, options, defaultValue = '' }) => {
-  const { register } = useFormContext();
+const SelectInput: React.FC<SelectInputProps> = ({ id, label, options }) => {
 
   return (
     <FormControl id={id} label={label}>
-      <select id={id} {...register(id)} defaultValue={defaultValue}>
-        {options.map(option => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+      <Controller
+        name={id}
+        render={({ field }) => (
+          <Select
+            collection={options}
+            field = {field}
+          />
+        )}
+      />
     </FormControl>
   );
 };

@@ -1,30 +1,41 @@
 import { forwardRef, useImperativeHandle } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import ConstructedUrlDisplay from '../../atoms/ConstructedUrlDisplay/ConstructedUrlDisplay';
-import CheckboxInput from '../../molecules/CheckboxInput/CheckboxInput';
+import CheckboxField from '../../molecules/CheckboxInput/CheckboxInput';
 import SelectInput from '../../molecules/SelectInput/SelectInput';
 import TextInput from '../../molecules/TextInput/TextInput';
 import AdditionalParameters from '../AdditionalParametersFormPart/AdditionalParameters';
-import useAutofill from './useAutofill';
 import useConstructedUrl from './useConstructedUrl';
 import { DevTool } from '@hookform/devtools';
 import { prefillFormData } from '../../services/prefillFormData/prefillFormData';
-import FormControl from '../../molecules/FormControl/FormControl';
+import { createListCollection } from '@chakra-ui/react';
+import Button from '@/atoms/Button/Button';
+import { ResponseModeValue, ResponseTypeValue } from '@/services/types/responseTypeAndValue'
+
+const responseTypeOptions = Object.values(ResponseTypeValue).map((value) => ({
+  value,
+  label: value,
+}));
+
+const responseModeOptions = createListCollection({
+  items: Object.values(ResponseModeValue).map((value) => ({
+    value,
+    label: value,
+  })),
+})
 
 export interface FormValues {
-  auth_endpoint: string;
-  client_id: string;
-  redirect_uri: string;
+  authEndpoint: string;
+  clientId: string;
+  redirectUri: string;
   scope: string;
-  response_type_code: boolean;
-  response_type_token: boolean;
-  response_type_id_token: boolean;
-  response_mode?: 'query' | 'fragment' | 'form_post';
+  responseType: ResponseTypeValue[];
+  responseMode?: ResponseModeValue;
   state?: string;
   nonce?: string;
   prompt?: string;
-  token_endpoint?: string;
-  additional_params?: { name: string; value: string }[];
+  tokenEndpoint?: string;
+  additionalParams?: { name: string; value: string }[];
 }
 
 export interface FormRef {
@@ -37,21 +48,18 @@ interface ConstructRequestFormProps {
 
 const ConstructRequestForm = forwardRef<FormRef, ConstructRequestFormProps>(({ onSubmit }, ref) => {
 
-  const methods= useForm<FormValues>();
-  const { handleSubmit, setValue, getValues, watch, control } = methods;
+  const methods = useForm<FormValues>();
+  const { handleSubmit, setValue, watch, control } = methods;
 
-  useAutofill(setValue);
+  //TODO: Fix tests
+  //TODO: Clean and refactor form and UI components
+  //TODO: Implement autofill for checkbox group and fix issues
+  //useAutofill(setValue);
   const constructedUrl = useConstructedUrl(watch);
-
-  // TODO: Checkbox array should be refactored after we implement UI library together with the CheckboxInput component and validation
-  const validateResponseType = () => {
-    const values = getValues(['response_type_code', 'response_type_token', 'response_type_id_token']);
-    return values.some(value => value) || 'At least one response type is required';
-  };
 
   useImperativeHandle<unknown, FormRef>(ref, () => ({
     prefill: (data: FormValues) => {
-        prefillFormData<FormValues>(setValue, data);
+      prefillFormData<FormValues>(setValue, data);
     },
   }));
 
@@ -60,33 +68,26 @@ const ConstructRequestForm = forwardRef<FormRef, ConstructRequestFormProps>(({ o
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <DevTool control={control} /> {/* Enable DevTools */}
-        <TextInput id="auth_endpoint" label="Authorization Endpoint" type="url"  registerOptions={{required: "This field is required"}} />
-        <TextInput id="client_id" label="Client ID" type="text"  registerOptions={{required: "This field is required"}} />
-        <TextInput id="redirect_uri" label="Redirect URI" type="url"  registerOptions={{required: "This field is required"}} />
-        <TextInput id="token_endpoint" label="Token Endpoint" type="url"/>
-        <TextInput id="scope" label="Scope" type="text"  registerOptions={{required: "This field is required"}} />
-        <FormControl id='response_type_code' label='Response Type'>
-            <CheckboxInput name="response_type_code" label="code" validate={validateResponseType} />
-            <CheckboxInput name="response_type_token" label="token" validate={validateResponseType} />
-            <CheckboxInput name="response_type_id_token" label="id_token" validate={validateResponseType} />
-        </FormControl>
-        <SelectInput id="response_mode" label="Response Mode" options={[
-          { value: '', label: 'None' },
-          { value: 'query', label: 'query' },
-          { value: 'fragment', label: 'fragment' },
-          { value: 'form_post', label: 'form_post' },
-        ]} />
-        <TextInput id="state" label="State" type="text"/>
-        <TextInput id="nonce" label="Nonce" type="text"/>
-        <TextInput id="prompt" label="Prompt" type="text"/>
-        <AdditionalParameters name="additional_params" />
+        <TextInput id="authEndpoint" label="Authorization Endpoint" type="url" registerOptions={{ required: "This field is required" }} />
+        <TextInput id="clientId" label="Client ID" type="text" registerOptions={{ required: "This field is required" }} />
+        <TextInput id="redirectUri" label="Redirect URI" type="url" registerOptions={{ required: "This field is required" }} />
+        <TextInput id="tokenEndpoint" label="Token Endpoint" type="url" />
+        <TextInput id="scope" label="Scope" type="text" registerOptions={{ required: "This field is required" }} />
+        <CheckboxField name="responseType" label="Response Type" items={responseTypeOptions} registerOptions={{
+          validate: (value) => Array.isArray(value) && value.length > 0 || "At least one response type is required"
+        }} />
+        <SelectInput id="responseMode" label="Response Mode" options={responseModeOptions} />
+        <TextInput id="state" label="State" type="text" />
+        <TextInput id="nonce" label="Nonce" type="text" />
+        <TextInput id="prompt" label="Prompt" type="text" />
+        <AdditionalParameters name="additionalParams" />
         <ConstructedUrlDisplay url={constructedUrl} />
-        <button type="submit">Redirect</button>
+        <Button type="submit">Redirect</Button>
       </form>
     </FormProvider>
   );
 });
 
-ConstructRequestForm.displayName = 'ConstructRequestForm'; 
+ConstructRequestForm.displayName = 'ConstructRequestForm';
 
 export default ConstructRequestForm;

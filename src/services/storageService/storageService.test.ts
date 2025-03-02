@@ -14,9 +14,9 @@ describe('oidcStorage', () => {
     const testParams: OidcParams = {
       nonce: 'test-nonce',
       state: 'test-state',
-      token_endpoint: 'https://example.com/token',
-      client_id: 'my-client-id',
-      redirect_uri: 'https://example.com/callback',
+      tokenEndpoint: 'https://example.com/token',
+      clientId: 'my-client-id',
+      redirectUri: 'https://example.com/callback',
     };
 
     storeOidcParams(testParams);
@@ -30,9 +30,9 @@ describe('oidcStorage', () => {
     const testParams: OidcParams = {
       nonce: null,
       state: 'test-state',
-      token_endpoint: null,
-      client_id: null,
-      redirect_uri: null,
+      tokenEndpoint: null,
+      clientId: null,
+      redirectUri: null,
     };
 
     storeOidcParams(testParams);
@@ -46,9 +46,9 @@ describe('oidcStorage', () => {
     const testParams: OidcParams = {
       nonce: 'test-nonce',
       state: 'test-state',
-      token_endpoint: 'https://example.com/token',
-      client_id: 'my-client-id',
-      redirect_uri: 'https://example.com/callback',
+      tokenEndpoint: 'https://example.com/token',
+      clientId: 'my-client-id',
+      redirectUri: 'https://example.com/callback',
     };
 
     storeOidcParams(testParams);
@@ -59,9 +59,9 @@ describe('oidcStorage', () => {
     expect(retrievedParams).toEqual({
       nonce: null,
       state: null,
-      token_endpoint: null,
-      client_id: null,
-      redirect_uri: null,
+      tokenEndpoint: null,
+      clientId: null,
+      redirectUri: null,
     });
   });
 });

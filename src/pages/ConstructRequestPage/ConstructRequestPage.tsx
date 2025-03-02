@@ -2,7 +2,8 @@ import React, { useRef } from 'react';
 import ConstructRequestForm, { FormRef, FormValues } from '../../organisms/ConstructRequestForm/ConstructRequestForm';
 import { redirectToOidcProvider } from '../../services/redirectHandler/redirectHandler';
 import Prefill from '../../organisms/PrefillComponent/PrefillComponent';
-import { prefillConfig } from '../../config/exampleConfig';
+import { prefillConfig } from '../../config/prefillConfig';
+import DefaultTemplate from '@/templates/Default/Default';
 
 const ConstructRequestPage: React.FC = () => {
   const onSubmit = (data: FormValues) => {
@@ -18,11 +19,10 @@ const ConstructRequestPage: React.FC = () => {
   };
 
   return (
-    <div>
-      <h1>Construct Request Page</h1>
-      <Prefill onPrefill={handlePrefill} prefillConfig={prefillConfig}/>
+    <DefaultTemplate title="Construct Request">
+      <Prefill onPrefill={handlePrefill} prefillConfig={prefillConfig} />
       <ConstructRequestForm onSubmit={onSubmit} ref={formRef} />
-    </div>
+    </DefaultTemplate>
   );
 };
 

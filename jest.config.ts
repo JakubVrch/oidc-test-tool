@@ -5,8 +5,6 @@ const config: Config = {
   collectCoverageFrom: ["src/**/*.{ts,tsx}", "!src/**/*.d.ts", "!**/vendor/**"],
   coverageDirectory: "coverage",
   testEnvironment: "jsdom",
-  resetMocks: true,
-  clearMocks: true,
   transform: {
     ".(ts|tsx)": ["ts-jest", { tsconfig: "tsconfig.app.json" }],
   },
@@ -18,9 +16,12 @@ const config: Config = {
     "package-lock.json",
     "pnpm-lock.json",
     "yarn-lock.json", //remove lock file accoding to your package manager
-    "jest.setup.ts",
+    "/src/testing",
   ],
-  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
+  setupFilesAfterEnv: ["<rootDir>/src/testing/jest.setup.ts"],
+  moduleNameMapper: {
+    "^@/(.*)$": "<rootDir>/src/$1",
+  },
 };
 
-module.exports = config;
+export default config;

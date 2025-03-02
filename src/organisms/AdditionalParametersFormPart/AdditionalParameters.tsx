@@ -1,6 +1,7 @@
 import React from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import TextInput from '../../molecules/TextInput/TextInput';
+import Button from '@/atoms/Button/Button';
 
 interface AdditionalParametersProps {
   name: string;
@@ -20,10 +21,10 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({ name }) => 
         <div key={field.id}>
           <TextInput id={`${name}.${index}.name`} label="Name" type='text' registerOptions={{required: "Please fill in this field"}} />
           <TextInput id={`${name}.${index}.value`} label="Value" type='text' registerOptions={{required: "Please fill in this field"}}   />
-          <button type="button" onClick={() => remove(index)}>Remove</button>
+          <Button onClick={() => remove(index)}>Remove</Button>
         </div>
       ))}
-      <button type="button" onClick={() => append({ name: '', value: '' })}>Add Parameter</button>
+      <Button onClick={() => append({ name: '', value: '' })}>Add Parameter</Button>
     </div>
   );
 };

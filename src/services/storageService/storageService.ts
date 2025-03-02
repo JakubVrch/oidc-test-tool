@@ -1,42 +1,42 @@
 export interface OidcParams {
   nonce: string | null;
   state: string | null;
-  token_endpoint: string | null;
-  client_id: string | null;
-  redirect_uri: string | null;
+  tokenEndpoint: string | null;
+  clientId: string | null;
+  redirectUri: string | null;
 }
 
 export const storeOidcParams = (params: OidcParams) => {
   if (params.nonce) {
-    localStorage.setItem('oidc_nonce', params.nonce);
+    localStorage.setItem('oidcNonce', params.nonce);
   }
   if (params.state) {
-    localStorage.setItem('oidc_state', params.state);
+    localStorage.setItem('oidcState', params.state);
   }
-  if (params.token_endpoint) {
-    localStorage.setItem('oidc_token_endpoint', params.token_endpoint);
+  if (params.tokenEndpoint) {
+    localStorage.setItem('oidcTokenEndpoint', params.tokenEndpoint);
   }
-  if (params.client_id) {
-    localStorage.setItem('oidc_client_id', params.client_id);
+  if (params.clientId) {
+    localStorage.setItem('oidcClientId', params.clientId);
   }
-  if (params.redirect_uri) {
-    localStorage.setItem('oidc_redirect_uri', params.redirect_uri);
+  if (params.redirectUri) {
+    localStorage.setItem('oidcRedirectUri', params.redirectUri);
   }
 };
 
 export const getStoredOidcParams = (): OidcParams => {
-  const nonce = localStorage.getItem('oidc_nonce');
-  const state = localStorage.getItem('oidc_state');
-  const token_endpoint = localStorage.getItem('oidc_token_endpoint');
-  const client_id = localStorage.getItem('oidc_client_id');
-  const redirect_uri = localStorage.getItem('oidc_redirect_uri');
-  return { nonce, state, token_endpoint, client_id, redirect_uri };
+  const nonce = localStorage.getItem('oidcNonce');
+  const state = localStorage.getItem('oidcState');
+  const tokenEndpoint = localStorage.getItem('oidcTokenEndpoint');
+  const clientId = localStorage.getItem('oidcClientId');
+  const redirectUri = localStorage.getItem('oidcRedirectUri');
+  return { nonce, state, tokenEndpoint, clientId, redirectUri };
 };
 
 export const clearStoredOidcParams = () => {
-  localStorage.removeItem('oidc_nonce');
-  localStorage.removeItem('oidc_state');
-  localStorage.removeItem('oidc_token_endpoint');
-  localStorage.removeItem('oidc_client_id');
-  localStorage.removeItem('oidc_redirect_uri');
+  localStorage.removeItem('oidcNonce');
+  localStorage.removeItem('oidcState');
+  localStorage.removeItem('oidcTokenEndpoint');
+  localStorage.removeItem('oidcClientId');
+  localStorage.removeItem('oidcRedirectUri');
 };
