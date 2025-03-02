@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import { render } from "@/testing/render"
 import userEvent from '@testing-library/user-event';
 import GetTokenComponent from './GetTokenComponent';
 import useTokenExchange from './useTokenExchange';
@@ -7,9 +8,9 @@ jest.mock('./useTokenExchange');
 
 describe('GetTokenComponent', () => {
 	const props = {
-		token_endpoint: 'https://example.com/token',
-		redirect_uri: 'https://example.com/callback',
-		client_id: 'your_client_id',
+		tokenEndpoint: 'https://example.com/token',
+		redirectUri: 'https://example.com/callback',
+		clientId: 'your_client_id',
 		code: 'your_authorization_code',
 	};
 
@@ -27,8 +28,8 @@ describe('GetTokenComponent', () => {
 		const mockTokenResponse = {
 			success: true,
 			message: 'Token exchange successful',
-			id_token: 'your_id_token',
-			access_token: 'your_access_token',
+			idToken: 'your_id_token',
+			accessToken: 'your_access_token',
 		};
 		(useTokenExchange as jest.Mock).mockImplementation(() => ({
 			tokenResponse: mockTokenResponse,

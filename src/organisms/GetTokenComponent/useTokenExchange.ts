@@ -10,8 +10,8 @@ interface TokenExchangeProps {
 interface TokenResponse {
   success: boolean;
   message?: string;
-  id_token?: string | null;
-  access_token?: string | null;
+  idToken?: string | null;
+  accessToken?: string | null;
 }
 
 const useTokenExchange = ({ 
@@ -32,8 +32,8 @@ const useTokenExchange = ({
         body: new URLSearchParams({
           grant_type: 'authorization_code',
           code,
-          redirectUri: redirectUri,
-          clientId: clientId,
+          redirect_uri: redirectUri,
+          client_id: clientId,
           client_secret: clientSecret, 
         }),
       });
@@ -43,8 +43,8 @@ const useTokenExchange = ({
         setTokenResponse({ 
           success: true, 
           message: JSON.stringify(data, null, 2),
-          id_token: getOptionalValue(data, 'id_token'),
-          access_token: getOptionalValue(data, 'access_token'),
+          idToken: getOptionalValue(data, 'id_token'),
+          accessToken: getOptionalValue(data, 'access_token'),
         });
       } else {
         const data: unknown = await response.json();
@@ -70,9 +70,8 @@ const getOptionalValue = <T>(data: unknown, key: string): T | null => {
 };
 
 const getErrorMessage = (data: unknown): string => {
-  return (data as { error_description?: string }).error_description 
-    ?? (data as { error?: string }).error 
-    ?? 'Unknown error';
+  const error = ((data as { error?: string }).error ?? "") + " " + ((data as { error_description?: string }).error_description ?? "");
+  return error ?? 'Unknown error';
 };
 
 export default useTokenExchange;

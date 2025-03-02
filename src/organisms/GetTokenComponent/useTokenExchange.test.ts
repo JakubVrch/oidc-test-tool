@@ -22,9 +22,9 @@ describe('useTokenExchange', () => {
 
     const { result } = renderHook(() => 
       useTokenExchange({ 
-        token_endpoint: mockTokenEndpoint, 
-        redirect_uri: mockRedirectUri, 
-        client_id: mockClientId, 
+        tokenEndpoint: mockTokenEndpoint, 
+        redirectUri: mockRedirectUri, 
+        clientId: mockClientId, 
         code: mockCode, 
       })
     );
@@ -36,8 +36,8 @@ describe('useTokenExchange', () => {
     expect(result.current.tokenResponse).toEqual({
       success: true,
       message: JSON.stringify(mockResponse, null, 2),
-      id_token: 'mock_id_token',
-      access_token: null,
+      idToken: 'mock_id_token',
+      accessToken: null,
     });
   });
 
@@ -46,9 +46,9 @@ describe('useTokenExchange', () => {
 
     const { result } = renderHook(() => 
       useTokenExchange({ 
-        token_endpoint: mockTokenEndpoint, 
-        redirect_uri: mockRedirectUri, 
-        client_id: mockClientId, 
+        tokenEndpoint: mockTokenEndpoint, 
+        redirectUri: mockRedirectUri, 
+        clientId: mockClientId, 
         code: mockCode, 
       })
     );
@@ -77,9 +77,9 @@ describe('useTokenExchange', () => {
 
     const { result } = renderHook(() => 
       useTokenExchange({ 
-        token_endpoint: mockTokenEndpoint, 
-        redirect_uri: mockRedirectUri, 
-        client_id: mockClientId, 
+        tokenEndpoint: mockTokenEndpoint, 
+        redirectUri: mockRedirectUri, 
+        clientId: mockClientId, 
         code: mockCode, 
       })
     );
@@ -90,7 +90,7 @@ describe('useTokenExchange', () => {
 
     expect(result.current.tokenResponse).toEqual({
       success: false,
-      message: `Error 400: Invalid authorization code`,
+      message: `Error 400: invalid_grant Invalid authorization code`,
     });
   });
 });

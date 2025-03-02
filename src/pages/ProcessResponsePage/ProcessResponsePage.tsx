@@ -5,14 +5,14 @@ import TokenViewer from '../../molecules/TokenViewer/TokenViewer';
 import GetTokenComponent from '../../organisms/GetTokenComponent/GetTokenComponent';
 import useOIDCResponseData from './useOIDCResponseData';
 import useStoredOidcParams from './useStoredOIDCParams';
+import DefaultTemplate from '@/templates/Default/Default';
 
 const ProcessResponsePage: React.FC = () => {
   const { mode, responseType, code, id_token, access_token, params } = useOIDCResponseData();
   const { tokenEndpoint, redirectUri, clientId, state} = useStoredOidcParams();
 
   return (
-    <div>
-      <h1>Redirect Page</h1>
+    <DefaultTemplate title="Process response">
       <ResponseSummary { ...{mode, responseType}} />
       { params && 
         <ReceivedParameters { ...{state, params}} />
@@ -22,7 +22,7 @@ const ProcessResponsePage: React.FC = () => {
       {code && tokenEndpoint && redirectUri && clientId && 
         <GetTokenComponent {...{tokenEndpoint, redirectUri,clientId, code}} />
       }
-    </div>
+    </DefaultTemplate>
   );
 };
 

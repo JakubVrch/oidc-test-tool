@@ -1,4 +1,5 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
+import { render } from "@/testing/render"
 import userEvent from '@testing-library/user-event';
 import ExchangeCodeForm from './ExchangeCodeForm';
 
@@ -7,6 +8,10 @@ const mockOnSubmit = jest.fn();
 describe('ExchangeCodeForm', () => {
   beforeEach(() => { 
     render(<ExchangeCodeForm onSubmit={mockOnSubmit} />);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
   
   it('renders the form with a password input and submit button', () => {

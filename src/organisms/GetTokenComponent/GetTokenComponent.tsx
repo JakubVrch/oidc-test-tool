@@ -36,8 +36,8 @@ const GetTokenComponent: React.FC<GetTokenComponentProps> = ({
                 <div>
                   <h4>Raw Response:</h4>
                   <pre>{tokenResponse.message}</pre>
-                  <TokenViewer token={tokenResponse.id_token ?? null} tokenName="ID Token" />
-                  <TokenViewer token={tokenResponse.access_token ?? null} tokenName="Access Token" />
+                  <TokenViewer token={tokenResponse.idToken ?? null} tokenName="ID Token" />
+                  <TokenViewer token={tokenResponse.accessToken ?? null} tokenName="Access Token" />
                 </div>
               ) : (
                 <p style={{ color: 'red' }}>{tokenResponse.message}</p>
