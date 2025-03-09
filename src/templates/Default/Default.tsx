@@ -13,7 +13,7 @@ const DefaultTemplate: React.FC<DefaultTemplateProps> = ({title, children}) => {
   return (
     <Flex direction="column" minHeight="100vh">
       <Navbar />
-      <VStack gap="2em" ml="4%" mt={5} direction="column" minHeight="100vh" alignItems="flex-start">
+      <VStack gap="2em" ml="4%" mt="5px" direction="column" minHeight="100vh" alignItems="flex-start">
         <Heading as="h2">{title}</Heading>
         {children}
       </VStack>
