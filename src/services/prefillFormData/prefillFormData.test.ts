@@ -13,9 +13,9 @@ describe('prefillFormData', () => {
     prefillFormData(mockSetValue, data);
 
     expect(mockSetValue).toHaveBeenCalledTimes(Object.keys(data).length);
-    expect(mockSetValue).toHaveBeenNthCalledWith(1, 'name', 'John Doe');
-    expect(mockSetValue).toHaveBeenNthCalledWith(2, 'email', 'john.doe@example.com');
-    expect(mockSetValue).toHaveBeenNthCalledWith(3, 'age', 30);
+    expect(mockSetValue).toHaveBeenNthCalledWith(1, 'name', 'John Doe', {"shouldDirty": true, "shouldValidate": true});
+    expect(mockSetValue).toHaveBeenNthCalledWith(2, 'email', 'john.doe@example.com', {"shouldDirty": true, "shouldValidate": true});
+    expect(mockSetValue).toHaveBeenNthCalledWith(3, 'age', 30, {"shouldDirty": true, "shouldValidate": true});
   });
 
   it('should handle nested fields correctly', () => {
@@ -30,7 +30,7 @@ describe('prefillFormData', () => {
 
     prefillFormData(mockSetValue, data);
 
-    expect(mockSetValue).toHaveBeenCalledWith("address", {"city": "Anytown", "street": "123 Main St"});
+    expect(mockSetValue).toHaveBeenCalledWith("address", {"city": "Anytown", "street": "123 Main St"},{"shouldDirty": true, "shouldValidate": true});
   });
 
   it('should handle arrays of objects correctly', () => {
@@ -42,7 +42,7 @@ describe('prefillFormData', () => {
 
     prefillFormData(mockSetValue, data);
 
-    expect(mockSetValue).toHaveBeenCalledWith('props', [{ name: 'test', value: 'test' }, { name: 'test2', value: 'test2' }]); 
+    expect(mockSetValue).toHaveBeenCalledWith('props', [{ name: 'test', value: 'test' }, { name: 'test2', value: 'test2' }],{"shouldDirty": true, "shouldValidate": true}); 
   });
 
   it('should handle empty data', () => {
