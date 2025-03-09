@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "jest",
-    "chakra-ui": "npx @chakra-ui/cli"
+    "typegen": "chakra typegen src/atoms/ui/theme.ts"
   },
   "dependencies": {
     "@chakra-ui/react": "^3.2.3",
