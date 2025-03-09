@@ -1,3 +1,4 @@
+import { Code } from '@chakra-ui/react';
 import React from 'react';
 
 interface ConstructedUrlDisplayProps {
@@ -10,7 +11,13 @@ const ConstructedUrlDisplay: React.FC<ConstructedUrlDisplayProps> = ({ url }) =>
   return (
     <div>
       <h3>Constructed URL</h3>
-      <p>{url}</p>
+      <Code
+        size="md"
+        maxWidth="100%"
+        wordBreak="break-all"
+      >
+        {url}
+      </Code>
     </div>
   );
 };
