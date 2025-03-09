@@ -4,6 +4,7 @@ import { redirectToOidcProvider } from '../../services/redirectHandler/redirectH
 import Prefill from '../../organisms/PrefillComponent/PrefillComponent';
 import { prefillConfig } from '../../config/prefillConfig';
 import DefaultTemplate from '@/templates/Default/Default';
+import { Stack, StackSeparator } from '@chakra-ui/react';
 
 const ConstructRequestPage: React.FC = () => {
   const onSubmit = (data: FormValues) => {
@@ -19,9 +20,12 @@ const ConstructRequestPage: React.FC = () => {
   };
 
   return (
-    <DefaultTemplate title="Construct Request">
-      <Prefill onPrefill={handlePrefill} prefillConfig={prefillConfig} />
-      <ConstructRequestForm onSubmit={onSubmit} ref={formRef} />
+    <DefaultTemplate title="Initiate flow">
+      <Stack align="flex-start" gap="2em" separator={<StackSeparator />} w="100%" maxW="2xl">
+        <Prefill onPrefill={handlePrefill} prefillConfig={prefillConfig} />
+        <ConstructRequestForm onSubmit={onSubmit} ref={formRef} />
+      </Stack>
+
     </DefaultTemplate>
   );
 };

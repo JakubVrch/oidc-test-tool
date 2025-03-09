@@ -1,7 +1,8 @@
 import { useForm, FieldValues, FormProvider } from 'react-hook-form';
 import SelectInput from '../../molecules/SelectInput/SelectInput';
 import Button from '@/atoms/Button/Button';
-import { createListCollection } from '@chakra-ui/react';
+import { createListCollection, Text } from '@chakra-ui/react';
+import FormStack from '@/atoms/FormStack/FormStack';
 
 interface ConfigItem<T extends FieldValues> {
   label: string;
@@ -33,7 +34,7 @@ const Prefill = <T extends FieldValues>({ onPrefill, prefillConfig }: PrefillPro
       }))
     ]
   })
- 
+
   const findSelectedConfig = (label?: string) =>
     label
       ? prefillConfig.find((config) => config.label === label)
@@ -50,15 +51,17 @@ const Prefill = <T extends FieldValues>({ onPrefill, prefillConfig }: PrefillPro
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <SelectInput id="selectedConfig" label="Select Config:" options={dropdownOptions} />
-        {selectedConfig?.description && (
-          <div>
-            <label>Description:</label>
-            <p>{selectedConfig.description}</p>
-          </div>
-        )}
-        <Button type="submit">Prefill</Button>
+      <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
+        <FormStack>
+          <SelectInput id="selectedConfig" label="Select Config:" options={dropdownOptions} />
+          {selectedConfig?.description && (
+            <div>
+              <Text fontSize="sm">Description:</Text>
+              <Text fontSize="sm">{selectedConfig.description}</Text>
+            </div>
+          )}
+          <Button type="submit">Prefill</Button>
+        </FormStack>
       </form>
     </FormProvider>
   );

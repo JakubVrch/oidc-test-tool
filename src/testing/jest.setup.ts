@@ -8,6 +8,7 @@
 import "@testing-library/jest-dom";
 import ResizeObserver from "resize-observer-polyfill";
 import {TextDecoder, TextEncoder} from "util";
+import { cloneDeep } from 'lodash';
 
 // TextEncoder and TextDecoder needs to be in global before JSDOM is created
 global.TextEncoder = TextEncoder;
@@ -83,5 +84,5 @@ Object.defineProperty(global, 'matchMedia', {
 Object.assign(global, { window, document: window.document});
 
 // Chakra UI requires structuredClone
-global.structuredClone = v => JSON.parse(JSON.stringify(v));
+global.structuredClone = cloneDeep;
 
