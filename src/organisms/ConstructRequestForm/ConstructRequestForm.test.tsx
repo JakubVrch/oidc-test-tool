@@ -8,7 +8,7 @@ const mockOnSubmit = jest.fn();
 describe('ConstructRequestForm', () => {
   beforeEach(() => {
     render(
-        <ConstructRequestForm onSubmit={mockOnSubmit} />
+      <ConstructRequestForm onSubmit={mockOnSubmit} />
     );
   });
 
@@ -73,7 +73,7 @@ describe('ConstructRequestForm', () => {
     await userEvent.type(screen.getByLabelText(/Redirect URI/i), 'http://localhost');
     await userEvent.type(screen.getByLabelText(/Scope/i), 'openid');
     await userEvent.click(screen.getByLabelText(/code/i));
-    
+
     await waitFor(() => {
       expect(screen.getByText(/Constructed URL/i)).toBeInTheDocument();
       expect(screen.getByText(/http:\/\/example\.com\/auth\?client_id=client&redirect_uri=http%3A%2F%2Flocalhost&scope=openid&response_type=code/i)).toBeInTheDocument();
@@ -91,17 +91,18 @@ describe('ConstructRequestForm', () => {
     await userEvent.type(screen.getByLabelText(/State/i), 'state');
     await userEvent.type(screen.getByLabelText(/Nonce/i), 'nonce');
     await userEvent.type(screen.getByLabelText(/Prompt/i), 'prompt');
-    
-    //TODO: Add response mode
+    await userEvent.click(screen.getByRole('combobox', { name: /Response Mode/i }));
+    await userEvent.click(screen.getByRole('option', { name: 'form_post' }));
+
     await userEvent.click(screen.getByRole('button', { name: /Add Parameter/i }));
     await userEvent.click(screen.getByRole('button', { name: /Add Parameter/i }));
     await userEvent.type(screen.getAllByLabelText(/Name/i)[0], 'name1');
     await userEvent.type(screen.getAllByLabelText(/Value/i)[0], 'value1');
     await userEvent.type(screen.getAllByLabelText(/Name/i)[1], 'name2');
     await userEvent.type(screen.getAllByLabelText(/Value/i)[1], 'value2');
-    
+
     await userEvent.click(screen.getByRole('button', { name: /Redirect/i }));
-    
+
     await waitFor(() => {
       expect(mockOnSubmit).toHaveBeenCalledWith({
         authEndpoint: 'http://example.com/auth',
@@ -109,7 +110,7 @@ describe('ConstructRequestForm', () => {
         redirectUri: 'http://localhost',
         scope: 'openid',
         responseType: ["code", "id_token"],
-        responseMode: undefined,
+        responseMode: 'form_post',
         state: 'state',
         nonce: 'nonce',
         prompt: 'prompt',
