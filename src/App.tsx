@@ -18,4 +18,3 @@ function App() {
 
 export default App;
 
-// TODO: Add possibility to retrieve form values from stored configuration

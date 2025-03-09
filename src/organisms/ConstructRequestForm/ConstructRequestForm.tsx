@@ -51,10 +51,6 @@ const ConstructRequestForm = forwardRef<FormRef, ConstructRequestFormProps>(({ o
   const methods = useForm<FormValues>();
   const { handleSubmit, setValue, watch, control } = methods;
 
-  //TODO: Fix tests
-  //TODO: Clean and refactor form and UI components
-  //TODO: Implement autofill for checkbox group and fix issues
-  //useAutofill(setValue);
   const constructedUrl = useConstructedUrl(watch);
 
   useImperativeHandle<unknown, FormRef>(ref, () => ({
@@ -63,7 +59,6 @@ const ConstructRequestForm = forwardRef<FormRef, ConstructRequestFormProps>(({ o
     },
   }));
 
-  //TODO: handleSubmit need handling for errors, but it is working fine for now
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
