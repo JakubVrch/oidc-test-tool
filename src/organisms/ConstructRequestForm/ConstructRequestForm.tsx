@@ -73,7 +73,7 @@ const ConstructRequestForm = forwardRef<FormRef, ConstructRequestFormProps>(({ o
           <CheckboxField name="responseType" label="Response Type" items={responseTypeOptions} registerOptions={{
             validate: (value) => Array.isArray(value) && value.length > 0 || "At least one response type is required"
           }} />
-          <SelectInput id="responseMode" label="Response Mode" options={responseModeOptions} />
+          <SelectInput id="responseMode" label="Response Mode" helperText='form_post cannot be inspected' options={responseModeOptions} />
           <TextInput id="state" label="State" type="text" />
           <TextInput id="nonce" label="Nonce" type="text" />
           <TextInput id="prompt" label="Prompt" type="text" />
