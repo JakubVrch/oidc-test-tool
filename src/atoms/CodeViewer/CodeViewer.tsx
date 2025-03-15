@@ -21,6 +21,7 @@ const CodeViewer: React.FC<CodeViewerProps> = ({ children,  headingText}) => {
       <Code
         size="md"
         w="100%"
+        py="2"
       >
         <Pre overflow="hidden" textOverflow="ellipsis">
           {children}
