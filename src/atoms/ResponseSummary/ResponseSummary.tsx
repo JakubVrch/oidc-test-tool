@@ -13,8 +13,8 @@ const ResponseSummary: React.FC<ResponseSummaryProps> = ({ mode, responseType })
       {(mode && responseType) ? (
         <div>
           <Heading fontSize="2xl" color="border.success">Success</Heading>
-          <Text fontSize="sm">Mode: {mode?.valueOf() ?? 'N/A'}</Text>
-          <Text fontSize="sm">Response Type: {responseType?.valueOf() ?? 'N/A'}</Text>
+          <Text>Mode: {mode?.valueOf() ?? 'N/A'}</Text>
+          <Text>Response Type: {responseType?.valueOf() ?? 'N/A'}</Text>
         </div>
       ) : (
         <Text fontSize="2xl" color="border.error">Response is invalid</Text>

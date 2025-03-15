@@ -56,8 +56,8 @@ const Prefill = <T extends FieldValues>({ onPrefill, prefillConfig }: PrefillPro
           <SelectInput id="selectedConfig" label="Select Config:" options={dropdownOptions} />
           {selectedConfig?.description && (
             <div>
-              <Text fontSize="sm">Description:</Text>
-              <Text fontSize="sm">{selectedConfig.description}</Text>
+              <Text>Description:</Text>
+              <Text>{selectedConfig.description}</Text>
             </div>
           )}
           <Button type="submit">Prefill</Button>

@@ -8,7 +8,7 @@ interface FormControlProps {
 const FormStack: React.FC<FormControlProps> = ({ children }) => {
 
   return (
-    <Stack  gap="1.5em" align="flex-start">
+    <Stack  gap="6" align="flex-start">
       {children}
     </Stack>
   );

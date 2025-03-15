@@ -18,7 +18,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({ name }) => 
 
   return (
     <FormStack>
-      <Text fontSize="sm">Additional Parameters</Text>
+      <Text>Additional Parameters</Text>
       {fields.map((field, index) => (
         <Stack key={field.id} direction="row" alignItems="flex-end">
           <TextInput id={`${name}.${index}.name`} label="Name" type='text' registerOptions={{ required: "Please fill in this field" }} />

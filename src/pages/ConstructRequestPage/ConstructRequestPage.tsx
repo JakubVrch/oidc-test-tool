@@ -21,7 +21,7 @@ const ConstructRequestPage: React.FC = () => {
 
   return (
     <DefaultTemplate title="Initiate flow">
-      <Stack align="flex-start" gap="2em" separator={<StackSeparator />} w="100%" maxW="2xl">
+      <Stack align="flex-start" gap="8" separator={<StackSeparator />} w="100%" maxW="2xl">
         <Prefill onPrefill={handlePrefill} prefillConfig={prefillConfig} />
         <ConstructRequestForm onSubmit={onSubmit} ref={formRef} />
       </Stack>

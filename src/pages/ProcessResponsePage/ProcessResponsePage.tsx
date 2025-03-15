@@ -14,7 +14,7 @@ const ProcessResponsePage: React.FC = () => {
 
   return (
     <DefaultTemplate title="Inspect redirect">
-      <Stack align="flex-start" gap="2em" w="100%" maxW="67em">
+      <Stack align="flex-start" gap="8" w="100%" maxW="4xl">
         <ResponseSummary {...{ mode, responseType }} />
         {params &&
           <ReceivedParameters {...{ state, params }} />

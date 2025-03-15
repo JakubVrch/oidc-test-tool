@@ -11,9 +11,9 @@ interface DefaultTemplateProps {
 const DefaultTemplate: React.FC<DefaultTemplateProps> = ({title, children}) => {
 
   return (
-    <Flex direction="column" minHeight="100vh" mb="2ex">
+    <Flex direction="column" minHeight="100vh" mb="8">
       <Navbar />
-      <VStack gap="4rem" mx="2em" mt="5px" direction="column" minHeight="100vh" alignItems="flex-start">
+      <VStack gap="8" mx="8" mt="1" direction="column" minHeight="100vh" alignItems="flex-start">
         <Heading as="h2">{title}</Heading>
         {children}
       </VStack>

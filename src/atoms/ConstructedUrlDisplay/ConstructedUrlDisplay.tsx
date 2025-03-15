@@ -10,7 +10,7 @@ const ConstructedUrlDisplay: React.FC<ConstructedUrlDisplayProps> = ({ url }) =>
 
   return (
     <div>
-      <Text fontSize="sm">Constructed URL</Text>
+      <Text>Constructed URL</Text>
       <Code
         size="md"
         maxWidth="100%"
