@@ -1,4 +1,5 @@
-import { Box, Flex, Link, Text, Separator, HStack } from '@chakra-ui/react';
+import { Link as RouterLink } from 'react-router-dom';
+import { Box, Flex, Link as ChakraLink, Text, Separator, HStack } from '@chakra-ui/react';
 
 const Navbar = () => {
   return (
@@ -10,17 +11,21 @@ const Navbar = () => {
           </Text>
           <Separator orientation="vertical" height="5" size="md" />
           <HStack gap="8">
-            <Link href="/">
-              Initiate flow
-            </Link>
-            <Link href="/redirect">
-              Inspect redirect
-            </Link>
+            <RouterLink to="/">
+              <ChakraLink as="span">
+                Initiate flow
+              </ChakraLink>
+            </RouterLink>
+            <RouterLink to="/redirect">
+              <ChakraLink as="span">
+                Inspect redirect
+              </ChakraLink>
+            </RouterLink>
           </HStack>
         </HStack>
-        <Link href="https://www.linkedin.com/in/vrchlabsky" >
+        <ChakraLink href="https://www.linkedin.com/in/vrchlabsky" >
           By Jakub Vrchlabský
-        </Link>
+        </ChakraLink>
       </Flex>
     </Box>
   );

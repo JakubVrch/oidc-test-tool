@@ -20,7 +20,7 @@ export const prefillConfig: PrefillConfig<FormValues> = [
       data: {
         authEndpoint: 'https://dev-bfpvq5utqmrksbsp.us.auth0.com/authorize',
         clientId: 'U9986Zh55XpwTKKGFncIm2uziHKqzq09',
-        redirectUri: 'http://localhost:5173/redirect',
+        redirectUri: 'http://localhost:5173/oidc-test-tool/redirect',
         scope: 'openid profile',
         tokenEndpoint: 'https://dev-bfpvq5utqmrksbsp.us.auth0.com/oauth/token',
         responseMode: ResponseModeValue.FRAGMENT,
@@ -34,7 +34,7 @@ export const prefillConfig: PrefillConfig<FormValues> = [
       data: {
         authEndpoint: 'https://dev-bfpvq5utqmrksbsp.us.auth0.com/authorize',
         clientId: 'U9986Zh55XpwTKKGFncIm2uziHKqzq09',
-        redirectUri: 'http://localhost:5173/redirect',
+        redirectUri: 'http://localhost:5173/oidc-test-tool/redirect',
         scope: 'openid profile',
         tokenEndpoint: 'https://dev-bfpvq5utqmrksbsp.us.auth0.com/oauth/token',
         responseType: [ResponseTypeValue.CODE],

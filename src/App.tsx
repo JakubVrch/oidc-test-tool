@@ -4,14 +4,12 @@ import ProcessResponsePage from './pages/ProcessResponsePage/ProcessResponsePage
 
 function App() {
   return (
-    <Router>
-      <div>
+    <Router basename="/oidc-test-tool">
         <Routes>
           <Route path="/" element={<ConstructRequest />} />
           <Route path="/redirect/:path/*" element={<ProcessResponsePage />} />
           <Route path="/redirect" element={<ProcessResponsePage />} />
         </Routes>
-      </div>
     </Router>
   );
 }

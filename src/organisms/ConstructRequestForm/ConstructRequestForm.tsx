@@ -50,7 +50,7 @@ interface ConstructRequestFormProps {
 const ConstructRequestForm = forwardRef<FormRef, ConstructRequestFormProps>(({ onSubmit }, ref) => {
 
   const methods = useForm<FormValues>();
-  const { handleSubmit, setValue, watch, control } = methods;
+  const { handleSubmit, setValue, watch } = methods;
 
   const constructedUrl = useConstructedUrl(watch);
 
@@ -64,7 +64,6 @@ const ConstructRequestForm = forwardRef<FormRef, ConstructRequestFormProps>(({ o
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
         <FormStack>
-          <DevTool control={control} /> {/* Enable DevTools */}
           <TextInput id="authEndpoint" label="Authorization Endpoint" type="url" registerOptions={{ required: "This field is required" }} />
           <TextInput id="clientId" label="Client ID" type="text" registerOptions={{ required: "This field is required" }} />
           <TextInput id="redirectUri" label="Redirect URI" type="url" registerOptions={{ required: "This field is required" }} />
