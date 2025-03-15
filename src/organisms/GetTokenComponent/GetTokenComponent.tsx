@@ -2,7 +2,7 @@ import React from "react";
 import TokenViewer from "../../molecules/TokenViewer/TokenViewer";
 import ExchangeCodeForm from "../ExchangeCodeForm/ExchangeCodeForm";
 import useTokenExchange from "./useTokenExchange";
-import { Heading, Text, Box } from "@chakra-ui/react";
+import { Heading, Text, Alert, Stack } from "@chakra-ui/react";
 import CodeViewer from "@/atoms/CodeViewer/CodeViewer";
 
 interface GetTokenComponentProps {
@@ -29,13 +29,17 @@ const GetTokenComponent: React.FC<GetTokenComponentProps> = ({
     <>
       {code && (
         <>
-          <Box w="100%">
+          <Stack w="100%" gap="2">
             <Heading size="xl">Exchange Authorization Code for Tokens</Heading>
+            <Alert.Root status="info">
+              <Alert.Indicator />
+              <Alert.Title>Please be careful when sharing secrets!</Alert.Title>
+            </Alert.Root>
             <ExchangeCodeForm onSubmit={handleExchangeCode} />
             {(tokenResponse && !tokenResponse.success) && (
               <Text style={{ color: 'red' }}>{tokenResponse.message}</Text>
             )}
-          </Box>
+          </Stack>
           <>
             {tokenResponse && tokenResponse.success && (
               <>
