@@ -6,7 +6,6 @@ import SelectInput from '../../molecules/SelectInput/SelectInput';
 import TextInput from '../../molecules/TextInput/TextInput';
 import AdditionalParameters from '../AdditionalParametersFormPart/AdditionalParameters';
 import useConstructedUrl from './useConstructedUrl';
-import { DevTool } from '@hookform/devtools';
 import { prefillFormData } from '../../services/prefillFormData/prefillFormData';
 import { createListCollection } from '@chakra-ui/react';
 import Button from '@/atoms/Button/Button';
