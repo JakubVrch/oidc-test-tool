@@ -1,3 +1,4 @@
+// @ts-expect-error - no types for this package
 import '@fontsource/ibm-plex-mono';
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
