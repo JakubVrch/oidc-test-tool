@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import ConstructRequestForm, { FormRef, FormValues } from '../../organisms/ConstructRequestForm/ConstructRequestForm';
 import { redirectToOidcProvider } from '../../services/redirectHandler/redirectHandler';
 import Prefill from '../../organisms/PrefillComponent/PrefillComponent';
-import { prefillConfig } from '../../config/prefillConfig';
+import { prefillConfig } from '../../config/exampleConfig';
 import DefaultTemplate from '@/templates/Default/Default';
 import { Stack, StackSeparator } from '@chakra-ui/react';
 
