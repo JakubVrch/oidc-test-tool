@@ -6,22 +6,25 @@ import GetTokenComponent from '../../organisms/GetTokenComponent/GetTokenCompone
 import useOIDCResponseData from './useOIDCResponseData';
 import useStoredOidcParams from './useStoredOIDCParams';
 import DefaultTemplate from '@/templates/Default/Default';
+import { Stack } from '@chakra-ui/react';
 
 const ProcessResponsePage: React.FC = () => {
   const { mode, responseType, code, id_token, access_token, params } = useOIDCResponseData();
-  const { tokenEndpoint, redirectUri, clientId, state} = useStoredOidcParams();
+  const { tokenEndpoint, redirectUri, clientId, state } = useStoredOidcParams();
 
   return (
-    <DefaultTemplate title="Process response">
-      <ResponseSummary { ...{mode, responseType}} />
-      { params && 
-        <ReceivedParameters { ...{state, params}} />
-      }
-      <TokenViewer token={id_token} tokenName="ID Token" />
-      <TokenViewer token={access_token} tokenName="Access Token" />
-      {code && tokenEndpoint && redirectUri && clientId && 
-        <GetTokenComponent {...{tokenEndpoint, redirectUri,clientId, code}} />
-      }
+    <DefaultTemplate title="Inspect redirect">
+      <Stack align="flex-start" gap="2em" w="100%" maxW="67em">
+        <ResponseSummary {...{ mode, responseType }} />
+        {params &&
+          <ReceivedParameters {...{ state, params }} />
+        }
+        <TokenViewer token={id_token} tokenName="ID Token" />
+        <TokenViewer token={access_token} tokenName="Access Token" />
+        {code && tokenEndpoint && redirectUri && clientId &&
+          <GetTokenComponent {...{ tokenEndpoint, redirectUri, clientId, code }} />
+        }
+      </Stack>
     </DefaultTemplate>
   );
 };

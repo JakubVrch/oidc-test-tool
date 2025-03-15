@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import { render } from '@/testing/render';
 import ResponseSummary from './ResponseSummary'
 import { ResponseMode, ResponseType } from '../../pages/ProcessResponsePage/useOIDCResponseData';
 

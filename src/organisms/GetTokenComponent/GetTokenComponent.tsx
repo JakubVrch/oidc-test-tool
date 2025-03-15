@@ -2,6 +2,8 @@ import React from "react";
 import TokenViewer from "../../molecules/TokenViewer/TokenViewer";
 import ExchangeCodeForm from "../ExchangeCodeForm/ExchangeCodeForm";
 import useTokenExchange from "./useTokenExchange";
+import { Heading, Text, Box } from "@chakra-ui/react";
+import CodeViewer from "@/atoms/CodeViewer/CodeViewer";
 
 interface GetTokenComponentProps {
   tokenEndpoint: string;
@@ -24,29 +26,29 @@ const GetTokenComponent: React.FC<GetTokenComponentProps> = ({
   });
 
   return (
-    <div>
+    <>
       {code && (
-        <div>
-          <h2>Exchange Authorization Code for Tokens</h2>
-          <ExchangeCodeForm onSubmit={handleExchangeCode} />
-          {tokenResponse && (
-            <div>
-              <h3>Token Response</h3>
-              {tokenResponse.success ? (
-                <div>
-                  <h4>Raw Response:</h4>
-                  <pre>{tokenResponse.message}</pre>
-                  <TokenViewer token={tokenResponse.idToken ?? null} tokenName="ID Token" />
-                  <TokenViewer token={tokenResponse.accessToken ?? null} tokenName="Access Token" />
-                </div>
-              ) : (
-                <p style={{ color: 'red' }}>{tokenResponse.message}</p>
-              )}
-            </div>
-          )}
-        </div>
+        <>
+          <Box w="100%">
+            <Heading size="xl">Exchange Authorization Code for Tokens</Heading>
+            <ExchangeCodeForm onSubmit={handleExchangeCode} />
+            {(tokenResponse && !tokenResponse.success) && (
+              <Text style={{ color: 'red' }}>{tokenResponse.message}</Text>
+            )}
+          </Box>
+          <>
+            {tokenResponse && tokenResponse.success && (
+              <>
+                <CodeViewer headingText="Raw Token EP Response"> {tokenResponse.message} </CodeViewer>
+                <TokenViewer token={tokenResponse.idToken ?? null} tokenName="Token EP ID Token" />
+                <TokenViewer token={tokenResponse.accessToken ?? null} tokenName="Token EP Access Token" />
+              </>
+            )}
+          </>
+
+        </>
       )}
-    </div>
+    </>
   )
 }
 

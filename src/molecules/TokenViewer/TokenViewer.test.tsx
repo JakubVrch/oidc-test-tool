@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import { render } from '@/testing/render';
 import TokenViewer from './TokenViewer';
 
 describe('TokenViewer Component', () => {

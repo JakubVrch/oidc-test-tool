@@ -1,4 +1,5 @@
 import React from 'react';
+import { Text, Heading } from '@chakra-ui/react';
 import { ResponseMode, ResponseType } from '../../pages/ProcessResponsePage/useOIDCResponseData';
 
 interface ResponseSummaryProps {
@@ -10,13 +11,13 @@ const ResponseSummary: React.FC<ResponseSummaryProps> = ({ mode, responseType })
   return (
     <>
       {(mode && responseType) ? (
-        <>
-          <p>Success</p>
-          <p>Mode: {mode?.valueOf() ?? 'N/A'}</p>
-          <p>Response Type: {responseType?.valueOf() ?? 'N/A'}</p>
-        </>
+        <div>
+          <Heading fontSize="2xl" color="border.success">Success</Heading>
+          <Text fontSize="sm">Mode: {mode?.valueOf() ?? 'N/A'}</Text>
+          <Text fontSize="sm">Response Type: {responseType?.valueOf() ?? 'N/A'}</Text>
+        </div>
       ) : (
-        <p>Response is invalid</p>
+        <Text fontSize="2xl" color="border.error">Response is invalid</Text>
       )}
     </>
   );
