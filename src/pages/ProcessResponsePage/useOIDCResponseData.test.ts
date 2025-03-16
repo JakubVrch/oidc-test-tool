@@ -110,7 +110,6 @@ describe('useOIDCResponseData', () => {
   testCases.forEach((testCase) => {
     it(`should handle ${testCase.name}`, () => {
       (useLocation as jest.Mock).mockReturnValue(testCase.location);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
       const result = useOIDCResponseData();
       expect(result).toEqual(testCase.expected);
     });

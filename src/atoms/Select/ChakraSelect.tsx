@@ -64,8 +64,26 @@ export const SelectContent = React.forwardRef<
 export const SelectItem = React.forwardRef<
   HTMLDivElement,
   ChakraSelect.ItemProps
->(function SelectItem(props, ref) {
-  const { item, children, ...rest } = props
+>(function SelectItem(props: ChakraSelect.ItemProps, ref) {
+  const { item, children, ...rest } = props as { item: unknown, children: React.ReactNode }
+  
+// Type guard to check if item has a valid value property
+if (!item || typeof item !== 'object' || !('value' in item)) {
+  console.warn('SelectItem: item prop must have a value property');
+  return null;
+}
+
+// Additional type guard for value property
+if (
+  item.value !== null && 
+  item.value !== undefined && 
+  typeof item.value !== 'string' && 
+  typeof item.value !== 'number'
+) {
+  console.warn('SelectItem: item.value must be string, number, null, or undefined');
+  return null;
+}
+  
   return (
     <ChakraSelect.Item key={item.value} item={item} {...rest} ref={ref}>
       {children}
@@ -82,7 +100,8 @@ interface SelectValueTextProps
 export const SelectValueText = React.forwardRef<
   HTMLSpanElement,
   SelectValueTextProps
->(function SelectValueText(props, ref) {
+>(function SelectValueText(this: void, props: SelectValueTextProps, ref) {
+  // eslint-disable-next-line @typescript-eslint/unbound-method  -- Incorrect detection
   const { children, ...rest } = props
   return (
     <ChakraSelect.ValueText {...rest} ref={ref}>
