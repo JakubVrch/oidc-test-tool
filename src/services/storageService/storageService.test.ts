@@ -3,20 +3,20 @@ import {
   storeOidcParams,
   getStoredOidcParams,
   clearStoredOidcParams,
-} from './storageService';
+} from "./storageService";
 
-describe('oidcStorage', () => {
+describe("oidcStorage", () => {
   afterEach(() => {
     localStorage.clear();
   });
 
-  it('should store and retrieve OidcParams correctly', () => {
+  it("should store and retrieve OidcParams correctly", () => {
     const testParams: OidcParams = {
-      nonce: 'test-nonce',
-      state: 'test-state',
-      tokenEndpoint: 'https://example.com/token',
-      clientId: 'my-client-id',
-      redirectUri: 'https://example.com/callback',
+      nonce: "test-nonce",
+      state: "test-state",
+      tokenEndpoint: "https://example.com/token",
+      clientId: "my-client-id",
+      redirectUri: "https://example.com/callback",
     };
 
     storeOidcParams(testParams);
@@ -26,10 +26,10 @@ describe('oidcStorage', () => {
     expect(retrievedParams).toEqual(testParams);
   });
 
-  it('should handle null values gracefully', () => {
+  it("should handle null values gracefully", () => {
     const testParams: OidcParams = {
       nonce: null,
-      state: 'test-state',
+      state: "test-state",
       tokenEndpoint: null,
       clientId: null,
       redirectUri: null,
@@ -42,13 +42,13 @@ describe('oidcStorage', () => {
     expect(retrievedParams).toEqual(testParams);
   });
 
-  it('should clear stored OidcParams', () => {
+  it("should clear stored OidcParams", () => {
     const testParams: OidcParams = {
-      nonce: 'test-nonce',
-      state: 'test-state',
-      tokenEndpoint: 'https://example.com/token',
-      clientId: 'my-client-id',
-      redirectUri: 'https://example.com/callback',
+      nonce: "test-nonce",
+      state: "test-state",
+      tokenEndpoint: "https://example.com/token",
+      clientId: "my-client-id",
+      redirectUri: "https://example.com/callback",
     };
 
     storeOidcParams(testParams);

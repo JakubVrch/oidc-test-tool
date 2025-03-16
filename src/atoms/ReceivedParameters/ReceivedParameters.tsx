@@ -1,12 +1,15 @@
-import React from 'react';
-import { Text, Heading, Table } from "@chakra-ui/react"
+import React from "react";
+import { Text, Heading, Table } from "@chakra-ui/react";
 
 interface ReceivedParametersProps {
   state: string | null;
   params: URLSearchParams;
 }
 
-const ReceivedParameters: React.FC<ReceivedParametersProps> = ({ state, params }) => {
+const ReceivedParameters: React.FC<ReceivedParametersProps> = ({
+  state,
+  params,
+}) => {
   const paramEntries = Array.from(params.entries());
 
   return (
@@ -18,17 +21,20 @@ const ReceivedParameters: React.FC<ReceivedParametersProps> = ({ state, params }
             <Table.Row key={key}>
               <Table.Cell w="10em">{key}</Table.Cell>
               <Table.Cell w="45%">
-                <Text truncate>
-                  {String(value)}
-                </Text>
+                <Text truncate>{String(value)}</Text>
               </Table.Cell>
               <Table.Cell>
-                {key === 'state' && state && (
+                {key === "state" && state && (
                   <>
-                    {(value === state) ?
-                      (<Text truncate color="border.success">{"Matches request: " + String(state)}</Text>) :
-                      (<Text truncate color="border.error">{"Does not match request:  " + String(state)}</Text>)
-                    }
+                    {value === state ? (
+                      <Text truncate color="border.success">
+                        {"Matches request: " + String(state)}
+                      </Text>
+                    ) : (
+                      <Text truncate color="border.error">
+                        {"Does not match request:  " + String(state)}
+                      </Text>
+                    )}
                   </>
                 )}
               </Table.Cell>

@@ -1,8 +1,8 @@
-import { useForm, FieldValues, FormProvider } from 'react-hook-form';
-import SelectInput from '../../molecules/SelectInput/SelectInput';
-import Button from '@/atoms/Button/Button';
-import { createListCollection, Text } from '@chakra-ui/react';
-import FormStack from '@/atoms/FormStack/FormStack';
+import { useForm, FieldValues, FormProvider } from "react-hook-form";
+import SelectInput from "../../molecules/SelectInput/SelectInput";
+import Button from "@/atoms/Button/Button";
+import { createListCollection, Text } from "@chakra-ui/react";
+import FormStack from "@/atoms/FormStack/FormStack";
 
 interface ConfigItem<T extends FieldValues> {
   label: string;
@@ -18,27 +18,28 @@ interface PrefillProps<T extends FieldValues> {
 }
 
 interface FormValues {
-  selectedConfig?: string
+  selectedConfig?: string;
 }
 
-const Prefill = <T extends FieldValues>({ onPrefill, prefillConfig }: PrefillProps<T>) => {
+const Prefill = <T extends FieldValues>({
+  onPrefill,
+  prefillConfig,
+}: PrefillProps<T>) => {
   const methods = useForm<FormValues>();
   const { handleSubmit, watch } = methods;
-  const selectedConfigLabel = watch('selectedConfig');
+  const selectedConfigLabel = watch("selectedConfig");
 
   const dropdownOptions = createListCollection({
     items: [
       ...prefillConfig.map((config) => ({
         value: config.label,
         label: config.label,
-      }))
-    ]
-  })
+      })),
+    ],
+  });
 
   const findSelectedConfig = (label?: string) =>
-    label
-      ? prefillConfig.find((config) => config.label === label)
-      : null;
+    label ? prefillConfig.find((config) => config.label === label) : null;
 
   const selectedConfig = findSelectedConfig(selectedConfigLabel);
 
@@ -51,9 +52,13 @@ const Prefill = <T extends FieldValues>({ onPrefill, prefillConfig }: PrefillPro
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
+      <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
         <FormStack>
-          <SelectInput id="selectedConfig" label="Select Config:" options={dropdownOptions} />
+          <SelectInput
+            id="selectedConfig"
+            label="Select Config:"
+            options={dropdownOptions}
+          />
           {selectedConfig?.description && (
             <div>
               <Text>Description:</Text>

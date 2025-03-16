@@ -17,6 +17,8 @@ A React-based debugging tool for OpenID Connect (OIDC) authentication flows. Thi
 
 ## Getting Started
 
+You can try the application here: <https://calm-plant-0cc61d103.6.azurestaticapps.net/>
+
 ### Prerequisites
 
 - Node.js 22.x or higher
@@ -25,17 +27,20 @@ A React-based debugging tool for OpenID Connect (OIDC) authentication flows. Thi
 ### Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/JakubVrch/oidc-test-tool.git
 cd oidc-test-tool
 ```
 
 2. Install dependencies:
+
 ```bash
 yarn install
 ```
 
 3. Start the development server:
+
 ```bash
 yarn dev
 ```
@@ -56,4 +61,3 @@ The application is configured through `src/config/exampleConfig.ts`. This file c
 6. TODO: OpenID Connect discovery (.well-known/openid-configuration)
 7. TODO: Form POST response mode support (requires backend)
 8. TODO: Environment variable configuration and Docker image
-

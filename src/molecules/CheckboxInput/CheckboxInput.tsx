@@ -1,10 +1,13 @@
-import React from 'react';
-import { RegisterOptions, useController, useFormContext } from 'react-hook-form'
-import { get } from 'lodash';
-import { Fieldset } from '@chakra-ui/react/fieldset';
-import { CheckboxGroup } from '@chakra-ui/react';
-import { Checkbox } from './checkbox';
-
+import React from "react";
+import {
+  RegisterOptions,
+  useController,
+  useFormContext,
+} from "react-hook-form";
+import { get } from "lodash";
+import { Fieldset } from "@chakra-ui/react/fieldset";
+import { CheckboxGroup } from "@chakra-ui/react";
+import { Checkbox } from "./checkbox";
 
 interface CheckboxInputProps {
   name: string;
@@ -13,16 +16,23 @@ interface CheckboxInputProps {
   items: { value: string; label: string }[];
 }
 
-const CheckboxField: React.FC<CheckboxInputProps> = ({ name, label, registerOptions, items }) => {
-  const { formState: { errors } } = useFormContext();
+const CheckboxField: React.FC<CheckboxInputProps> = ({
+  name,
+  label,
+  registerOptions,
+  items,
+}) => {
+  const {
+    formState: { errors },
+  } = useFormContext();
   const error = get(errors, name);
-  const invalid = !!error
+  const invalid = !!error;
 
   const group = useController({
     name: name,
     defaultValue: [],
     rules: registerOptions,
-  })
+  });
 
   return (
     <Fieldset.Root invalid={invalid}>
@@ -43,10 +53,13 @@ const CheckboxField: React.FC<CheckboxInputProps> = ({ name, label, registerOpti
       </CheckboxGroup>
 
       {error && (
-        <Fieldset.ErrorText>{typeof error.message === 'string' ? error.message : JSON.stringify(error?.message)}</Fieldset.ErrorText>
+        <Fieldset.ErrorText>
+          {typeof error.message === "string"
+            ? error.message
+            : JSON.stringify(error?.message)}
+        </Fieldset.ErrorText>
       )}
     </Fieldset.Root>
-
   );
 };
 

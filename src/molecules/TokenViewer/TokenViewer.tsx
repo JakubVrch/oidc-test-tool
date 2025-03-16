@@ -1,6 +1,6 @@
-import React from 'react';
-import { jwtDecode } from 'jwt-decode';
-import CodeViewer from '@/atoms/CodeViewer/CodeViewer';
+import React from "react";
+import { jwtDecode } from "jwt-decode";
+import CodeViewer from "@/atoms/CodeViewer/CodeViewer";
 
 interface TokenProps {
   token: string | null;
@@ -23,9 +23,7 @@ const TokenViewer: React.FC<TokenProps> = ({ token, tokenName }) => {
   }
 
   return (
-    <CodeViewer
-      headingText={tokenName + " Information"}
-    >
+    <CodeViewer headingText={tokenName + " Information"}>
       {tokenHeader || tokenBody ? (
         <>
           Header: <br />

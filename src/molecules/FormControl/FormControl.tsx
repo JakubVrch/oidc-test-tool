@@ -1,7 +1,7 @@
-import React from 'react';
-import { RegisterOptions, useFormContext } from 'react-hook-form';
-import { get } from 'lodash';
-import Field, { FieldProps } from './Field';
+import React from "react";
+import { RegisterOptions, useFormContext } from "react-hook-form";
+import { get } from "lodash";
+import Field, { FieldProps } from "./Field";
 
 export interface FormControlProps extends FieldProps {
   id: string;
@@ -10,17 +10,23 @@ export interface FormControlProps extends FieldProps {
 }
 
 const FormControl: React.FC<FormControlProps> = ({ id, children, ...rest }) => {
-  const { formState: { errors } } = useFormContext();
+  const {
+    formState: { errors },
+  } = useFormContext();
   const error = get(errors, id);
 
   return (
-      <Field
-        invalid={error ? true : false}
-        errorText={error && typeof error.message === 'string' ? error.message : JSON.stringify(error?.message)}
-        {...rest}
-      >
-        {children}
-      </Field>
+    <Field
+      invalid={error ? true : false}
+      errorText={
+        error && typeof error.message === "string"
+          ? error.message
+          : JSON.stringify(error?.message)
+      }
+      {...rest}
+    >
+      {children}
+    </Field>
   );
 };
 

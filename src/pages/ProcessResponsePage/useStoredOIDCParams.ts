@@ -1,5 +1,8 @@
-import { useEffect, useState, useRef } from 'react';
-import { getStoredOidcParams, OidcParams } from '../../services/storageService/storageService';
+import { useEffect, useState, useRef } from "react";
+import {
+  getStoredOidcParams,
+  OidcParams,
+} from "../../services/storageService/storageService";
 
 function useStoredOidcParams() {
   const [storedParams, setStoredParams] = useState<OidcParams>({
