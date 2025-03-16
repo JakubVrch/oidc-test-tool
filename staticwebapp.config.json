@@ -1,0 +1,10 @@
+{
+  "routes": [
+    {
+      "route": "/oidc-test-tool/",
+      "methods": [
+        "get"
+      ]
+    }
+  ]
+}
