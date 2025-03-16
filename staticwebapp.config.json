@@ -2,7 +2,7 @@
   "routes": [
     {
       "route": "/oidc-test-tool*",
-      "rewrite": "/index.html"
+      "rewrite": "index.html"
     }
   ]
 }
