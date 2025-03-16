@@ -1,7 +1,7 @@
 {
   "routes": [
     {
-      "route": "/oidc-test-tool/",
+      "route": "/oidc-test-tool/*",
       "methods": [
         "get"
       ]
