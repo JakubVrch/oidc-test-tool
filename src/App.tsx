@@ -4,7 +4,7 @@ import ProcessResponsePage from './pages/ProcessResponsePage/ProcessResponsePage
 
 function App() {
   return (
-    <Router basename="/oidc-test-tool">
+    <Router>
         <Routes>
           <Route path="/" element={<ConstructRequest />} />
           <Route path="/redirect/:path/*" element={<ProcessResponsePage />} />
