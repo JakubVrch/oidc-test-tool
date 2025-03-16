@@ -1,10 +1,13 @@
-import React, { useRef } from 'react';
-import ConstructRequestForm, { FormRef, FormValues } from '../../organisms/ConstructRequestForm/ConstructRequestForm';
-import { redirectToOidcProvider } from '../../services/redirectHandler/redirectHandler';
-import Prefill from '../../organisms/PrefillComponent/PrefillComponent';
-import { prefillConfig } from '../../config/exampleConfig';
-import DefaultTemplate from '@/templates/Default/Default';
-import { Stack, StackSeparator } from '@chakra-ui/react';
+import React, { useRef } from "react";
+import ConstructRequestForm, {
+  FormRef,
+  FormValues,
+} from "../../organisms/ConstructRequestForm/ConstructRequestForm";
+import { redirectToOidcProvider } from "../../services/redirectHandler/redirectHandler";
+import Prefill from "../../organisms/PrefillComponent/PrefillComponent";
+import { prefillConfig } from "../../config/exampleConfig";
+import DefaultTemplate from "@/templates/Default/Default";
+import { Stack, StackSeparator } from "@chakra-ui/react";
 
 const ConstructRequestPage: React.FC = () => {
   const onSubmit = (data: FormValues) => {
@@ -21,11 +24,16 @@ const ConstructRequestPage: React.FC = () => {
 
   return (
     <DefaultTemplate title="Initiate flow">
-      <Stack align="flex-start" gap="8" separator={<StackSeparator />} w="100%" maxW="2xl">
+      <Stack
+        align="flex-start"
+        gap="8"
+        separator={<StackSeparator />}
+        w="100%"
+        maxW="2xl"
+      >
         <Prefill onPrefill={handlePrefill} prefillConfig={prefillConfig} />
         <ConstructRequestForm onSubmit={onSubmit} ref={formRef} />
       </Stack>
-
     </DefaultTemplate>
   );
 };

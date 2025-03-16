@@ -1,28 +1,23 @@
-import React from 'react';
-import { Box, chakra, Code, Heading } from '@chakra-ui/react';
+import React from "react";
+import { Box, chakra, Code, Heading } from "@chakra-ui/react";
 
 interface CodeViewerProps {
-  children: React.ReactNode
+  children: React.ReactNode;
   headingText: string;
 }
 
-const CodeViewer: React.FC<CodeViewerProps> = ({ children,  headingText}) => {
-
-  const Pre = chakra('pre', {
+const CodeViewer: React.FC<CodeViewerProps> = ({ children, headingText }) => {
+  const Pre = chakra("pre", {
     base: {
       overflow: "hidden",
-      textOverflow: "ellipsis"
-    }
+      textOverflow: "ellipsis",
+    },
   });
 
   return (
     <Box w="100%">
       <Heading size="xl">{headingText}</Heading>
-      <Code
-        size="md"
-        w="100%"
-        py="2"
-      >
+      <Code size="md" w="100%" py="2">
         <Pre overflow="hidden" textOverflow="ellipsis">
           {children}
         </Pre>

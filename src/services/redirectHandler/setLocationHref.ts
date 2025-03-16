@@ -1,3 +1,3 @@
-export function setLocationHref (href: string) {
-  window.location.href = href
+export function setLocationHref(href: string) {
+  window.location.href = href;
 }

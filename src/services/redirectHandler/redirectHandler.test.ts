@@ -1,32 +1,30 @@
-import { FormValues } from '../../organisms/ConstructRequestForm/ConstructRequestForm';
-import { storeOidcParams } from '../storageService/storageService';
-import { ResponseTypeValue } from '../types/responseTypeAndValue';
-import { constructUrl } from '../urlManager/urlManager';
-import { redirectToOidcProvider } from './redirectHandler';
-import { setLocationHref } from './setLocationHref';
+import { FormValues } from "../../organisms/ConstructRequestForm/ConstructRequestForm";
+import { storeOidcParams } from "../storageService/storageService";
+import { ResponseTypeValue } from "../types/responseTypeAndValue";
+import { constructUrl } from "../urlManager/urlManager";
+import { redirectToOidcProvider } from "./redirectHandler";
+import { setLocationHref } from "./setLocationHref";
 
-jest.mock('../storageService/storageService');
-jest.mock('../urlManager/urlManager');
-jest.mock('./setLocationHref');
+jest.mock("../storageService/storageService");
+jest.mock("../urlManager/urlManager");
+jest.mock("./setLocationHref");
 
-
-describe('oidcRedirect', () => {
-
+describe("oidcRedirect", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should redirect to OIDC provider with minimal valid params', () => {
+  it("should redirect to OIDC provider with minimal valid params", () => {
     const mockFormValues: FormValues = {
-      clientId: 'test_client_id',
-      redirectUri: 'http://localhost:3000/callback',
-      authEndpoint: 'https://example.com/authorize',
-      scope: 'openid',
+      clientId: "test_client_id",
+      redirectUri: "http://localhost:3000/callback",
+      authEndpoint: "https://example.com/authorize",
+      scope: "openid",
       responseType: [ResponseTypeValue.CODE],
     };
 
     const mockUrlResult = {
-      url: 'http://localhost:3000/callback'
+      url: "http://localhost:3000/callback",
     };
 
     (constructUrl as jest.Mock).mockReturnValueOnce(mockUrlResult);
@@ -42,21 +40,23 @@ describe('oidcRedirect', () => {
       tokenEndpoint: null,
     });
     //FIXME: Resolve when this issue is complete: https://github.com/jsdom/jsdom/issues/3492
-    expect(setLocationHref).toHaveBeenCalledWith( 'http://localhost:3000/callback' )
+    expect(setLocationHref).toHaveBeenCalledWith(
+      "http://localhost:3000/callback",
+    );
   });
 
-  it('should not redirect and log error if URL construction fails', () => {
+  it("should not redirect and log error if URL construction fails", () => {
     const mockFormValues: FormValues = {
-      authEndpoint: '',
-      clientId: 'test_client_id',
-      redirectUri: 'http://localhost:3000/callback',
-      scope: '',
+      authEndpoint: "",
+      clientId: "test_client_id",
+      redirectUri: "http://localhost:3000/callback",
+      scope: "",
       responseType: [],
     };
 
     const mockUrlResult = {
       url: null,
-      error: 'Error constructing URL',
+      error: "Error constructing URL",
     };
 
     (constructUrl as jest.Mock).mockReturnValueOnce(mockUrlResult);
@@ -68,7 +68,10 @@ describe('oidcRedirect', () => {
     expect(constructUrl).toHaveBeenCalledWith(mockFormValues);
     expect(storeOidcParams).not.toHaveBeenCalled();
     //expect(window.location.href).toBe("http://localhost/"); <- See above
-    expect(console.error).toHaveBeenCalledWith('Error constructing URL:', 'Error constructing URL');
+    expect(console.error).toHaveBeenCalledWith(
+      "Error constructing URL:",
+      "Error constructing URL",
+    );
     expect(setLocationHref).not.toHaveBeenCalled();
   });
 });

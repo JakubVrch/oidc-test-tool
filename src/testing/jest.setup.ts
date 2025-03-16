@@ -1,5 +1,4 @@
 // Disabling eslint rules for this file as it is a test setup file
-/* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -7,8 +6,8 @@
 
 import "@testing-library/jest-dom";
 import ResizeObserver from "resize-observer-polyfill";
-import {TextDecoder, TextEncoder} from "util";
-import { cloneDeep } from 'lodash';
+import { TextDecoder, TextEncoder } from "util";
+import { cloneDeep } from "lodash";
 
 // TextEncoder and TextDecoder needs to be in global before JSDOM is created
 global.TextEncoder = TextEncoder;
@@ -50,8 +49,8 @@ window.URL.createObjectURL = () => "https://i.pravatar.cc/300";
 window.URL.revokeObjectURL = () => {};
 
 // scrollTo mock
-window.HTMLElement.prototype.scrollTo = function() {};
-global.HTMLElement.prototype.scrollTo = function() {};
+window.HTMLElement.prototype.scrollTo = function () {};
+global.HTMLElement.prototype.scrollTo = function () {};
 
 // matchMedia mock
 const matchMediaMock = jest.fn().mockImplementation((query) => ({
@@ -66,12 +65,12 @@ const matchMediaMock = jest.fn().mockImplementation((query) => ({
 }));
 
 // Set matchMedia on both window and global
-Object.defineProperty(window, 'matchMedia', {
+Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: matchMediaMock,
 });
 
-Object.defineProperty(global, 'matchMedia', {
+Object.defineProperty(global, "matchMedia", {
   writable: true,
   value: matchMediaMock,
 });
@@ -81,8 +80,7 @@ Object.defineProperty(global, 'matchMedia', {
 (global as any).PointerEvent = MouseEvent;
 
 // Override globalThis
-Object.assign(global, { window, document: window.document});
+Object.assign(global, { window, document: window.document });
 
 // Chakra UI requires structuredClone
 global.structuredClone = cloneDeep;
-
