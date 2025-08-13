@@ -27,7 +27,7 @@ export interface ParseResult {
   params?: UrlParams;
   error?: string;
 }
-
+//TODO: propagate PKCE to constructURL and localStorage
 export const constructUrl = (params: UrlParams): UrlResult => {
   if (!params.authEndpoint)
     return { error: "Authorization Endpoint is required" };
