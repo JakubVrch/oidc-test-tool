@@ -1,33 +1,5 @@
-import {
-  ResponseModeValue,
-  ResponseTypeValue,
-} from "@/services/types/responseTypeAndValue";
+import { UrlParams, UrlResult } from "./types";
 
-export interface UrlParams {
-  authEndpoint?: string;
-  clientId?: string;
-  redirectUri?: string;
-  scope?: string;
-  responseType?: (ResponseTypeValue | undefined)[];
-  responseMode?: ResponseModeValue;
-  state?: string;
-  nonce?: string;
-  prompt?: string;
-  additionalParams?:
-    | ({ name?: string; value?: string } | undefined)[]
-    | undefined;
-}
-
-export interface UrlResult {
-  url?: string;
-  error?: string;
-}
-
-export interface ParseResult {
-  params?: UrlParams;
-  error?: string;
-}
-//TODO: propagate PKCE to constructURL and localStorage
 export const constructUrl = (params: UrlParams): UrlResult => {
   if (!params.authEndpoint)
     return { error: "Authorization Endpoint is required" };
@@ -48,6 +20,10 @@ export const constructUrl = (params: UrlParams): UrlResult => {
     nonce,
     prompt,
     additionalParams,
+    pkceEnabled,
+    pkceMethod,
+    codeChallenge,
+    codeVerifier
   } = params;
 
   const url = new URL(authEndpoint ?? "");
@@ -59,6 +35,17 @@ export const constructUrl = (params: UrlParams): UrlResult => {
   if (state) url.searchParams.append("state", state);
   if (nonce) url.searchParams.append("nonce", nonce);
   if (prompt) url.searchParams.append("prompt", prompt);
+
+  // Add PKCE parameters if enabled
+  if (pkceEnabled && pkceMethod && codeChallenge) {
+    url.searchParams.append("code_challenge", codeChallenge);
+    url.searchParams.append("code_challenge_method", pkceMethod.toUpperCase());
+
+    // Store code verifier in localStorage for later use
+    if (codeVerifier) {
+      localStorage.setItem("pkce_code_verifier", codeVerifier);
+    }
+  }
 
   if (additionalParams && Array.isArray(additionalParams)) {
     additionalParams.forEach((param) => {

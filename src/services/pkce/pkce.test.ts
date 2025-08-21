@@ -100,4 +100,23 @@ describe("generateCodeChallenge", () => {
     // Calculate expected base64url
     expect(challenge).toBe("-_8");
   });
+
+  it("should handle long code verifier input", async () => {
+    const verifier = "A".repeat(128);  // RFC7636 allows up to 128 characters
+    const challenge = await generateCodeChallenge(verifier, "S256");
+    expect(typeof challenge).toBe("string");
+    // Base64url string should not contain +, / or =
+    expect(challenge).not.toMatch(/[+/=]/);
+  });
+
+  it("should handle special characters in code verifier", async () => {
+    const verifier = "Hello!@#$%^&*()_+-=[]{}|;:,.<>?";
+    const challengePlain = await generateCodeChallenge(verifier, "plain");
+    const challengeS256 = await generateCodeChallenge(verifier, "S256");
+
+    expect(challengePlain).toBe(verifier);
+    expect(typeof challengeS256).toBe("string");
+    expect(challengeS256).not.toBe(verifier);
+    expect(challengeS256).not.toMatch(/[+/=]/);
+  });
 });

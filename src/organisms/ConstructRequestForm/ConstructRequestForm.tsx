@@ -8,6 +8,7 @@ import TextInput from "../../molecules/TextInput/TextInput";
 import AdditionalParameters from "../AdditionalParametersFormPart/AdditionalParameters";
 import useConstructedUrl from "./useConstructedUrl";
 import usePKCEChallenge from "./usePKCEChallenge";
+import { usePKCEValidation } from "./usePKCEValidation";
 import { prefillFormData } from "../../services/prefillFormData/prefillFormData";
 import Button from "@/atoms/Button/Button";
 import {
@@ -81,6 +82,7 @@ const ConstructRequestForm = forwardRef<FormRef, ConstructRequestFormProps>(
 
     usePKCEChallenge(watch, setValue);
     const pkceEnabled = watch("pkceEnabled");
+    const { canUsePKCE } = usePKCEValidation(watch, setValue);
 
     const constructedUrl = useConstructedUrl(watch);
 
@@ -140,7 +142,11 @@ const ConstructRequestForm = forwardRef<FormRef, ConstructRequestFormProps>(
             <TextInput id="nonce" label="Nonce" type="text" />
             <TextInput id="prompt" label="Prompt" type="text" />
 
-            <CheckboxField id="pkceEnabled" label="Enable PKCE" />
+            <CheckboxField 
+              id="pkceEnabled" 
+              label="Enable PKCE"
+              disabled={!canUsePKCE}
+            />
             {pkceEnabled && (
               <>
                 <SelectInput
