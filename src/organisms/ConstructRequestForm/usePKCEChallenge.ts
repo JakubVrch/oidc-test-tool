@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { UseFormWatch, UseFormSetValue } from "react-hook-form";
 import { FormValues } from "./ConstructRequestForm";
-import * as pkce from "@/services/pkce/pkce";
+import { generateCodeChallenge } from "@/services/pkce/pkce";
 
 const usePKCEChallenge = (
   watch: UseFormWatch<FormValues>,
-  setValue: UseFormSetValue<FormValues>
+  setValue: UseFormSetValue<FormValues>,
 ) => {
   const pkceEnabled = watch("pkceEnabled");
   const pkceMethod = watch("pkceMethod");
@@ -13,7 +13,7 @@ const usePKCEChallenge = (
 
   useEffect(() => {
     if (pkceEnabled && codeVerifier && pkceMethod) {
-      void pkce.generateCodeChallenge(codeVerifier, pkceMethod).then((challenge) => {
+      void generateCodeChallenge(codeVerifier, pkceMethod).then((challenge) => {
         setValue("codeChallenge", challenge);
       });
     } else {

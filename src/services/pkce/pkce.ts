@@ -21,8 +21,7 @@ export async function generateCodeChallenge(
   const encoder = new TextEncoder();
   const data = encoder.encode(verifier);
   const digest = await window.crypto.subtle.digest("SHA-256", data);
-  return btoa(String.fromCharCode(...new Uint8Array(digest)))
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/, "");
+  const bytes = new Uint8Array(digest);
+  const base64url = Buffer.from(bytes).toString('base64url');
+  return base64url;
 }

@@ -9,7 +9,6 @@ import AdditionalParameters from "../AdditionalParametersFormPart/AdditionalPara
 import useConstructedUrl from "./useConstructedUrl";
 import usePKCEChallenge from "./usePKCEChallenge";
 import { prefillFormData } from "../../services/prefillFormData/prefillFormData";
-import { createListCollection } from "@chakra-ui/react";
 import Button from "@/atoms/Button/Button";
 import {
   ResponseModeValue,
@@ -19,25 +18,16 @@ import { PKCEMethod } from "@/services/types/pkceMethod";
 import * as pkce from "@/services/pkce/pkce";
 import FormStack from "@/atoms/FormStack/FormStack";
 import { DevTool } from "@hookform/devtools";
+import { mapEnumToOptions } from "./mapEnumToOptions";
 
 const responseTypeOptions = Object.values(ResponseTypeValue).map((value) => ({
   value,
   label: value,
 }));
 
-const responseModeOptions = createListCollection({
-  items: Object.values(ResponseModeValue).map((value) => ({
-    value,
-    label: value,
-  })),
-});
+const responseModeOptions = mapEnumToOptions(ResponseModeValue);
 
-const pkceMethodOptions = createListCollection({
-  items: Object.values(PKCEMethod).map((value) => ({
-    value,
-    label: value,
-  })),
-});
+const pkceMethodOptions = mapEnumToOptions(PKCEMethod);
 
 export interface FormValues {
   authEndpoint: string;
@@ -67,30 +57,24 @@ interface ConstructRequestFormProps {
 
 const ConstructRequestForm = forwardRef<FormRef, ConstructRequestFormProps>(
   ({ onSubmit }, ref) => {
+    const codeVerifier = pkce.generateCodeVerifier();
     const methods = useForm<FormValues>({
-      defaultValues: async () => {
-        const codeVerifier = pkce.generateCodeVerifier();
-        const codeChallenge = await pkce.generateCodeChallenge(
-          codeVerifier,
-          "S256",
-        );
-        return {
-          authEndpoint: "",
-          clientId: "",
-          redirectUri: "",
-          scope: "",
-          responseType: [],
-          responseMode: undefined,
-          state: "",
-          nonce: "",
-          prompt: "",
-          tokenEndpoint: "",
-          additionalParams: [],
-          pkceEnabled: false,
-          pkceMethod: undefined,
-          codeVerifier,
-          codeChallenge,
-        };
+      defaultValues: {
+        authEndpoint: "",
+        clientId: "",
+        redirectUri: "",
+        scope: "",
+        responseType: [],
+        responseMode: undefined,
+        state: "",
+        nonce: "",
+        prompt: "",
+        tokenEndpoint: "",
+        additionalParams: [],
+        pkceEnabled: false,
+        pkceMethod: undefined,
+        codeVerifier: codeVerifier,
+        codeChallenge: "",
       },
     });
     const { handleSubmit, setValue, watch, control } = methods;
@@ -175,7 +159,8 @@ const ConstructRequestForm = forwardRef<FormRef, ConstructRequestFormProps>(
                 <TextInput
                   id="codeChallenge"
                   label="Code Challenge"
-                  registerOptions={{ disabled: true }}
+                  registerOptions={{}}
+                  readOnly={true}
                 />
               </>
             )}

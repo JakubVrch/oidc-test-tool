@@ -8,7 +8,6 @@ import "@testing-library/jest-dom";
 import ResizeObserver from "resize-observer-polyfill";
 import { TextDecoder, TextEncoder } from "util";
 import { cloneDeep } from "lodash";
-import * as crypto from "crypto" 
 
 // TextEncoder and TextDecoder needs to be in global before JSDOM is created
 global.TextEncoder = TextEncoder;
@@ -85,12 +84,3 @@ Object.assign(global, { window, document: window.document });
 
 // Chakra UI requires structuredClone
 global.structuredClone = cloneDeep;
-
-// Mock crypto for PKCE
-Object.defineProperty(window, "crypto", {
-  value: crypto,
-});
-
-Object.defineProperty(global, "crypto", {
-  value: crypto,
-});

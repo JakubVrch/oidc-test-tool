@@ -1,5 +1,5 @@
 import React from "react";
-import { useFormContext } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import FormControl from "../FormControl/FormControl";
 import Checkbox from "@/atoms/Checkbox/Checkbox";
 
@@ -9,12 +9,19 @@ interface CheckboxProps {
 }
 
 const CheckboxInput: React.FC<CheckboxProps> = ({ id, label }) => {
-  const { register } = useFormContext();
   return (
     <FormControl id={id}>
-      <Checkbox id={id} {...register(id)}>
-        {label}
-      </Checkbox>
+      <Controller
+        name={id}
+        render={({ field }) => (
+          <Checkbox
+            checked={Boolean(field.value)}
+            onCheckedChange={({ checked }) => field.onChange(checked)}
+          >
+            {label}
+          </Checkbox>
+        )}
+      />
     </FormControl>
   );
 };

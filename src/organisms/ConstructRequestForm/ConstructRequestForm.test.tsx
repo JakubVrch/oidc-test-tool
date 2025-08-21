@@ -1,11 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { render } from "@/testing/render";
 import ConstructRequestForm from "./ConstructRequestForm";
 
 const mockOnSubmit = jest.fn();
-
-//TODO: Fix TEsts
+// Mock the pkce service to avoid calling window.crypto which is not available in the test environment
+jest.mock("@/services/pkce/pkce", () => ({
+  generateCodeVerifier: jest.fn(() => "custom-value"),
+  generateCodeChallenge: jest.fn(() => Promise.resolve("custom-challenge")),
+}));
 
 describe("ConstructRequestForm", () => {
   beforeEach(() => {
@@ -33,6 +37,13 @@ describe("ConstructRequestForm", () => {
     expect(screen.getByLabelText(/State/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Nonce/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Prompt/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Enable PKCE/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /Redirect/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /Add Parameter/i }),
+    ).toBeInTheDocument();
   });
 
   it("submits the form with minimal valid data", async () => {
@@ -52,7 +63,7 @@ describe("ConstructRequestForm", () => {
 
     await waitFor(() => {
       expect(mockOnSubmit).toHaveBeenCalledWith(
-        {
+        expect.objectContaining({
           authEndpoint: "http://example.com/auth",
           clientId: "client",
           redirectUri: "http://localhost",
@@ -64,7 +75,11 @@ describe("ConstructRequestForm", () => {
           prompt: "",
           tokenEndpoint: "",
           additionalParams: [],
-        },
+          pkceEnabled: false,
+          pkceMethod: undefined,
+          codeVerifier: expect.any(String),
+          codeChallenge: expect.any(String),
+        }),
         expect.anything(),
       );
     });
@@ -133,6 +148,17 @@ describe("ConstructRequestForm", () => {
     await userEvent.click(screen.getByRole("option", { name: "form_post" }));
 
     await userEvent.click(
+      screen.getByRole("checkbox", { name: /Enable PKCE/i }),
+    );
+    await userEvent.click(
+      screen.getByRole("combobox", { name: /PKCE Method/i }),
+    );
+    await userEvent.click(screen.getByRole("option", { name: "S256" }));
+    const codeVerifierInput = screen.getByLabelText(/Code Verifier/i);
+    await userEvent.clear(codeVerifierInput);
+    await userEvent.type(codeVerifierInput, "custom-verifier");
+
+    await userEvent.click(
       screen.getByRole("button", { name: /Add Parameter/i }),
     );
     await userEvent.click(
@@ -147,7 +173,7 @@ describe("ConstructRequestForm", () => {
 
     await waitFor(() => {
       expect(mockOnSubmit).toHaveBeenCalledWith(
-        {
+        expect.objectContaining({
           authEndpoint: "http://example.com/auth",
           clientId: "client",
           redirectUri: "http://localhost",
@@ -162,7 +188,11 @@ describe("ConstructRequestForm", () => {
             { name: "name1", value: "value1" },
             { name: "name2", value: "value2" },
           ],
-        },
+          pkceEnabled: true,
+          pkceMethod: "S256",
+          codeVerifier: "custom-verifier",
+          codeChallenge: "custom-challenge",
+        }),
         expect.anything(),
       );
     });
