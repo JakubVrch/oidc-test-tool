@@ -11,13 +11,14 @@ export const redirectToOidcProvider = (params: FormValues) => {
     return;
   } else {
     // Store nonce and state in localStorage
-    const { clientId, redirectUri, state, nonce, tokenEndpoint } = params;
+    const { clientId, redirectUri, state, nonce, tokenEndpoint, pkceEnabled, codeVerifier } = params;
     const oidcParams: OidcParams = {
       nonce: nonce ?? null,
       state: state ?? null,
       tokenEndpoint: tokenEndpoint ?? null,
       clientId,
       redirectUri,
+      codeVerifier: pkceEnabled && codeVerifier ? codeVerifier : null,
     };
     storeOidcParams(oidcParams);
 

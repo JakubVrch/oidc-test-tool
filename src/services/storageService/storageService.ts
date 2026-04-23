@@ -4,6 +4,7 @@ export interface OidcParams {
   tokenEndpoint: string | null;
   clientId: string | null;
   redirectUri: string | null;
+  codeVerifier: string | null;
 }
 
 export const storeOidcParams = (params: OidcParams) => {
@@ -22,6 +23,9 @@ export const storeOidcParams = (params: OidcParams) => {
   if (params.redirectUri) {
     localStorage.setItem("oidcRedirectUri", params.redirectUri);
   }
+  if (params.codeVerifier) {
+    localStorage.setItem("oidcCodeVerifier", params.codeVerifier);
+  }
 };
 
 export const getStoredOidcParams = (): OidcParams => {
@@ -30,7 +34,8 @@ export const getStoredOidcParams = (): OidcParams => {
   const tokenEndpoint = localStorage.getItem("oidcTokenEndpoint");
   const clientId = localStorage.getItem("oidcClientId");
   const redirectUri = localStorage.getItem("oidcRedirectUri");
-  return { nonce, state, tokenEndpoint, clientId, redirectUri };
+  const codeVerifier = localStorage.getItem("oidcCodeVerifier");
+  return { nonce, state, tokenEndpoint, clientId, redirectUri, codeVerifier };
 };
 
 export const clearStoredOidcParams = () => {
@@ -39,4 +44,5 @@ export const clearStoredOidcParams = () => {
   localStorage.removeItem("oidcTokenEndpoint");
   localStorage.removeItem("oidcClientId");
   localStorage.removeItem("oidcRedirectUri");
+  localStorage.removeItem("oidcCodeVerifier");
 };
