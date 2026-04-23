@@ -1,6 +1,5 @@
 import React from "react";
 import { Controller } from "react-hook-form";
-import { Controller } from "react-hook-form";
 import FormControl from "../FormControl/FormControl";
 import Checkbox from "@/atoms/Checkbox/Checkbox";
 
