@@ -1,31 +1,34 @@
-import { forwardRef, useImperativeHandle } from "react";
+import { forwardRef, useImperativeHandle, useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import ConstructedUrlDisplay from "../../atoms/ConstructedUrlDisplay/ConstructedUrlDisplay";
 import CheckboxField from "../../molecules/CheckboxInput/CheckboxInput";
+import CheckboxGroupField from "../../molecules/CheckboxGroupInput/CheckboxGroupInput";
 import SelectInput from "../../molecules/SelectInput/SelectInput";
 import TextInput from "../../molecules/TextInput/TextInput";
 import AdditionalParameters from "../AdditionalParametersFormPart/AdditionalParameters";
 import useConstructedUrl from "./useConstructedUrl";
+import usePKCEChallenge from "./usePKCEChallenge";
+import { usePKCEValidation } from "./usePKCEValidation";
 import { prefillFormData } from "../../services/prefillFormData/prefillFormData";
-import { createListCollection } from "@chakra-ui/react";
 import Button from "@/atoms/Button/Button";
 import {
   ResponseModeValue,
   ResponseTypeValue,
 } from "@/services/types/responseTypeAndValue";
+import { PKCEMethod } from "@/services/types/pkceMethod";
+import { generateCodeVerifier } from "@/services/pkce/pkce";
 import FormStack from "@/atoms/FormStack/FormStack";
+import { DevTool } from "@hookform/devtools";
+import { mapEnumToOptions } from "./mapEnumToOptions";
 
 const responseTypeOptions = Object.values(ResponseTypeValue).map((value) => ({
   value,
   label: value,
 }));
 
-const responseModeOptions = createListCollection({
-  items: Object.values(ResponseModeValue).map((value) => ({
-    value,
-    label: value,
-  })),
-});
+const responseModeOptions = mapEnumToOptions(ResponseModeValue);
+
+const pkceMethodOptions = mapEnumToOptions(PKCEMethod);
 
 export interface FormValues {
   authEndpoint: string;
@@ -39,6 +42,10 @@ export interface FormValues {
   prompt?: string;
   tokenEndpoint?: string;
   additionalParams?: { name: string; value: string }[];
+  pkceEnabled?: boolean;
+  pkceMethod?: PKCEMethod;
+  codeVerifier?: string;
+  codeChallenge?: string;
 }
 
 export interface FormRef {
@@ -51,8 +58,31 @@ interface ConstructRequestFormProps {
 
 const ConstructRequestForm = forwardRef<FormRef, ConstructRequestFormProps>(
   ({ onSubmit }, ref) => {
-    const methods = useForm<FormValues>();
-    const { handleSubmit, setValue, watch } = methods;
+    const [codeVerifier] = useState(() => generateCodeVerifier());
+    const methods = useForm<FormValues>({
+      defaultValues: {
+        authEndpoint: "",
+        clientId: "",
+        redirectUri: "",
+        scope: "",
+        responseType: [],
+        responseMode: undefined,
+        state: "",
+        nonce: "",
+        prompt: "",
+        tokenEndpoint: "",
+        additionalParams: [],
+        pkceEnabled: false,
+        pkceMethod: undefined,
+        codeVerifier: codeVerifier,
+        codeChallenge: "",
+      },
+    });
+    const { handleSubmit, setValue, watch, control } = methods;
+
+    usePKCEChallenge(watch, setValue);
+    const pkceEnabled = watch("pkceEnabled");
+    const { canUsePKCE } = usePKCEValidation(watch, setValue);
 
     const constructedUrl = useConstructedUrl(watch);
 
@@ -64,6 +94,7 @@ const ConstructRequestForm = forwardRef<FormRef, ConstructRequestFormProps>(
 
     return (
       <FormProvider {...methods}>
+        {process.env.NODE_ENV === "development" && <DevTool control={control} />}
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
           <FormStack>
             <TextInput
@@ -91,12 +122,12 @@ const ConstructRequestForm = forwardRef<FormRef, ConstructRequestFormProps>(
               type="text"
               registerOptions={{ required: "This field is required" }}
             />
-            <CheckboxField
+            <CheckboxGroupField
               name="responseType"
               label="Response Type"
               items={responseTypeOptions}
               registerOptions={{
-                validate: (value) =>
+                validate: (value: string | unknown[]) =>
                   (Array.isArray(value) && value.length > 0) ||
                   "At least one response type is required",
               }}
@@ -110,6 +141,36 @@ const ConstructRequestForm = forwardRef<FormRef, ConstructRequestFormProps>(
             <TextInput id="state" label="State" type="text" />
             <TextInput id="nonce" label="Nonce" type="text" />
             <TextInput id="prompt" label="Prompt" type="text" />
+
+            <CheckboxField 
+              id="pkceEnabled" 
+              label="Enable PKCE"
+              disabled={!canUsePKCE}
+            />
+            {pkceEnabled && (
+              <>
+                <SelectInput
+                  id="pkceMethod"
+                  label="PKCE Method"
+                  options={pkceMethodOptions}
+                  rules={{
+                    required: "Select a PKCE method",
+                  }}
+                />
+                <TextInput
+                  id="codeVerifier"
+                  label="Code Verifier"
+                  defaultValue={codeVerifier}
+                  registerOptions={{ required: "This field is required" }}
+                />
+                <TextInput
+                  id="codeChallenge"
+                  label="Code Challenge"
+                  registerOptions={{}}
+                  readOnly={true}
+                />
+              </>
+            )}
             <AdditionalParameters name="additionalParams" />
             <ConstructedUrlDisplay url={constructedUrl} />
             <Button type="submit">Redirect</Button>

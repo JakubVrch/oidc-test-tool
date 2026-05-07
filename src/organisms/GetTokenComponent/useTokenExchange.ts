@@ -7,6 +7,13 @@ interface TokenExchangeProps {
   code: string;
 }
 
+export interface CodeExchangeParams {
+  useClientSecret: boolean;
+  clientSecret?: string;
+  useCodeVerifier: boolean;
+  codeVerifier?: string;
+}
+
 interface TokenResponse {
   success: boolean;
   message?: string;
@@ -25,20 +32,34 @@ const useTokenExchange = ({
   );
 
   const handleExchangeCode = useCallback(
-    async ({ clientSecret }: { clientSecret: string }) => {
+    async ({
+      useClientSecret,
+      clientSecret,
+      useCodeVerifier,
+      codeVerifier,
+    }: CodeExchangeParams) => {
       try {
+        const URLQueryParams: Record<string, string> = {
+          grant_type: "authorization_code",
+          code,
+          redirect_uri: redirectUri,
+          client_id: clientId,
+        };
+
+        if (useClientSecret && clientSecret) {
+          URLQueryParams.client_secret = clientSecret;
+        }
+
+        if (useCodeVerifier && codeVerifier) {
+          URLQueryParams.code_verifier = codeVerifier;
+        }
+
         const response = await fetch(tokenEndpoint, {
           method: "POST",
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
           },
-          body: new URLSearchParams({
-            grant_type: "authorization_code",
-            code,
-            redirect_uri: redirectUri,
-            client_id: clientId,
-            client_secret: clientSecret,
-          }),
+          body: new URLSearchParams(URLQueryParams),
         });
 
         if (response.ok) {

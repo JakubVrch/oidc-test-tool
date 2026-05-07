@@ -1,32 +1,4 @@
-import {
-  ResponseModeValue,
-  ResponseTypeValue,
-} from "@/services/types/responseTypeAndValue";
-
-export interface UrlParams {
-  authEndpoint?: string;
-  clientId?: string;
-  redirectUri?: string;
-  scope?: string;
-  responseType?: (ResponseTypeValue | undefined)[];
-  responseMode?: ResponseModeValue;
-  state?: string;
-  nonce?: string;
-  prompt?: string;
-  additionalParams?:
-    | ({ name?: string; value?: string } | undefined)[]
-    | undefined;
-}
-
-export interface UrlResult {
-  url?: string;
-  error?: string;
-}
-
-export interface ParseResult {
-  params?: UrlParams;
-  error?: string;
-}
+import { UrlParams, UrlResult } from "./types";
 
 export const constructUrl = (params: UrlParams): UrlResult => {
   if (!params.authEndpoint)
@@ -48,6 +20,9 @@ export const constructUrl = (params: UrlParams): UrlResult => {
     nonce,
     prompt,
     additionalParams,
+    pkceEnabled,
+    pkceMethod,
+    codeChallenge,
   } = params;
 
   const url = new URL(authEndpoint ?? "");
@@ -59,6 +34,12 @@ export const constructUrl = (params: UrlParams): UrlResult => {
   if (state) url.searchParams.append("state", state);
   if (nonce) url.searchParams.append("nonce", nonce);
   if (prompt) url.searchParams.append("prompt", prompt);
+
+  // Add PKCE parameters if enabled
+  if (pkceEnabled && pkceMethod && codeChallenge) {
+    url.searchParams.append("code_challenge", codeChallenge);
+    url.searchParams.append("code_challenge_method", pkceMethod.toUpperCase());
+  }
 
   if (additionalParams && Array.isArray(additionalParams)) {
     additionalParams.forEach((param) => {

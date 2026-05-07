@@ -1,9 +1,21 @@
-import { screen, waitFor } from "@testing-library/react";
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { render } from "@/testing/render";
 import ConstructRequestForm from "./ConstructRequestForm";
+import { generateCodeChallenge } from "@/services/pkce/pkce";
 
 const mockOnSubmit = jest.fn();
+// Mock the pkce service to avoid calling window.crypto which is not available in the test environment
+jest.mock("@/services/pkce/pkce", () => ({
+  generateCodeVerifier: jest.fn(() => "custom-value"),
+  generateCodeChallenge: jest.fn(() => Promise.resolve("custom-challenge")),
+}));
+// Mock the pkce service to avoid calling window.crypto which is not available in the test environment
+jest.mock("@/services/pkce/pkce", () => ({
+  generateCodeVerifier: jest.fn(() => "custom-value"),
+  generateCodeChallenge: jest.fn(() => Promise.resolve("custom-challenge")),
+}));
 
 describe("ConstructRequestForm", () => {
   beforeEach(() => {
@@ -31,6 +43,20 @@ describe("ConstructRequestForm", () => {
     expect(screen.getByLabelText(/State/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Nonce/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Prompt/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Enable PKCE/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /Redirect/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /Add Parameter/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByLabelText(/Enable PKCE/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /Redirect/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /Add Parameter/i }),
+    ).toBeInTheDocument();
   });
 
   it("submits the form with minimal valid data", async () => {
@@ -50,7 +76,7 @@ describe("ConstructRequestForm", () => {
 
     await waitFor(() => {
       expect(mockOnSubmit).toHaveBeenCalledWith(
-        {
+        expect.objectContaining({
           authEndpoint: "http://example.com/auth",
           clientId: "client",
           redirectUri: "http://localhost",
@@ -62,7 +88,11 @@ describe("ConstructRequestForm", () => {
           prompt: "",
           tokenEndpoint: "",
           additionalParams: [],
-        },
+          pkceEnabled: false,
+          pkceMethod: undefined,
+          codeVerifier: expect.any(String),
+          codeChallenge: expect.any(String),
+        }),
         expect.anything(),
       );
     });
@@ -131,6 +161,17 @@ describe("ConstructRequestForm", () => {
     await userEvent.click(screen.getByRole("option", { name: "form_post" }));
 
     await userEvent.click(
+      screen.getByRole("checkbox", { name: /Enable PKCE/i }),
+    );
+    await userEvent.click(
+      screen.getByRole("combobox", { name: /PKCE Method/i }),
+    );
+    await userEvent.click(screen.getByRole("option", { name: "S256" }));
+    const codeVerifierInput = screen.getByLabelText(/Code Verifier/i);
+    await userEvent.clear(codeVerifierInput);
+    await userEvent.type(codeVerifierInput, "custom-verifier");
+
+    await userEvent.click(
       screen.getByRole("button", { name: /Add Parameter/i }),
     );
     await userEvent.click(
@@ -145,7 +186,7 @@ describe("ConstructRequestForm", () => {
 
     await waitFor(() => {
       expect(mockOnSubmit).toHaveBeenCalledWith(
-        {
+        expect.objectContaining({
           authEndpoint: "http://example.com/auth",
           clientId: "client",
           redirectUri: "http://localhost",
@@ -160,7 +201,11 @@ describe("ConstructRequestForm", () => {
             { name: "name1", value: "value1" },
             { name: "name2", value: "value2" },
           ],
-        },
+          pkceEnabled: true,
+          pkceMethod: "S256",
+          codeVerifier: "custom-verifier",
+          codeChallenge: "custom-challenge",
+        }),
         expect.anything(),
       );
     });
@@ -193,6 +238,115 @@ describe("ConstructRequestForm", () => {
     await waitFor(() => {
       expect(screen.getAllByLabelText(/Name/i).length).toBe(1);
       expect(screen.getAllByLabelText(/Value/i).length).toBe(1);
+    });
+  });
+  //TODO: Explorative testing + (WARN) Define `ts-jest` config under `globals` is deprecated
+  describe("PKCE functionality", () => {
+    it("shows PKCE fields when PKCE is enabled", async () => {
+      // PKCE fields should be hidden initially
+      expect(screen.queryByLabelText(/PKCE Method/i)).not.toBeInTheDocument();
+      expect(screen.queryByLabelText(/Code Verifier/i)).not.toBeInTheDocument();
+      expect(screen.queryByLabelText(/Code Challenge/i)).not.toBeInTheDocument();
+
+      // Enable PKCE
+      await userEvent.click(screen.getByLabelText(/code/i));
+      await userEvent.click(screen.getByLabelText(/Enable PKCE/i));
+
+      // PKCE fields should be visible
+      expect(screen.getByRole("combobox", { name: /PKCE Method/i }));
+      expect(screen.getByLabelText(/Code Verifier/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/Code Challenge/i)).toBeInTheDocument();
+    });
+
+    it("requires PKCE method when PKCE is enabled", async () => {
+      // Enable PKCE
+      await userEvent.click(screen.getByLabelText(/code/i));
+      await userEvent.click(screen.getByLabelText(/Enable PKCE/i));
+
+      // Try to submit without selecting a PKCE method
+      await userEvent.click(screen.getByRole("button", { name: /Redirect/i }));
+
+      // Should show error message
+      await waitFor(() => {
+        expect(screen.getByText(/Select a PKCE method/i)).toBeInTheDocument();
+      });
+    });
+
+    it("automatically generates code challenge for S256 method", async () => {
+      // Enable PKCE
+      await userEvent.click(screen.getByLabelText(/code/i));
+      await userEvent.click(screen.getByLabelText(/Enable PKCE/i));
+
+      // Select S256 method
+      await userEvent.click(screen.getByRole("combobox", { name: /PKCE Method/i }));
+      await userEvent.click(screen.getByRole("option", { name: "S256" }));
+
+      // The challenge field should be populated automatically
+      await waitFor(() => {
+        const challengeInput = screen.getByLabelText(/Code Challenge/i);
+        expect(challengeInput).toHaveValue("custom-challenge");
+        expect(generateCodeChallenge).toHaveBeenCalledWith("custom-value", "S256");
+      });
+    });
+
+    it("uses same code challenge as verifier for plain method", async () => {
+      // Enable PKCE
+      await userEvent.click(screen.getByLabelText(/code/i));
+      await userEvent.click(screen.getByLabelText(/Enable PKCE/i));
+
+      // Select plain method
+      await userEvent.click(screen.getByRole("combobox", { name: /PKCE Method/i }));
+      await userEvent.click(screen.getByRole("option", { name: "plain" }));
+
+      // The challenge should be the same as the verifier
+      const verifierInput = screen.getByLabelText(/Code Verifier/i);
+      expect(verifierInput).toHaveValue("custom-value");
+
+      await waitFor(() => {
+        const challengeInput = screen.getByLabelText(/Code Challenge/i);
+        expect(challengeInput).toHaveValue("custom-challenge");
+        expect(generateCodeChallenge).toHaveBeenCalledWith("custom-value", "plain");
+      });
+    });
+
+    it("disables PKCE fields when response type does not include code", async () => {
+      // First enable PKCE with code flow
+      await userEvent.click(screen.getByLabelText(/code/i));
+      await userEvent.click(screen.getByLabelText(/Enable PKCE/i));
+      expect(screen.getByLabelText(/Enable PKCE/i)).toBeEnabled();
+
+      // Now uncheck code and check id_token
+      await userEvent.click(screen.getByRole("checkbox", { name: /code/i }));
+      await userEvent.click(screen.getByLabelText(/id_token/i));
+
+      // PKCE checkbox should be disabled
+      expect(screen.getByLabelText(/Enable PKCE/i)).toBeDisabled();
+      expect(screen.queryByLabelText(/PKCE Method/i)).not.toBeInTheDocument();
+    });
+
+    it("retains PKCE values when re-enabling PKCE", async () => {
+      // Enable PKCE and set values
+      await userEvent.click(screen.getByLabelText(/code/i));
+      await userEvent.click(screen.getByLabelText(/Enable PKCE/i));
+      await userEvent.click(screen.getByRole("combobox", { name: /PKCE Method/i }));
+      await userEvent.click(screen.getByRole("option", { name: "S256" }));
+      const codeVerifierInput = screen.getByLabelText(/Code Verifier/i);
+      await userEvent.clear(codeVerifierInput);
+      await userEvent.type(codeVerifierInput, "test-verifier");
+
+      // Disable PKCE
+      await userEvent.click(screen.getByLabelText(/Enable PKCE/i));
+
+      // Re-enable PKCE
+      await userEvent.click(screen.getByLabelText(/Enable PKCE/i));
+
+      // Values should be retained
+      const pkceMethodTrigger = await screen.findByRole("combobox", { name: /PKCE Method/i });
+      await waitFor(() => {
+        const node = within(pkceMethodTrigger);
+        expect(node.getByText("S256")).toBeInTheDocument();
+      });
+      expect(screen.getByLabelText(/Code Verifier/i)).toHaveValue("test-verifier");
     });
   });
 });

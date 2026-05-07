@@ -11,7 +11,7 @@ import { Stack } from "@chakra-ui/react";
 const ProcessResponsePage: React.FC = () => {
   const { mode, responseType, code, id_token, access_token, params } =
     useOIDCResponseData();
-  const { tokenEndpoint, redirectUri, clientId, state } = useStoredOidcParams();
+  const { tokenEndpoint, redirectUri, clientId, state, codeVerifier } = useStoredOidcParams();
 
   return (
     <DefaultTemplate title="Inspect redirect">
@@ -22,7 +22,7 @@ const ProcessResponsePage: React.FC = () => {
         <TokenViewer token={access_token} tokenName="Access Token" />
         {code && tokenEndpoint && redirectUri && clientId && (
           <GetTokenComponent
-            {...{ tokenEndpoint, redirectUri, clientId, code }}
+            {...{ tokenEndpoint, redirectUri, clientId, code, codeVerifier }}
           />
         )}
       </Stack>

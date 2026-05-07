@@ -19,6 +19,7 @@ describe("useStoredOidcParams", () => {
       tokenEndpoint: "test-token-endpoint",
       clientId: "test-client-id",
       redirectUri: "test-redirect-uri",
+      codeVerifier: "test-code-verifier",
     };
     (getStoredOidcParams as jest.Mock).mockReturnValueOnce(mockStoredParams);
 
@@ -35,6 +36,7 @@ describe("useStoredOidcParams", () => {
       tokenEndpoint: "test-token-endpoint",
       clientId: "test-client-id",
       redirectUri: "test-redirect-uri",
+      codeVerifier: "test-code-verifier",
     };
     (getStoredOidcParams as jest.Mock).mockReturnValueOnce(mockStoredParams);
 

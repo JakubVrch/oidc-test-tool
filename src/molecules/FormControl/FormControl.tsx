@@ -1,11 +1,10 @@
 import React from "react";
-import { RegisterOptions, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { get } from "lodash";
 import Field, { FieldProps } from "./Field";
 
 export interface FormControlProps extends FieldProps {
   id: string;
-  registerOptions?: RegisterOptions;
   children: React.ReactNode;
 }
 

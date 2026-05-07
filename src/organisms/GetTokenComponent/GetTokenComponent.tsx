@@ -10,6 +10,7 @@ interface GetTokenComponentProps {
   redirectUri: string;
   clientId: string;
   code: string;
+  codeVerifier?: string | null;
 }
 
 const GetTokenComponent: React.FC<GetTokenComponentProps> = ({
@@ -17,6 +18,7 @@ const GetTokenComponent: React.FC<GetTokenComponentProps> = ({
   tokenEndpoint,
   redirectUri,
   clientId,
+  codeVerifier,
 }) => {
   const { tokenResponse, handleExchangeCode } = useTokenExchange({
     tokenEndpoint,
@@ -33,9 +35,9 @@ const GetTokenComponent: React.FC<GetTokenComponentProps> = ({
             <Heading size="xl">Exchange Authorization Code for Tokens</Heading>
             <Alert.Root status="info">
               <Alert.Indicator />
-              <Alert.Title>Please be careful when sharing secrets!</Alert.Title>
+              <Alert.Title>Be careful when sharing secrets! If you are using PKCE, the code verifier is usually sufficient for this tool, and you typically do not need to provide a client secret.</Alert.Title>
             </Alert.Root>
-            <ExchangeCodeForm onSubmit={handleExchangeCode} />
+            <ExchangeCodeForm onSubmit={handleExchangeCode} codeVerifier={codeVerifier} />
             {tokenResponse && !tokenResponse.success && (
               <Text style={{ color: "red" }}>{tokenResponse.message}</Text>
             )}

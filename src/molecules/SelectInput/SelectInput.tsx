@@ -4,9 +4,9 @@ import FormControl, { FormControlProps } from "../FormControl/FormControl";
 import { ListCollection } from "@chakra-ui/react";
 import Select from "@/atoms/Select/Select";
 
-interface SelectInputProps
-  extends Omit<FormControlProps, "children" | "registerOptions"> {
+interface SelectInputProps extends Omit<FormControlProps, "children"> {
   options: ListCollection;
+  rules?: Parameters<typeof Controller>[0]["rules"];
 }
 
 const SelectInput: React.FC<SelectInputProps> = ({
@@ -14,11 +14,13 @@ const SelectInput: React.FC<SelectInputProps> = ({
   label,
   options,
   helperText,
+  rules,
 }) => {
   return (
     <FormControl id={id} label={label} helperText={helperText}>
       <Controller
         name={id}
+        rules={rules}
         render={({ field }) => <Select collection={options} field={field} />}
       />
     </FormControl>

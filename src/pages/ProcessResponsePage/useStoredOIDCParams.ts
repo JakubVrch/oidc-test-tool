@@ -11,6 +11,7 @@ function useStoredOidcParams() {
     tokenEndpoint: null,
     clientId: null,
     redirectUri: null,
+    codeVerifier: null,
   });
   const effectRan = useRef(false);
 

@@ -17,6 +17,7 @@ describe("oidcStorage", () => {
       tokenEndpoint: "https://example.com/token",
       clientId: "my-client-id",
       redirectUri: "https://example.com/callback",
+      codeVerifier: "test-code-verifier",
     };
 
     storeOidcParams(testParams);
@@ -33,6 +34,7 @@ describe("oidcStorage", () => {
       tokenEndpoint: null,
       clientId: null,
       redirectUri: null,
+      codeVerifier: null,
     };
 
     storeOidcParams(testParams);
@@ -49,6 +51,7 @@ describe("oidcStorage", () => {
       tokenEndpoint: "https://example.com/token",
       clientId: "my-client-id",
       redirectUri: "https://example.com/callback",
+      codeVerifier: "test-code-verifier",
     };
 
     storeOidcParams(testParams);
@@ -62,6 +65,7 @@ describe("oidcStorage", () => {
       tokenEndpoint: null,
       clientId: null,
       redirectUri: null,
+      codeVerifier: null,
     });
   });
 });

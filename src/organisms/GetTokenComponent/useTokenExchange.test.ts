@@ -31,7 +31,9 @@ describe("useTokenExchange", () => {
 
     await act(async () => {
       await result.current.handleExchangeCode({
+        useClientSecret: true,
         clientSecret: mockClientSecret,
+        useCodeVerifier: false,
       });
     });
 
@@ -57,7 +59,9 @@ describe("useTokenExchange", () => {
 
     await act(async () => {
       await result.current.handleExchangeCode({
+        useClientSecret: true,
         clientSecret: mockClientSecret,
+        useCodeVerifier: false,
       });
     });
 
@@ -90,7 +94,9 @@ describe("useTokenExchange", () => {
 
     await act(async () => {
       await result.current.handleExchangeCode({
+        useClientSecret: true,
         clientSecret: mockClientSecret,
+        useCodeVerifier: false,
       });
     });
 
@@ -98,5 +104,71 @@ describe("useTokenExchange", () => {
       success: false,
       message: `Error 400: invalid_grant Invalid authorization code`,
     });
+  });
+
+  it("should include code_verifier and omit client_secret for PKCE", async () => {
+    const mockCodeVerifier = "test-code-verifier";
+    const mockResponse = { access_token: "mock_access_token" };
+
+    global.fetch = jest.fn().mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve(mockResponse),
+    });
+
+    const { result } = renderHook(() =>
+      useTokenExchange({
+        tokenEndpoint: mockTokenEndpoint,
+        redirectUri: mockRedirectUri,
+        clientId: mockClientId,
+        code: mockCode,
+      }),
+    );
+
+    await act(async () => {
+      await result.current.handleExchangeCode({
+        useClientSecret: false,
+        useCodeVerifier: true,
+        codeVerifier: mockCodeVerifier,
+      });
+    });
+
+    const callBody = (global.fetch as jest.Mock).mock.calls[0][1]
+      .body as URLSearchParams;
+    expect(callBody.get("code_verifier")).toBe(mockCodeVerifier);
+    expect(callBody.has("client_secret")).toBe(false);
+    expect(result.current.tokenResponse?.success).toBe(true);
+  });
+
+  it("should include both client_secret and code_verifier when both are selected", async () => {
+    const mockCodeVerifier = "test-code-verifier";
+    const mockResponse = { access_token: "mock_access_token" };
+
+    global.fetch = jest.fn().mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve(mockResponse),
+    });
+
+    const { result } = renderHook(() =>
+      useTokenExchange({
+        tokenEndpoint: mockTokenEndpoint,
+        redirectUri: mockRedirectUri,
+        clientId: mockClientId,
+        code: mockCode,
+      }),
+    );
+
+    await act(async () => {
+      await result.current.handleExchangeCode({
+        useClientSecret: true,
+        clientSecret: mockClientSecret,
+        useCodeVerifier: true,
+        codeVerifier: mockCodeVerifier,
+      });
+    });
+
+    const callBody = (global.fetch as jest.Mock).mock.calls[0][1]
+      .body as URLSearchParams;
+    expect(callBody.get("client_secret")).toBe(mockClientSecret);
+    expect(callBody.get("code_verifier")).toBe(mockCodeVerifier);
   });
 });

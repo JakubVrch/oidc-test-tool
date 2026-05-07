@@ -38,10 +38,32 @@ describe("oidcRedirect", () => {
       redirectUri: "http://localhost:3000/callback",
       state: null,
       tokenEndpoint: null,
+      codeVerifier: null,
     });
     //FIXME: Resolve when this issue is complete: https://github.com/jsdom/jsdom/issues/3492
     expect(setLocationHref).toHaveBeenCalledWith(
       "http://localhost:3000/callback",
+    );
+  });
+
+  it("should store codeVerifier when PKCE is enabled", () => {
+    const mockFormValues: FormValues = {
+      clientId: "test_client_id",
+      redirectUri: "http://localhost:3000/callback",
+      authEndpoint: "https://example.com/authorize",
+      scope: "openid",
+      responseType: [ResponseTypeValue.CODE],
+      pkceEnabled: true,
+      codeVerifier: "test-code-verifier",
+    };
+
+    const mockUrlResult = { url: "http://localhost:3000/callback" };
+    (constructUrl as jest.Mock).mockReturnValueOnce(mockUrlResult);
+
+    redirectToOidcProvider(mockFormValues);
+
+    expect(storeOidcParams).toHaveBeenCalledWith(
+      expect.objectContaining({ codeVerifier: "test-code-verifier" }),
     );
   });
 

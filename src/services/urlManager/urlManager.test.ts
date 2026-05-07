@@ -2,7 +2,9 @@ import {
   ResponseModeValue,
   ResponseTypeValue,
 } from "../types/responseTypeAndValue";
-import { constructUrl, UrlParams, UrlResult } from "./urlManager";
+import { constructUrl } from "./urlManager";
+import { UrlParams, UrlResult } from "./types";
+import { PKCEMethod } from "../types/pkceMethod";
 
 describe("constructUrl", () => {
   it("should return error if mandatory params are missing", () => {
@@ -52,6 +54,42 @@ describe("constructUrl", () => {
     const result: UrlResult = constructUrl(params);
     expect(result.url).toBe(
       "http://example.com/auth?client_id=client&redirect_uri=http%3A%2F%2Flocalhost&scope=openid&response_type=code",
+    );
+  });
+
+  it("should include PKCE parameters when PKCE is enabled with S256", () => {
+    const params: UrlParams = {
+      authEndpoint: "http://example.com/auth",
+      clientId: "client",
+      redirectUri: "http://localhost",
+      scope: "openid",
+      responseType: [ResponseTypeValue.CODE],
+      pkceEnabled: true,
+      pkceMethod: PKCEMethod.S256,
+      codeChallenge: "challenge",
+      codeVerifier: "verifier",
+    };
+    const result = constructUrl(params);
+    expect(result.url).toBe(
+      "http://example.com/auth?client_id=client&redirect_uri=http%3A%2F%2Flocalhost&scope=openid&response_type=code&code_challenge=challenge&code_challenge_method=S256"
+    );
+  });
+
+  it("should include PKCE parameters when PKCE is enabled with plain method", () => {
+    const params: UrlParams = {
+      authEndpoint: "http://example.com/auth",
+      clientId: "client",
+      redirectUri: "http://localhost",
+      scope: "openid",
+      responseType: [ResponseTypeValue.CODE],
+      pkceEnabled: true,
+      pkceMethod: PKCEMethod.PLAIN,
+      codeChallenge: "challenge",
+      codeVerifier: "verifier",
+    };
+    const result = constructUrl(params);
+    expect(result.url).toBe(
+      "http://example.com/auth?client_id=client&redirect_uri=http%3A%2F%2Flocalhost&scope=openid&response_type=code&code_challenge=challenge&code_challenge_method=PLAIN"
     );
   });
 });
