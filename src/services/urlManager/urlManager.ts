@@ -23,7 +23,6 @@ export const constructUrl = (params: UrlParams): UrlResult => {
     pkceEnabled,
     pkceMethod,
     codeChallenge,
-    codeVerifier
   } = params;
 
   const url = new URL(authEndpoint ?? "");
@@ -40,11 +39,6 @@ export const constructUrl = (params: UrlParams): UrlResult => {
   if (pkceEnabled && pkceMethod && codeChallenge) {
     url.searchParams.append("code_challenge", codeChallenge);
     url.searchParams.append("code_challenge_method", pkceMethod.toUpperCase());
-
-    // Store code verifier in localStorage for later use
-    if (codeVerifier) {
-      localStorage.setItem("pkce_code_verifier", codeVerifier);
-    }
   }
 
   if (additionalParams && Array.isArray(additionalParams)) {

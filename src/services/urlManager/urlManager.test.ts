@@ -92,26 +92,4 @@ describe("constructUrl", () => {
       "http://example.com/auth?client_id=client&redirect_uri=http%3A%2F%2Flocalhost&scope=openid&response_type=code&code_challenge=challenge&code_challenge_method=PLAIN"
     );
   });
-
-  it("should store code verifier in localStorage when PKCE is enabled", () => {
-    // Mock localStorage
-    const mockSetItem = jest.spyOn(Storage.prototype, 'setItem');
-    
-    const params: UrlParams = {
-      authEndpoint: "http://example.com/auth",
-      clientId: "client",
-      redirectUri: "http://localhost",
-      scope: "openid",
-      responseType: [ResponseTypeValue.CODE],
-      pkceEnabled: true,
-      pkceMethod: PKCEMethod.S256,
-      codeChallenge: "challenge",
-      codeVerifier: "verifier",
-    };
-    constructUrl(params);
-    expect(mockSetItem).toHaveBeenCalledWith("pkce_code_verifier", "verifier");
-    
-    // Clean up
-    mockSetItem.mockRestore();
-  });
 });

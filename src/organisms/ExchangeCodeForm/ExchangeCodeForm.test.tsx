@@ -1,4 +1,4 @@
-import { screen, waitFor } from "@testing-library/react";
+import { screen, waitFor, act } from "@testing-library/react";
 import { render } from "@/testing/render";
 import userEvent from "@testing-library/user-event";
 import ExchangeCodeForm from "./ExchangeCodeForm";
@@ -11,8 +11,10 @@ describe("ExchangeCodeForm", () => {
   });
 
   describe("without codeVerifier prop (non-PKCE)", () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       render(<ExchangeCodeForm onSubmit={mockOnSubmit} />);
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      await act(async () => {});
     });
 
     it("pre-checks Use Client Secret and renders password input", () => {
@@ -51,10 +53,12 @@ describe("ExchangeCodeForm", () => {
   describe("with codeVerifier prop (PKCE)", () => {
     const mockCodeVerifier = "mock-code-verifier";
 
-    beforeEach(() => {
+    beforeEach(async () => {
       render(
         <ExchangeCodeForm onSubmit={mockOnSubmit} codeVerifier={mockCodeVerifier} />,
       );
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      await act(async () => {});
     });
 
     it("pre-checks Use Code Verifier and renders pre-filled input", () => {

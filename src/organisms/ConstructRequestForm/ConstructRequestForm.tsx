@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle } from "react";
+import { forwardRef, useImperativeHandle, useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import ConstructedUrlDisplay from "../../atoms/ConstructedUrlDisplay/ConstructedUrlDisplay";
 import CheckboxField from "../../molecules/CheckboxInput/CheckboxInput";
@@ -16,7 +16,7 @@ import {
   ResponseTypeValue,
 } from "@/services/types/responseTypeAndValue";
 import { PKCEMethod } from "@/services/types/pkceMethod";
-import * as pkce from "@/services/pkce/pkce";
+import { generateCodeVerifier } from "@/services/pkce/pkce";
 import FormStack from "@/atoms/FormStack/FormStack";
 import { DevTool } from "@hookform/devtools";
 import { mapEnumToOptions } from "./mapEnumToOptions";
@@ -58,7 +58,7 @@ interface ConstructRequestFormProps {
 
 const ConstructRequestForm = forwardRef<FormRef, ConstructRequestFormProps>(
   ({ onSubmit }, ref) => {
-    const codeVerifier = pkce.generateCodeVerifier();
+    const [codeVerifier] = useState(() => generateCodeVerifier());
     const methods = useForm<FormValues>({
       defaultValues: {
         authEndpoint: "",
@@ -94,7 +94,7 @@ const ConstructRequestForm = forwardRef<FormRef, ConstructRequestFormProps>(
 
     return (
       <FormProvider {...methods}>
-        <DevTool control={control} /> {/* set up the dev tool */}
+        {process.env.NODE_ENV === "development" && <DevTool control={control} />}
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
           <FormStack>
             <TextInput
@@ -160,6 +160,7 @@ const ConstructRequestForm = forwardRef<FormRef, ConstructRequestFormProps>(
                 <TextInput
                   id="codeVerifier"
                   label="Code Verifier"
+                  defaultValue={codeVerifier}
                   registerOptions={{ required: "This field is required" }}
                 />
                 <TextInput
