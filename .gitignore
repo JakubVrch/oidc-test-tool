@@ -20,6 +20,7 @@ coverage
 .vscode/*
 !.vscode/extensions.json
 .idea
+.yarn/install-state.gz
 .DS_Store
 *.suo
 *.ntvs*

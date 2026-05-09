@@ -12,14 +12,11 @@ import { cloneDeep } from "lodash";
 // TextEncoder and TextDecoder needs to be in global before JSDOM is created
 global.TextEncoder = TextEncoder;
 (global as any).TextDecoder = TextDecoder;
-
-// JSDOM window needs mocks to support Chakra UI
-import { JSDOM } from "jsdom";
-const { window } = new JSDOM();
+const testWindow = window;
 
 // ResizeObserver mock
 global.ResizeObserver = ResizeObserver;
-window.ResizeObserver = ResizeObserver;
+testWindow.ResizeObserver = ResizeObserver;
 
 // IntersectionObserver mock
 class IntersectionObserverMock implements IntersectionObserver {
@@ -35,21 +32,21 @@ class IntersectionObserverMock implements IntersectionObserver {
 }
 
 global.IntersectionObserver = IntersectionObserverMock;
-window.IntersectionObserver = IntersectionObserverMock;
+testWindow.IntersectionObserver = IntersectionObserverMock;
 
 // Scroll Methods mock
-window.Element.prototype.scrollTo = () => {};
-window.Element.prototype.scrollIntoView = () => {};
+testWindow.Element.prototype.scrollTo = () => {};
+testWindow.Element.prototype.scrollIntoView = () => {};
 
 // requestAnimationFrame mock
-window.requestAnimationFrame = (cb) => setTimeout(cb, 1000 / 60);
+testWindow.requestAnimationFrame = (cb) => setTimeout(cb, 1000 / 60);
 
 // URL object mock
-window.URL.createObjectURL = () => "https://i.pravatar.cc/300";
-window.URL.revokeObjectURL = () => {};
+testWindow.URL.createObjectURL = () => "https://i.pravatar.cc/300";
+testWindow.URL.revokeObjectURL = () => {};
 
 // scrollTo mock
-window.HTMLElement.prototype.scrollTo = function () {};
+testWindow.HTMLElement.prototype.scrollTo = function () {};
 global.HTMLElement.prototype.scrollTo = function () {};
 
 // matchMedia mock
@@ -76,7 +73,7 @@ Object.defineProperty(global, "matchMedia", {
 });
 
 // PointerEvent mock
-(window as any).PointerEvent = MouseEvent;
+(testWindow as any).PointerEvent = MouseEvent;
 (global as any).PointerEvent = MouseEvent;
 
 // Override globalThis

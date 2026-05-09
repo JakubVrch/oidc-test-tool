@@ -1,3 +1,5 @@
+// ts-node is required by Jest to parse this TypeScript config file at runtime
+import type {} from "ts-node";
 import { Config } from "jest";
 
 const config: Config = {
@@ -8,7 +10,7 @@ const config: Config = {
   coverageDirectory: "coverage",
   testEnvironment: "jsdom",
   transform: {
-    ".(ts|tsx)": ["ts-jest", { tsconfig: "tsconfig.app.json" }],
+    ".(ts|tsx)": ["ts-jest", { tsconfig: "tsconfig.jest.json" }],
   },
   coverageReporters: ["json-summary", "clover", "text"],
   coveragePathIgnorePatterns: [
@@ -23,13 +25,6 @@ const config: Config = {
   setupFilesAfterEnv: ["<rootDir>/src/testing/jest.setup.ts"],
   // Limit workers on CI/Windows/WSL to avoid high CPU/IO during transforms
   maxWorkers: "50%",
-  globals: {
-    'ts-jest': {
-      tsconfig: 'tsconfig.app.json',
-      // isolatedModules speeds up compilation by avoiding type-checks in ts-jest
-      isolatedModules: true,
-    },
-  },
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",
   },

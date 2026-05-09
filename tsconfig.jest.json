@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.app.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "ignoreDeprecations": "6.0",
+    "allowImportingTsExtensions": false,
+    "noEmit": false,
+    "isolatedModules": true
+  },
+  "include": ["src", "jest.config.ts"]
+}
