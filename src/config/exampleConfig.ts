@@ -1,4 +1,4 @@
-import { PrefillConfig } from "../organisms/PrefillComponent/PrefillComponent";
+import { PrefillConfig } from "@/services/types/prefillConfig";
 import { FormValues } from "@/services/types/constructRequestForm";
 import {
   ResponseTypeValue,
