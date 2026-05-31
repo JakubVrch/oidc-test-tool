@@ -1,15 +1,5 @@
 import { useLocation } from "react-router-dom";
-
-export enum ResponseType {
-  Code = "Code",
-  Implicit = "Implicit",
-  Hybrid = "Hybrid",
-}
-
-export enum ResponseMode {
-  Query = "Query",
-  Fragment = "Fragment",
-}
+import { ResponseMode, ResponseType } from "@/services/types/oidcResponseTypeAndMode";
 
 function useOIDCResponseData() {
   const location = useLocation();
