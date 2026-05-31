@@ -7,42 +7,52 @@ export interface OidcParams {
   codeVerifier: string | null;
 }
 
+const OIDC_PARAMS_KEY = "oidcParams";
+
+const EMPTY_OIDC_PARAMS: OidcParams = {
+  nonce: null,
+  state: null,
+  tokenEndpoint: null,
+  clientId: null,
+  redirectUri: null,
+  codeVerifier: null,
+};
+
+const getStringOrNull = (
+  record: Partial<OidcParams>,
+  key: keyof OidcParams,
+): string | null => (typeof record[key] === "string" ? record[key] : null);
+
 export const storeOidcParams = (params: OidcParams) => {
-  if (params.nonce) {
-    localStorage.setItem("oidcNonce", params.nonce);
-  }
-  if (params.state) {
-    localStorage.setItem("oidcState", params.state);
-  }
-  if (params.tokenEndpoint) {
-    localStorage.setItem("oidcTokenEndpoint", params.tokenEndpoint);
-  }
-  if (params.clientId) {
-    localStorage.setItem("oidcClientId", params.clientId);
-  }
-  if (params.redirectUri) {
-    localStorage.setItem("oidcRedirectUri", params.redirectUri);
-  }
-  if (params.codeVerifier) {
-    localStorage.setItem("oidcCodeVerifier", params.codeVerifier);
-  }
+  localStorage.setItem(OIDC_PARAMS_KEY, JSON.stringify(params));
 };
 
 export const getStoredOidcParams = (): OidcParams => {
-  const nonce = localStorage.getItem("oidcNonce");
-  const state = localStorage.getItem("oidcState");
-  const tokenEndpoint = localStorage.getItem("oidcTokenEndpoint");
-  const clientId = localStorage.getItem("oidcClientId");
-  const redirectUri = localStorage.getItem("oidcRedirectUri");
-  const codeVerifier = localStorage.getItem("oidcCodeVerifier");
-  return { nonce, state, tokenEndpoint, clientId, redirectUri, codeVerifier };
+  const serializedParams = localStorage.getItem(OIDC_PARAMS_KEY);
+  if (!serializedParams) {
+    return { ...EMPTY_OIDC_PARAMS };
+  }
+
+  try {
+    const parsed: unknown = JSON.parse(serializedParams);
+    if (typeof parsed !== "object" || parsed === null) {
+      return { ...EMPTY_OIDC_PARAMS };
+    }
+
+    const record = parsed as Partial<OidcParams>;
+    return {
+      nonce: getStringOrNull(record, "nonce"),
+      state: getStringOrNull(record, "state"),
+      tokenEndpoint: getStringOrNull(record, "tokenEndpoint"),
+      clientId: getStringOrNull(record, "clientId"),
+      redirectUri: getStringOrNull(record, "redirectUri"),
+      codeVerifier: getStringOrNull(record, "codeVerifier"),
+    };
+  } catch {
+    return { ...EMPTY_OIDC_PARAMS };
+  }
 };
 
 export const clearStoredOidcParams = () => {
-  localStorage.removeItem("oidcNonce");
-  localStorage.removeItem("oidcState");
-  localStorage.removeItem("oidcTokenEndpoint");
-  localStorage.removeItem("oidcClientId");
-  localStorage.removeItem("oidcRedirectUri");
-  localStorage.removeItem("oidcCodeVerifier");
+  localStorage.removeItem(OIDC_PARAMS_KEY);
 };

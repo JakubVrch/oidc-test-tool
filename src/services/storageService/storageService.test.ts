@@ -6,6 +6,8 @@ import {
 } from "./storageService";
 
 describe("oidcStorage", () => {
+  const ATOMIC_OIDC_KEY = "oidcParams";
+
   afterEach(() => {
     localStorage.clear();
   });
@@ -67,5 +69,6 @@ describe("oidcStorage", () => {
       redirectUri: null,
       codeVerifier: null,
     });
+    expect(localStorage.getItem(ATOMIC_OIDC_KEY)).toBeNull();
   });
 });
