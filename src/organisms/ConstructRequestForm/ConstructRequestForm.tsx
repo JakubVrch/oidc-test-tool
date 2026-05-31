@@ -20,6 +20,7 @@ import { generateCodeVerifier } from "@/services/pkce/pkce";
 import FormStack from "@/atoms/FormStack/FormStack";
 import { DevTool } from "@hookform/devtools";
 import { mapEnumToOptions } from "./mapEnumToOptions";
+import { FormValues } from "@/services/types/constructRequestForm";
 
 const responseTypeOptions = Object.values(ResponseTypeValue).map((value) => ({
   value,
@@ -30,30 +31,12 @@ const responseModeOptions = mapEnumToOptions(ResponseModeValue);
 
 const pkceMethodOptions = mapEnumToOptions(PKCEMethod);
 
-export interface FormValues {
-  authEndpoint: string;
-  clientId: string;
-  redirectUri: string;
-  scope: string;
-  responseType: ResponseTypeValue[];
-  responseMode?: ResponseModeValue;
-  state?: string;
-  nonce?: string;
-  prompt?: string;
-  tokenEndpoint?: string;
-  additionalParams?: { name: string; value: string }[];
-  pkceEnabled?: boolean;
-  pkceMethod?: PKCEMethod;
-  codeVerifier?: string;
-  codeChallenge?: string;
+interface ConstructRequestFormProps {
+  onSubmit: SubmitHandler<FormValues>;
 }
 
 export interface FormRef {
   prefill: (data: FormValues) => void;
-}
-
-interface ConstructRequestFormProps {
-  onSubmit: SubmitHandler<FormValues>;
 }
 
 const ConstructRequestForm = forwardRef<FormRef, ConstructRequestFormProps>(

@@ -1,4 +1,4 @@
-import { FormValues } from "../../organisms/ConstructRequestForm/ConstructRequestForm";
+import { FormValues } from "@/services/types/constructRequestForm";
 import { storeOidcParams, OidcParams } from "../storageService/storageService";
 import { constructUrl } from "../urlManager/urlManager";
 import { setLocationHref } from "./setLocationHref";

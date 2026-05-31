@@ -1,8 +1,6 @@
 import React, { useRef } from "react";
-import ConstructRequestForm, {
-  FormRef,
-  FormValues,
-} from "../../organisms/ConstructRequestForm/ConstructRequestForm";
+import ConstructRequestForm, {FormRef} from "../../organisms/ConstructRequestForm/ConstructRequestForm";
+import { FormValues } from "@/services/types/constructRequestForm";
 import { redirectToOidcProvider } from "../../services/redirectHandler/redirectHandler";
 import Prefill from "../../organisms/PrefillComponent/PrefillComponent";
 import { prefillConfig } from "../../config/exampleConfig";

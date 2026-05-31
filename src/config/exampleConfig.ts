@@ -1,5 +1,5 @@
 import { PrefillConfig } from "../organisms/PrefillComponent/PrefillComponent";
-import { FormValues } from "../organisms/ConstructRequestForm/ConstructRequestForm";
+import { FormValues } from "@/services/types/constructRequestForm";
 import {
   ResponseTypeValue,
   ResponseModeValue,

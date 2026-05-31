@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { UseFormWatch, UseFormSetValue } from "react-hook-form";
-import { FormValues } from "./ConstructRequestForm";
+import { FormValues } from "@/services/types/constructRequestForm";
 import { generateCodeChallenge } from "@/services/pkce/pkce";
 
 const usePKCEChallenge = (
