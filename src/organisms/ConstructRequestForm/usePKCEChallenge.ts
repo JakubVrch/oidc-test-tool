@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { UseFormWatch, UseFormSetValue } from "react-hook-form";
-import { FormValues } from "@/services/types/constructRequestForm";
+import { ConstructRequestFormValues } from "@/services/types/constructRequestForm";
 import { generateCodeChallenge } from "@/services/pkce/pkce";
 
 const usePKCEChallenge = (
-  watch: UseFormWatch<FormValues>,
-  setValue: UseFormSetValue<FormValues>,
+  watch: UseFormWatch<ConstructRequestFormValues>,
+  setValue: UseFormSetValue<ConstructRequestFormValues>,
 ) => {
   const pkceEnabled = watch("pkceEnabled");
   const pkceMethod = watch("pkceMethod");

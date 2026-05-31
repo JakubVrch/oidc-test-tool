@@ -1,4 +1,4 @@
-import { FormValues } from "@/services/types/constructRequestForm";
+import { ConstructRequestFormValues } from "@/services/types/constructRequestForm";
 import { storeOidcParams } from "@/services/storageService/storageService";
 import { ResponseTypeValue } from "@/services/types/responseTypeAndValue";
 import { constructUrl } from "@/services/urlManager/urlManager";
@@ -15,7 +15,7 @@ describe("oidcRedirect", () => {
   });
 
   it("should redirect to OIDC provider with minimal valid params", () => {
-    const mockFormValues: FormValues = {
+    const mockFormValues: ConstructRequestFormValues = {
       clientId: "test_client_id",
       redirectUri: "http://localhost:3000/callback",
       authEndpoint: "https://example.com/authorize",
@@ -47,7 +47,7 @@ describe("oidcRedirect", () => {
   });
 
   it("should store codeVerifier when PKCE is enabled", () => {
-    const mockFormValues: FormValues = {
+    const mockFormValues: ConstructRequestFormValues = {
       clientId: "test_client_id",
       redirectUri: "http://localhost:3000/callback",
       authEndpoint: "https://example.com/authorize",
@@ -68,7 +68,7 @@ describe("oidcRedirect", () => {
   });
 
   it("should not redirect and log error if URL construction fails", () => {
-    const mockFormValues: FormValues = {
+    const mockFormValues: ConstructRequestFormValues = {
       authEndpoint: "",
       clientId: "test_client_id",
       redirectUri: "http://localhost:3000/callback",

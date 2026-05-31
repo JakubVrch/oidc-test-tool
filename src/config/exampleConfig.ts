@@ -1,12 +1,12 @@
 import { PrefillConfig } from "@/services/types/prefillConfig";
-import { FormValues } from "@/services/types/constructRequestForm";
+import { ConstructRequestFormValues } from "@/services/types/constructRequestForm";
 import {
   ResponseTypeValue,
   ResponseModeValue,
 } from "@/services/types/responseTypeAndValue";
 import { PKCEMethod } from "@/services/types/pkceMethod";
 
-export const prefillConfig: PrefillConfig<FormValues> = [
+export const prefillConfig: PrefillConfig<ConstructRequestFormValues> = [
  
   {
     label: "PKCE with Authorization Code Flow",

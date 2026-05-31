@@ -20,7 +20,7 @@ import { generateCodeVerifier } from "@/services/pkce/pkce";
 import FormStack from "@/atoms/FormStack/FormStack";
 import { DevTool } from "@hookform/devtools";
 import { mapEnumToOptions } from "./mapEnumToOptions";
-import { FormValues } from "@/services/types/constructRequestForm";
+import { ConstructRequestFormValues } from "@/services/types/constructRequestForm";
 
 const responseTypeOptions = Object.values(ResponseTypeValue).map((value) => ({
   value,
@@ -32,17 +32,17 @@ const responseModeOptions = mapEnumToOptions(ResponseModeValue);
 const pkceMethodOptions = mapEnumToOptions(PKCEMethod);
 
 interface ConstructRequestFormProps {
-  onSubmit: SubmitHandler<FormValues>;
+  onSubmit: SubmitHandler<ConstructRequestFormValues>;
 }
 
 export interface FormRef {
-  prefill: (data: FormValues) => void;
+  prefill: (data: ConstructRequestFormValues) => void;
 }
 
 const ConstructRequestForm = forwardRef<FormRef, ConstructRequestFormProps>(
   ({ onSubmit }, ref) => {
     const [codeVerifier] = useState(() => generateCodeVerifier());
-    const methods = useForm<FormValues>({
+    const methods = useForm<ConstructRequestFormValues>({
       defaultValues: {
         authEndpoint: "",
         clientId: "",
@@ -70,8 +70,8 @@ const ConstructRequestForm = forwardRef<FormRef, ConstructRequestFormProps>(
     const constructedUrl = useConstructedUrl(watch);
 
     useImperativeHandle<unknown, FormRef>(ref, () => ({
-      prefill: (data: FormValues) => {
-        prefillFormData<FormValues>(setValue, data);
+      prefill: (data: ConstructRequestFormValues) => {
+        prefillFormData<ConstructRequestFormValues>(setValue, data);
       },
     }));
 
