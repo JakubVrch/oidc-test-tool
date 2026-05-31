@@ -1,15 +1,15 @@
 import { forwardRef, useImperativeHandle, useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import ConstructedUrlDisplay from "../../atoms/ConstructedUrlDisplay/ConstructedUrlDisplay";
-import CheckboxField from "../../molecules/CheckboxInput/CheckboxInput";
-import CheckboxGroupField from "../../molecules/CheckboxGroupInput/CheckboxGroupInput";
-import SelectInput from "../../molecules/SelectInput/SelectInput";
-import TextInput from "../../molecules/TextInput/TextInput";
-import AdditionalParameters from "../AdditionalParametersFormPart/AdditionalParameters";
+import ConstructedUrlDisplay from "@/atoms/ConstructedUrlDisplay/ConstructedUrlDisplay";
+import CheckboxField from "@/molecules/CheckboxInput/CheckboxInput";
+import CheckboxGroupField from "@/molecules/CheckboxGroupInput/CheckboxGroupInput";
+import SelectInput from "@/molecules/SelectInput/SelectInput";
+import TextInput from "@/molecules/TextInput/TextInput";
+import AdditionalParameters from "@/organisms/AdditionalParametersFormPart/AdditionalParameters";
 import useConstructedUrl from "./useConstructedUrl";
 import usePKCEChallenge from "./usePKCEChallenge";
 import { usePKCEValidation } from "./usePKCEValidation";
-import { prefillFormData } from "../../services/prefillFormData/prefillFormData";
+import { prefillFormData } from "@/services/prefillFormData/prefillFormData";
 import Button from "@/atoms/Button/Button";
 import {
   ResponseModeValue,

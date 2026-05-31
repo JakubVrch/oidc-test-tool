@@ -1,10 +1,10 @@
 import {
   ResponseModeValue,
   ResponseTypeValue,
-} from "../types/responseTypeAndValue";
+} from "@/services/types/responseTypeAndValue";
 import { constructUrl } from "./urlManager";
 import { UrlParams, UrlResult } from "./types";
-import { PKCEMethod } from "../types/pkceMethod";
+import { PKCEMethod } from "@/services/types/pkceMethod";
 
 describe("constructUrl", () => {
   it("should return error if mandatory params are missing", () => {

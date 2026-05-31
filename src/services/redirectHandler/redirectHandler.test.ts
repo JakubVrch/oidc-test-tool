@@ -1,12 +1,12 @@
 import { FormValues } from "@/services/types/constructRequestForm";
-import { storeOidcParams } from "../storageService/storageService";
-import { ResponseTypeValue } from "../types/responseTypeAndValue";
-import { constructUrl } from "../urlManager/urlManager";
+import { storeOidcParams } from "@/services/storageService/storageService";
+import { ResponseTypeValue } from "@/services/types/responseTypeAndValue";
+import { constructUrl } from "@/services/urlManager/urlManager";
 import { redirectToOidcProvider } from "./redirectHandler";
 import { setLocationHref } from "./setLocationHref";
 
-jest.mock("../storageService/storageService");
-jest.mock("../urlManager/urlManager");
+jest.mock("@/services/storageService/storageService");
+jest.mock("@/services/urlManager/urlManager");
 jest.mock("./setLocationHref");
 
 describe("oidcRedirect", () => {
