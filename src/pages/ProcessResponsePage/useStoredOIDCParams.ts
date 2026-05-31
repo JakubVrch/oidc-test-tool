@@ -1,27 +1,11 @@
-import { useEffect, useState, useRef } from "react";
+import { useState } from "react";
 import {
   getStoredOidcParams,
   OidcParams,
 } from "@/services/storageService/storageService";
 
 function useStoredOidcParams() {
-  const [storedParams, setStoredParams] = useState<OidcParams>({
-    nonce: null,
-    state: null,
-    tokenEndpoint: null,
-    clientId: null,
-    redirectUri: null,
-    codeVerifier: null,
-  });
-  const effectRan = useRef(false);
-
-  useEffect(() => {
-    if (effectRan.current === false) {
-      const params = getStoredOidcParams();
-      setStoredParams(params);
-      effectRan.current = true;
-    }
-  }, []);
+  const [storedParams] = useState<OidcParams>(getStoredOidcParams);
 
   return storedParams;
 }
