@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "test": "jest",
     "typegen": "chakra typegen src/atoms/ui/theme.ts",
-    "prettier": "npx prettier --write .",
+    "prettier": "prettier --write .",
+    "prettier:check": "prettier --check .",
     "knip": "knip"
   },
   "dependencies": {
