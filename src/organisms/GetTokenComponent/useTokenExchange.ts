@@ -16,7 +16,7 @@ export interface CodeExchangeParams {
 
 interface TokenResponse {
   success: boolean;
-  message?: string;
+  message: string;
   idToken?: string | null;
   accessToken?: string | null;
 }
@@ -91,7 +91,11 @@ const useTokenExchange = ({
 };
 
 const getOptionalValue = <T>(data: unknown, key: string): T | null => {
-  return (data as Record<string, T>)?.[key] ?? null;
+  if (typeof data !== "object" || data === null || !(key in data)) {
+    return null;
+  }
+
+  return (data as Record<string, unknown>)[key] as T;
 };
 
 const getErrorMessage = (data: unknown): string => {
