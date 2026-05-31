@@ -16,8 +16,8 @@ const TokenViewer: React.FC<TokenProps> = ({ token, tokenName }) => {
   }
 
   try {
-    tokenHeader = jwtDecode(token);
-    tokenBody = jwtDecode(token, { header: true });
+    tokenBody = jwtDecode(token);
+    tokenHeader = jwtDecode(token, { header: true });
   } catch {
     // If decoding fails, assume it's not a JWT
   }
