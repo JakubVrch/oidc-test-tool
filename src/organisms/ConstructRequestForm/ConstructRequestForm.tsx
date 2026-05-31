@@ -143,7 +143,6 @@ const ConstructRequestForm = forwardRef<FormRef, ConstructRequestFormProps>(
                 <TextInput
                   id="codeVerifier"
                   label="Code Verifier"
-                  defaultValue={codeVerifier}
                   registerOptions={{ required: "This field is required" }}
                 />
                 <TextInput

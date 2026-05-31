@@ -81,7 +81,6 @@ const ExchangeCodeForm: React.FC<ExchangeCodeFormProps> = ({
                 id="codeVerifier"
                 label="Code Verifier:"
                 type="text"
-                defaultValue={codeVerifier}
                 registerOptions={{
                   required: useCodeVerifierChecked ? "Code Verifier is required" : false,
                 }}
