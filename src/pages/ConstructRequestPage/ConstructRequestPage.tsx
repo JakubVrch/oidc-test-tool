@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import ConstructRequestForm, { FormRef } from "@/organisms/ConstructRequestForm/ConstructRequestForm";
-import { FormValues } from "@/services/types/constructRequestForm";
+import { ConstructRequestFormValues } from "@/services/types/constructRequestForm";
 import { redirectToOidcProvider } from "@/services/redirectHandler/redirectHandler";
 import Prefill from "@/organisms/PrefillComponent/PrefillComponent";
 import { prefillConfig } from "@/config/exampleConfig";
@@ -8,13 +8,13 @@ import DefaultTemplate from "@/templates/Default/Default";
 import { Stack, StackSeparator } from "@chakra-ui/react";
 
 const ConstructRequestPage: React.FC = () => {
-  const onSubmit = (data: FormValues) => {
+  const onSubmit = (data: ConstructRequestFormValues) => {
     redirectToOidcProvider(data);
   };
 
   const formRef = useRef<FormRef>(null);
 
-  const handlePrefill = (data: FormValues) => {
+  const handlePrefill = (data: ConstructRequestFormValues) => {
     if (formRef.current?.prefill) {
       formRef.current.prefill(data);
     }

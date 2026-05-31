@@ -4,7 +4,7 @@ import {
   ResponseTypeValue,
 } from "@/services/types/responseTypeAndValue";
 
-export interface FormValues {
+export interface ConstructRequestFormValues {
   authEndpoint: string;
   clientId: string;
   redirectUri: string;

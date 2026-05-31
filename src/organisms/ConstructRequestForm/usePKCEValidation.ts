@@ -1,11 +1,11 @@
 import { ResponseTypeValue } from "@/services/types/responseTypeAndValue";
 import { useEffect } from "react";
 import { UseFormWatch, UseFormSetValue } from "react-hook-form";
-import { FormValues } from "@/services/types/constructRequestForm";
+import { ConstructRequestFormValues } from "@/services/types/constructRequestForm";
 
 export const usePKCEValidation = (
-  watch: UseFormWatch<FormValues>,
-  setValue: UseFormSetValue<FormValues>,
+  watch: UseFormWatch<ConstructRequestFormValues>,
+  setValue: UseFormSetValue<ConstructRequestFormValues>,
 ) => {
   const responseTypes = watch("responseType");
   const pkceEnabled = watch("pkceEnabled");
