@@ -1,6 +1,6 @@
 import React from "react";
 import TokenViewer from "@/molecules/TokenViewer/TokenViewer";
-import ExchangeCodeForm from "@/organisms/ExchangeCodeForm/ExchangeCodeForm";
+import ExchangeCodeForm from "@/molecules/ExchangeCodeForm/ExchangeCodeForm";
 import useTokenExchange from "./useTokenExchange";
 import { Heading, Text, Alert, Stack } from "@chakra-ui/react";
 import CodeViewer from "@/atoms/CodeViewer/CodeViewer";
