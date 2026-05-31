@@ -8,7 +8,6 @@ interface TextInputProps
   id: string;
   label: string;
   type?: string;
-  defaultValue?: string;
   registerOptions?: RegisterOptions;
 }
 
@@ -16,7 +15,6 @@ const TextInput: React.FC<TextInputProps> = ({
   id,
   label,
   type = "text",
-  defaultValue = "",
   registerOptions = {},
   ...rest
 }) => {
@@ -27,7 +25,6 @@ const TextInput: React.FC<TextInputProps> = ({
       <ChakraInput
         {...register(id, { ...registerOptions })}
         type={type}
-        defaultValue={defaultValue}
         {...rest}
       />
     </FormControl>
