@@ -1,33 +1,29 @@
-import { useForm, FieldValues, FormProvider } from "react-hook-form";
+import { useForm, FormProvider, useWatch } from "react-hook-form";
 import SelectInput from "../../molecules/SelectInput/SelectInput";
 import Button from "@/atoms/Button/Button";
 import { createListCollection, Text } from "@chakra-ui/react";
 import FormStack from "@/atoms/FormStack/FormStack";
+import { PrefillConfig } from "@/services/types/prefillConfig";
 
-interface ConfigItem<T extends FieldValues> {
-  label: string;
-  description?: string;
-  data: T;
-}
-
-export type PrefillConfig<T extends FieldValues> = ConfigItem<T>[];
-
-interface PrefillProps<T extends FieldValues> {
+interface PrefillProps<T> {
   prefillConfig: PrefillConfig<T>;
   onPrefill?: (data: T) => void;
 }
 
-interface FormValues {
+interface PrefillFormValues {
   selectedConfig?: string;
 }
 
-const Prefill = <T extends FieldValues>({
+const Prefill = <T,>({
   onPrefill,
   prefillConfig,
 }: PrefillProps<T>) => {
-  const methods = useForm<FormValues>();
-  const { handleSubmit, watch } = methods;
-  const selectedConfigLabel = watch("selectedConfig");
+  const methods = useForm<PrefillFormValues>();
+  const { handleSubmit, control } = methods;
+  const selectedConfigLabel = useWatch({
+    control,
+    name: "selectedConfig",
+  });
 
   const dropdownOptions = createListCollection({
     items: [
@@ -43,7 +39,7 @@ const Prefill = <T extends FieldValues>({
 
   const selectedConfig = findSelectedConfig(selectedConfigLabel);
 
-  const onSubmit = (data: FormValues) => {
+  const onSubmit = (data: PrefillFormValues) => {
     const selectedConfig = findSelectedConfig(data.selectedConfig);
     if (selectedConfig?.data && onPrefill) {
       onPrefill(selectedConfig.data);
