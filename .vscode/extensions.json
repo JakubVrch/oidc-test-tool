@@ -1,6 +1,7 @@
 {
   "recommendations": [
     "orta.vscode-jest",
-    "gruntfuggly.todo-tree"
+    "gruntfuggly.todo-tree",
+    "esbenp.prettier-vscode"
   ]
 }

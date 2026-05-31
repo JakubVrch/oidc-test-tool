@@ -13,18 +13,19 @@ A React-based debugging tool for OpenID Connect (OIDC) authentication flows. Thi
 - **Response Inspection**
   - Decode and display JWT tokens
   - Verify state parameter matches
-  - Support for authorization code exchange
+  - Support for authorization code exchange and PKCE
 
 ## Getting Started
 
 You can try the application here: <https://calm-plant-0cc61d103.6.azurestaticapps.net/>
 
-### Prerequisites
+### Supported Environment
 
-- Node.js 22.x or higher
-- npm/yarn/pnpm
+- Dev Container in VS Code (this is the only supported setup)
 
-### Installation
+### Installation and Development Setup
+
+There is no separate installation mode for this tool. Installation and development setup are the same process.
 
 1. Clone the repository:
 
@@ -33,19 +34,28 @@ git clone https://github.com/JakubVrch/oidc-test-tool.git
 cd oidc-test-tool
 ```
 
-2. Install dependencies:
+2. Open the folder in VS Code.
+3. Install workspace-recommended extensions from `.vscode/extensions.json` (Command Palette: **Extensions: Show Recommended Extensions**).
+4. Run **Dev Containers: Rebuild and Reopen in Container**.
+5. After the container starts, install dependencies and run the app:
 
 ```bash
 yarn install
-```
-
-3. Start the development server:
-
-```bash
 yarn dev
 ```
 
 The application will be available at `http://localhost:5173`
+
+The dev container post-create step configures Corepack and installs the Yarn version pinned by `packageManager` in `package.json`.
+
+### Useful Commands
+
+```bash
+yarn dev
+yarn test
+yarn lint
+yarn build
+```
 
 ### Configuration
 
@@ -53,7 +63,6 @@ The application is configured through `src/config/exampleConfig.ts`. This file c
 
 ## Roadmap
 
-1. TODO: PKCE
 2. TODO: Fully responsive layout (on mobile devices)
 3. TODO: Token introspection
 4. TODO: Logout
