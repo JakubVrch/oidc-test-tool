@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { UseFormWatch } from "react-hook-form";
-import { FormValues } from "./ConstructRequestForm";
+import { FormValues } from "@/services/types/constructRequestForm";
 import { constructUrl } from "../../services/urlManager/urlManager";
 
 const useConstructedUrl = (watch: UseFormWatch<FormValues>) => {
