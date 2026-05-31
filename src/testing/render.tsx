@@ -1,4 +1,4 @@
-import { Provider } from "@/atoms/ui/ChackraProvider.tsx";
+import { Provider } from "@/atoms/ui/ChakraProvider";
 import { render as rtlRender } from "@testing-library/react";
 
 export function render(ui: React.ReactNode) {
