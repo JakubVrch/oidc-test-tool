@@ -3,7 +3,7 @@
 {
   "name": "Node.js & TypeScript",
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:24-bookworm"
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:24-bookworm",
 
   // Features to add to the dev container. More info: https://containers.dev/features.
   // "features": {},
@@ -12,7 +12,13 @@
   // "forwardPorts": [],
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  // "postCreateCommand": "yarn install",
+  // Setup Corepack and install the Yarn version pinned by package.json.
+  "postCreateCommand": "npm -g uninstall yarn || true && mkdir -p $HOME/.local/bin && corepack enable --install-directory $HOME/.local/bin && corepack install",
+
+  // Ensure user-level Corepack shims win over globally installed package managers.
+  "remoteEnv": {
+    "PATH": "/home/node/.local/bin:${containerEnv:PATH}"
+  }
 
   // Configure tool-specific properties.
   // "customizations": {},
