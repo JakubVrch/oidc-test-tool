@@ -6,14 +6,14 @@ interface CodeViewerProps {
   headingText: string;
 }
 
-const CodeViewer: React.FC<CodeViewerProps> = ({ children, headingText }) => {
-  const Pre = chakra("pre", {
-    base: {
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-    },
-  });
+const Pre = chakra("pre", {
+  base: {
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  },
+});
 
+const CodeViewer: React.FC<CodeViewerProps> = ({ children, headingText }) => {
   return (
     <Box w="100%">
       <Heading size="xl">{headingText}</Heading>
