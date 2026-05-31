@@ -1,7 +1,5 @@
-import useOIDCResponseData, {
-  ResponseMode,
-  ResponseType,
-} from "./useOIDCResponseData";
+import { ResponseMode, ResponseType } from "@/services/types/oidcResponseTypeAndMode";
+import useOIDCResponseData from "./useOIDCResponseData";
 import { useLocation } from "react-router-dom";
 
 jest.mock("react-router-dom", () => ({
