@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import TextInput from "../../molecules/TextInput/TextInput";
-import CheckboxInput from "../../molecules/CheckboxInput/CheckboxInput";
+import TextInput from "@/molecules/TextInput/TextInput";
+import CheckboxInput from "@/molecules/CheckboxInput/CheckboxInput";
 import Button from "@/atoms/Button/Button";
 import { Stack } from "@chakra-ui/react";
 

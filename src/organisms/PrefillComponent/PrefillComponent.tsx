@@ -1,5 +1,5 @@
 import { useForm, FormProvider, useWatch } from "react-hook-form";
-import SelectInput from "../../molecules/SelectInput/SelectInput";
+import SelectInput from "@/molecules/SelectInput/SelectInput";
 import Button from "@/atoms/Button/Button";
 import { createListCollection, Text } from "@chakra-ui/react";
 import FormStack from "@/atoms/FormStack/FormStack";

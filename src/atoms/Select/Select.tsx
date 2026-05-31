@@ -7,7 +7,7 @@ import {
   SelectRoot,
   SelectTrigger,
   SelectValueText,
-} from "@/atoms/Select/ChakraSelect";
+} from "./ChakraSelect";
 import { ControllerRenderProps } from "react-hook-form";
 
 interface SelectProps {

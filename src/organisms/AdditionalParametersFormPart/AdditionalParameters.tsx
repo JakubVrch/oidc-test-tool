@@ -1,7 +1,7 @@
 import React from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { Stack, Text } from "@chakra-ui/react";
-import TextInput from "../../molecules/TextInput/TextInput";
+import TextInput from "@/molecules/TextInput/TextInput";
 import Button from "@/atoms/Button/Button";
 import FormStack from "@/atoms/FormStack/FormStack";
 

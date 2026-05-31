@@ -1,6 +1,6 @@
 import { FormValues } from "@/services/types/constructRequestForm";
-import { storeOidcParams, OidcParams } from "../storageService/storageService";
-import { constructUrl } from "../urlManager/urlManager";
+import { storeOidcParams, OidcParams } from "@/services/storageService/storageService";
+import { constructUrl } from "@/services/urlManager/urlManager";
 import { setLocationHref } from "./setLocationHref";
 
 export const redirectToOidcProvider = (params: FormValues) => {

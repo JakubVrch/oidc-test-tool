@@ -3,9 +3,9 @@ import useStoredOidcParams from "./useStoredOIDCParams";
 import {
   getStoredOidcParams,
   OidcParams,
-} from "../../services/storageService/storageService";
+} from "@/services/storageService/storageService";
 
-jest.mock("../../services/storageService/storageService");
+jest.mock("@/services/storageService/storageService");
 
 describe("useStoredOidcParams", () => {
   afterEach(() => {

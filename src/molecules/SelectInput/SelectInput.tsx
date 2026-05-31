@@ -1,6 +1,6 @@
 import React from "react";
 import { Controller } from "react-hook-form";
-import FormControl, { FormControlProps } from "../FormControl/FormControl";
+import FormControl, { FormControlProps } from "@/molecules/FormControl/FormControl";
 import { ListCollection } from "@chakra-ui/react";
 import Select from "@/atoms/Select/Select";
 
