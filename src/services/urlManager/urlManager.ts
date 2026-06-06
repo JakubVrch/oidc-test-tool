@@ -25,7 +25,12 @@ export const constructUrl = (params: UrlParams): UrlResult => {
     codeChallenge,
   } = params;
 
-  const url = new URL(authEndpoint ?? "");
+  let url: URL;
+  try {
+    url = new URL(authEndpoint ?? "");
+  } catch {
+    return { error: "Authorization Endpoint is invalid" };
+  }
   url.searchParams.append("client_id", clientId);
   url.searchParams.append("redirect_uri", redirectUri);
   url.searchParams.append("scope", scope);

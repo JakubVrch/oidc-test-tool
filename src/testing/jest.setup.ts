@@ -3,13 +3,14 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/// <reference types="node" />
 
 import "@testing-library/jest-dom";
 import ResizeObserver from "resize-observer-polyfill";
 import { TextDecoder, TextEncoder } from "util";
 import { cloneDeep } from "lodash";
 
-// TextEncoder and TextDecoder needs to be in global before JSDOM is created
+// TextEncoder and TextDecoder need to be on the global object before JSDOM is created.
 global.TextEncoder = TextEncoder;
 (global as any).TextDecoder = TextDecoder;
 const testWindow = window;
@@ -22,6 +23,7 @@ testWindow.ResizeObserver = ResizeObserver;
 class IntersectionObserverMock implements IntersectionObserver {
   root: Element | null = null;
   rootMargin = "";
+  scrollMargin = "";
   thresholds: readonly number[] = [];
   disconnect() {}
   observe() {}
