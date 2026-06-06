@@ -20,7 +20,7 @@ const GetTokenComponent: React.FC<GetTokenComponentProps> = ({
   clientId,
   codeVerifier,
 }) => {
-  const { tokenResponse, handleExchangeCode } = useTokenExchange({
+  const { tokenResponse, isLoading, handleExchangeCode } = useTokenExchange({
     tokenEndpoint,
     redirectUri,
     clientId,
@@ -37,7 +37,11 @@ const GetTokenComponent: React.FC<GetTokenComponentProps> = ({
               <Alert.Indicator />
               <Alert.Title>Be careful when sharing secrets! If you are using PKCE, the code verifier is usually sufficient for this tool, and you typically do not need to provide a client secret.</Alert.Title>
             </Alert.Root>
-            <ExchangeCodeForm onSubmit={handleExchangeCode} codeVerifier={codeVerifier} />
+            <ExchangeCodeForm
+              onSubmit={handleExchangeCode}
+              codeVerifier={codeVerifier}
+              isLoading={isLoading}
+            />
             {tokenResponse && !tokenResponse.success && (
               <Text style={{ color: "red" }}>{tokenResponse.message}</Text>
             )}

@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 
 interface TokenExchangeProps {
   tokenEndpoint: string;
@@ -30,6 +30,8 @@ const useTokenExchange = ({
   const [tokenResponse, setTokenResponse] = useState<TokenResponse | null>(
     null,
   );
+  const [isLoading, setIsLoading] = useState(false);
+  const isInFlightRef = useRef(false);
 
   const handleExchangeCode = useCallback(
     async ({
@@ -38,6 +40,13 @@ const useTokenExchange = ({
       useCodeVerifier,
       codeVerifier,
     }: CodeExchangeParams) => {
+      if (isInFlightRef.current) {
+        return;
+      }
+
+      isInFlightRef.current = true;
+      setIsLoading(true);
+
       try {
         const URLQueryParams: Record<string, string> = {
           grant_type: "authorization_code",
@@ -82,12 +91,15 @@ const useTokenExchange = ({
           success: false,
           message: `Failed to retrieve token: ${(error as Error).message}`,
         });
+      } finally {
+        isInFlightRef.current = false;
+        setIsLoading(false);
       }
     },
     [tokenEndpoint, redirectUri, clientId, code],
   );
 
-  return { tokenResponse, handleExchangeCode };
+  return { tokenResponse, isLoading, handleExchangeCode };
 };
 
 const getOptionalValue = <T>(data: unknown, key: string): T | null => {

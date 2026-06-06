@@ -17,6 +17,7 @@ describe("GetTokenComponent", () => {
   it("renders ExchangeCodeForm", () => {
     (useTokenExchange as jest.Mock).mockImplementation(() => ({
       tokenResponse: null,
+      isLoading: false,
       handleExchangeCode: jest.fn(),
     }));
 
@@ -33,6 +34,7 @@ describe("GetTokenComponent", () => {
     };
     (useTokenExchange as jest.Mock).mockImplementation(() => ({
       tokenResponse: mockTokenResponse,
+      isLoading: false,
       handleExchangeCode: jest.fn(),
     }));
 
@@ -60,6 +62,7 @@ describe("GetTokenComponent", () => {
     };
     (useTokenExchange as jest.Mock).mockImplementation(() => ({
       tokenResponse: mockTokenResponse,
+      isLoading: false,
       handleExchangeCode: jest.fn(),
     }));
 
@@ -75,5 +78,17 @@ describe("GetTokenComponent", () => {
     );
 
     expect(screen.getByText("Token exchange failed")).toBeInTheDocument();
+  });
+
+  it("disables exchange button while loading", () => {
+    (useTokenExchange as jest.Mock).mockImplementation(() => ({
+      tokenResponse: null,
+      isLoading: true,
+      handleExchangeCode: jest.fn(),
+    }));
+
+    render(<GetTokenComponent {...props} />);
+
+    expect(screen.getByRole("button")).toBeDisabled();
   });
 });

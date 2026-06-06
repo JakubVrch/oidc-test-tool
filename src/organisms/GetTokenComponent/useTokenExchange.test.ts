@@ -171,4 +171,87 @@ describe("useTokenExchange", () => {
     expect(callBody.get("client_secret")).toBe(mockClientSecret);
     expect(callBody.get("code_verifier")).toBe(mockCodeVerifier);
   });
+
+  it("should expose loading state while exchange is in-flight", async () => {
+    let resolveFetch: ((value: unknown) => void) | undefined;
+    const pendingFetch = new Promise((resolve) => {
+      resolveFetch = resolve;
+    });
+
+    global.fetch = jest.fn().mockReturnValueOnce(pendingFetch);
+
+    const { result } = renderHook(() =>
+      useTokenExchange({
+        tokenEndpoint: mockTokenEndpoint,
+        redirectUri: mockRedirectUri,
+        clientId: mockClientId,
+        code: mockCode,
+      }),
+    );
+
+    let exchangePromise: Promise<void> | undefined;
+    await act(async () => {
+      exchangePromise = result.current.handleExchangeCode({
+        useClientSecret: true,
+        clientSecret: mockClientSecret,
+        useCodeVerifier: false,
+      });
+    });
+
+    expect(result.current.isLoading).toBe(true);
+
+    await act(async () => {
+      resolveFetch?.({
+        ok: true,
+        json: () => Promise.resolve({ access_token: "mock_access_token" }),
+      });
+      await exchangePromise;
+    });
+
+    expect(result.current.isLoading).toBe(false);
+  });
+
+  it("should ignore duplicate submissions while a request is in-flight", async () => {
+    let resolveFetch: ((value: unknown) => void) | undefined;
+    const pendingFetch = new Promise((resolve) => {
+      resolveFetch = resolve;
+    });
+
+    global.fetch = jest.fn().mockReturnValueOnce(pendingFetch);
+
+    const { result } = renderHook(() =>
+      useTokenExchange({
+        tokenEndpoint: mockTokenEndpoint,
+        redirectUri: mockRedirectUri,
+        clientId: mockClientId,
+        code: mockCode,
+      }),
+    );
+
+    let firstRequest: Promise<void> | undefined;
+    let secondRequest: Promise<void> | undefined;
+    await act(async () => {
+      firstRequest = result.current.handleExchangeCode({
+        useClientSecret: true,
+        clientSecret: mockClientSecret,
+        useCodeVerifier: false,
+      });
+      secondRequest = result.current.handleExchangeCode({
+        useClientSecret: true,
+        clientSecret: mockClientSecret,
+        useCodeVerifier: false,
+      });
+    });
+
+    expect(global.fetch).toHaveBeenCalledTimes(1);
+
+    await act(async () => {
+      resolveFetch?.({
+        ok: true,
+        json: () => Promise.resolve({ access_token: "mock_access_token" }),
+      });
+      await firstRequest;
+      await secondRequest;
+    });
+  });
 });
