@@ -15,11 +15,13 @@ export interface ExchangeCodeFormData {
 interface ExchangeCodeFormProps {
   onSubmit: SubmitHandler<ExchangeCodeFormData>;
   codeVerifier?: string | null;
+  isLoading?: boolean;
 }
 
 const ExchangeCodeForm: React.FC<ExchangeCodeFormProps> = ({
   onSubmit,
   codeVerifier,
+  isLoading = false,
 }) => {
   const methods = useForm<ExchangeCodeFormData>({
     defaultValues: {
@@ -87,7 +89,14 @@ const ExchangeCodeForm: React.FC<ExchangeCodeFormProps> = ({
               />
             </>
           )}
-          <Button type="submit">Exchange Code</Button>
+          <Button
+            type="submit"
+            loading={isLoading}
+            spinnerPlacement="start"
+            disabled={isLoading}
+          >
+            Exchange Code
+          </Button>
         </Stack>
       </form>
     </FormProvider>
