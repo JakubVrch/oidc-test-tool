@@ -24,7 +24,8 @@ const config: Config = {
   ],
   setupFilesAfterEnv: ["<rootDir>/src/testing/jest.setup.ts"],
   // Limit workers on CI/Windows/WSL to avoid high CPU/IO during transforms
-  maxWorkers: "50%",
+  maxWorkers: 6,
+  testTimeout: 15000,
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",
   },

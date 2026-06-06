@@ -209,7 +209,7 @@ describe("ConstructRequestForm", () => {
         expect.anything(),
       );
     });
-  }, 10000);
+  });
 
   it("removes additional parameters", async () => {
     await userEvent.type(

@@ -1,7 +1,7 @@
 import { renderHook, act } from "@testing-library/react";
 import useTokenExchange from "./useTokenExchange";
 
-global.fetch = jest.fn();
+window.fetch = jest.fn();
 
 describe("useTokenExchange", () => {
   const mockTokenEndpoint = "/token";
@@ -15,7 +15,7 @@ describe("useTokenExchange", () => {
       id_token: "mock_id_token",
     };
 
-    global.fetch = jest.fn().mockResolvedValueOnce({
+    window.fetch = jest.fn().mockResolvedValueOnce({
       ok: true,
       json: () => Promise.resolve(mockResponse),
     });
@@ -46,7 +46,7 @@ describe("useTokenExchange", () => {
   });
 
   it("should handle network errors", async () => {
-    global.fetch = jest.fn().mockRejectedValueOnce(new Error("Network Error"));
+    window.fetch = jest.fn().mockRejectedValueOnce(new Error("Network Error"));
 
     const { result } = renderHook(() =>
       useTokenExchange({
@@ -77,7 +77,7 @@ describe("useTokenExchange", () => {
       error_description: "Invalid authorization code",
     };
 
-    global.fetch = jest.fn().mockResolvedValueOnce({
+    window.fetch = jest.fn().mockResolvedValueOnce({
       ok: false,
       status: 400,
       json: () => Promise.resolve(mockErrorResponse),
@@ -110,7 +110,7 @@ describe("useTokenExchange", () => {
     const mockCodeVerifier = "test-code-verifier";
     const mockResponse = { access_token: "mock_access_token" };
 
-    global.fetch = jest.fn().mockResolvedValueOnce({
+    window.fetch = jest.fn().mockResolvedValueOnce({
       ok: true,
       json: () => Promise.resolve(mockResponse),
     });
@@ -132,7 +132,7 @@ describe("useTokenExchange", () => {
       });
     });
 
-    const callBody = (global.fetch as jest.Mock).mock.calls[0][1]
+    const callBody = (window.fetch as jest.Mock).mock.calls[0][1]
       .body as URLSearchParams;
     expect(callBody.get("code_verifier")).toBe(mockCodeVerifier);
     expect(callBody.has("client_secret")).toBe(false);
@@ -143,7 +143,7 @@ describe("useTokenExchange", () => {
     const mockCodeVerifier = "test-code-verifier";
     const mockResponse = { access_token: "mock_access_token" };
 
-    global.fetch = jest.fn().mockResolvedValueOnce({
+    window.fetch = jest.fn().mockResolvedValueOnce({
       ok: true,
       json: () => Promise.resolve(mockResponse),
     });
@@ -166,7 +166,7 @@ describe("useTokenExchange", () => {
       });
     });
 
-    const callBody = (global.fetch as jest.Mock).mock.calls[0][1]
+    const callBody = (window.fetch as jest.Mock).mock.calls[0][1]
       .body as URLSearchParams;
     expect(callBody.get("client_secret")).toBe(mockClientSecret);
     expect(callBody.get("code_verifier")).toBe(mockCodeVerifier);
@@ -178,7 +178,7 @@ describe("useTokenExchange", () => {
       resolveFetch = resolve;
     });
 
-    global.fetch = jest.fn().mockReturnValueOnce(pendingFetch);
+    window.fetch = jest.fn().mockReturnValueOnce(pendingFetch);
 
     const { result } = renderHook(() =>
       useTokenExchange({
@@ -217,7 +217,7 @@ describe("useTokenExchange", () => {
       resolveFetch = resolve;
     });
 
-    global.fetch = jest.fn().mockReturnValueOnce(pendingFetch);
+    window.fetch = jest.fn().mockReturnValueOnce(pendingFetch);
 
     const { result } = renderHook(() =>
       useTokenExchange({
@@ -243,7 +243,7 @@ describe("useTokenExchange", () => {
       });
     });
 
-    expect(global.fetch).toHaveBeenCalledTimes(1);
+    expect(window.fetch).toHaveBeenCalledTimes(1);
 
     await act(async () => {
       resolveFetch?.({

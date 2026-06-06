@@ -30,6 +30,7 @@ const responseTypeOptions = Object.values(ResponseTypeValue).map((value) => ({
 const responseModeOptions = mapEnumToOptions(ResponseModeValue);
 
 const pkceMethodOptions = mapEnumToOptions(PKCEMethod);
+const isDevEnvironment = process.env.NODE_ENV !== "production";
 
 interface ConstructRequestFormProps {
   onSubmit: SubmitHandler<ConstructRequestFormValues>;
@@ -77,7 +78,7 @@ const ConstructRequestForm = forwardRef<FormRef, ConstructRequestFormProps>(
 
     return (
       <FormProvider {...methods}>
-        {process.env.NODE_ENV === "development" && <DevTool control={control} />}
+        {isDevEnvironment && <DevTool control={control} />}
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
           <FormStack>
             <TextInput

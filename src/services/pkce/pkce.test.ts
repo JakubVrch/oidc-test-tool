@@ -19,26 +19,28 @@ describe("generateCodeVerifier", () => {
   let getRandomValuesSpy: jest.SpyInstance;
 
   beforeAll(() => {
+    const mockGetRandomValues: typeof window.crypto.getRandomValues = (array) => {
+      if (!array) {
+        throw new Error("getRandomValues mock: array must be provided");
+      }
+      // Fill the provided array using its own type
+      if (
+        array instanceof Uint8Array ||
+        array instanceof Uint16Array ||
+        array instanceof Uint32Array
+      ) {
+        for (let i = 0; i < array.length; i++) {
+          array[i] = i;
+        }
+        return array;
+      }
+
+      throw new Error("getRandomValues mock: unsupported array type");
+    };
+
     getRandomValuesSpy = jest
       .spyOn(window.crypto, "getRandomValues")
-      .mockImplementation((array: ArrayBufferView | null) => {
-        if (!array) {
-          throw new Error("getRandomValues mock: array must be provided");
-        }
-        // Fill the provided array using its own type
-        if (
-          array instanceof Uint8Array ||
-          array instanceof Uint16Array ||
-          array instanceof Uint32Array
-        ) {
-          for (let i = 0; i < array.length; i++) {
-            array[i] = i;
-          }
-          return array;
-        } else {
-          throw new Error("getRandomValues mock: unsupported array type");
-        }
-      });
+      .mockImplementation(mockGetRandomValues);
   });
 
   afterAll(() => {
