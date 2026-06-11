@@ -31,6 +31,8 @@ jobs:
         run: yarn install --immutable
       - name: Build
         run: yarn build
+      - name: Include Static Web Apps config
+        run: cp staticwebapp.config.json dist/staticwebapp.config.json
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
