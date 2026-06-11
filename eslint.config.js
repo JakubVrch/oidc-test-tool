@@ -6,7 +6,7 @@ import tseslint from "typescript-eslint";
 import react from "eslint-plugin-react";
 
 export default tseslint.config(
-  { ignores: ["dist"] },
+  { ignores: ["dist", "jest.config.ts"] },
   {
     settings: { react: { version: "19.2" } },
     extends: [

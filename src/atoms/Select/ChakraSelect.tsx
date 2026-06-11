@@ -163,5 +163,19 @@ export const SelectItemGroup = React.forwardRef<
   );
 });
 
-export const SelectLabel = ChakraSelect.Label;
-export const SelectItemText = ChakraSelect.ItemText;
+type SelectLabelProps = React.ComponentProps<typeof ChakraSelect.Label>;
+type SelectItemTextProps = React.ComponentProps<typeof ChakraSelect.ItemText>;
+
+export const SelectLabel = React.forwardRef<
+  React.ElementRef<typeof ChakraSelect.Label>,
+  SelectLabelProps
+>(function SelectLabel(props, ref) {
+  return <ChakraSelect.Label {...props} ref={ref} />;
+});
+
+export const SelectItemText = React.forwardRef<
+  React.ElementRef<typeof ChakraSelect.ItemText>,
+  SelectItemTextProps
+>(function SelectItemText(props, ref) {
+  return <ChakraSelect.ItemText {...props} ref={ref} />;
+});
