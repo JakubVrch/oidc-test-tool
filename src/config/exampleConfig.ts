@@ -7,7 +7,6 @@ import {
 import { PKCEMethod } from "@/services/types/pkceMethod";
 
 export const prefillConfig: PrefillConfig<ConstructRequestFormValues> = [
- 
   {
     label: "PKCE with Authorization Code Flow",
     description:
@@ -40,5 +39,5 @@ export const prefillConfig: PrefillConfig<ConstructRequestFormValues> = [
       responseType: [ResponseTypeValue.ID_TOKEN],
       nonce: "123456",
     },
-  }
+  },
 ];

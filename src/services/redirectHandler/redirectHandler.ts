@@ -1,5 +1,8 @@
 import { ConstructRequestFormValues } from "@/services/types/constructRequestForm";
-import { storeOidcParams, OidcParams } from "@/services/storageService/storageService";
+import {
+  storeOidcParams,
+  OidcParams,
+} from "@/services/storageService/storageService";
 import { constructUrl } from "@/services/urlManager/urlManager";
 import { setLocationHref } from "./setLocationHref";
 
@@ -11,7 +14,15 @@ export const redirectToOidcProvider = (params: ConstructRequestFormValues) => {
     return;
   } else {
     // Store nonce and state in localStorage
-    const { clientId, redirectUri, state, nonce, tokenEndpoint, pkceEnabled, codeVerifier } = params;
+    const {
+      clientId,
+      redirectUri,
+      state,
+      nonce,
+      tokenEndpoint,
+      pkceEnabled,
+      codeVerifier,
+    } = params;
     const oidcParams: OidcParams = {
       nonce: nonce ?? null,
       state: state ?? null,

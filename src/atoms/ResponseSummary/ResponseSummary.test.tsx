@@ -1,6 +1,9 @@
 import { screen } from "@testing-library/react";
 import { render } from "@/testing/render";
-import { ResponseMode, ResponseType } from "@/services/types/oidcResponseTypeAndMode";
+import {
+  ResponseMode,
+  ResponseType,
+} from "@/services/types/oidcResponseTypeAndMode";
 import ResponseSummary from "./ResponseSummary";
 
 jest.mock("react-router-dom", () => ({

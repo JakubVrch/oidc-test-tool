@@ -126,8 +126,8 @@ const ConstructRequestForm = forwardRef<FormRef, ConstructRequestFormProps>(
             <TextInput id="nonce" label="Nonce" type="text" />
             <TextInput id="prompt" label="Prompt" type="text" />
 
-            <CheckboxField 
-              id="pkceEnabled" 
+            <CheckboxField
+              id="pkceEnabled"
               label="Enable PKCE"
               disabled={!canUsePKCE}
             />

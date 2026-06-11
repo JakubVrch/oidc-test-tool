@@ -19,16 +19,25 @@ describe("ExchangeCodeForm", () => {
 
     it("pre-checks Use Client Secret and renders password input", () => {
       expect(screen.getByLabelText(/Client Secret:/i)).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: /Exchange Code/i })).toBeInTheDocument();
+      expect(
+        screen.getByRole("button", { name: /Exchange Code/i }),
+      ).toBeInTheDocument();
     });
 
     it("does not render Use Code Verifier option", () => {
-      expect(screen.queryByLabelText(/Use Code Verifier/i)).not.toBeInTheDocument();
+      expect(
+        screen.queryByLabelText(/Use Code Verifier/i),
+      ).not.toBeInTheDocument();
     });
 
     it("calls onSubmit with clientSecret on valid submission", async () => {
-      await userEvent.type(screen.getByLabelText(/Client Secret:/i), "testSecret");
-      await userEvent.click(screen.getByRole("button", { name: /Exchange Code/i }));
+      await userEvent.type(
+        screen.getByLabelText(/Client Secret:/i),
+        "testSecret",
+      );
+      await userEvent.click(
+        screen.getByRole("button", { name: /Exchange Code/i }),
+      );
 
       await waitFor(() => {
         expect(mockOnSubmit).toHaveBeenCalledWith(
@@ -42,10 +51,14 @@ describe("ExchangeCodeForm", () => {
     });
 
     it("displays error when clientSecret is empty", async () => {
-      await userEvent.click(screen.getByRole("button", { name: /Exchange Code/i }));
+      await userEvent.click(
+        screen.getByRole("button", { name: /Exchange Code/i }),
+      );
 
       await waitFor(() => {
-        expect(screen.getByText("Client Secret is required")).toBeInTheDocument();
+        expect(
+          screen.getByText("Client Secret is required"),
+        ).toBeInTheDocument();
       });
     });
   });
@@ -55,7 +68,10 @@ describe("ExchangeCodeForm", () => {
 
     beforeEach(async () => {
       render(
-        <ExchangeCodeForm onSubmit={mockOnSubmit} codeVerifier={mockCodeVerifier} />,
+        <ExchangeCodeForm
+          onSubmit={mockOnSubmit}
+          codeVerifier={mockCodeVerifier}
+        />,
       );
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       await act(async () => {});
@@ -63,7 +79,9 @@ describe("ExchangeCodeForm", () => {
 
     it("pre-checks Use Code Verifier and renders pre-filled input", () => {
       expect(screen.getByLabelText(/Code Verifier:/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/Code Verifier:/i)).toHaveValue(mockCodeVerifier);
+      expect(screen.getByLabelText(/Code Verifier:/i)).toHaveValue(
+        mockCodeVerifier,
+      );
     });
 
     it("always renders Client Secret input even when Use Client Secret is unchecked", () => {
@@ -71,7 +89,9 @@ describe("ExchangeCodeForm", () => {
     });
 
     it("calls onSubmit with codeVerifier only by default", async () => {
-      await userEvent.click(screen.getByRole("button", { name: /Exchange Code/i }));
+      await userEvent.click(
+        screen.getByRole("button", { name: /Exchange Code/i }),
+      );
 
       await waitFor(() => {
         expect(mockOnSubmit).toHaveBeenCalledWith(
@@ -98,14 +118,17 @@ describe("ExchangeCodeForm", () => {
     it("clears error when an auth method is re-checked", async () => {
       await userEvent.click(screen.getByLabelText(/Use Code Verifier/i));
       await waitFor(() =>
-        expect(screen.getByText("Select at least one authentication method")).toBeInTheDocument(),
+        expect(
+          screen.getByText("Select at least one authentication method"),
+        ).toBeInTheDocument(),
       );
 
       await userEvent.click(screen.getByLabelText(/Use Client Secret/i));
       await waitFor(() =>
-        expect(screen.queryByText("Select at least one authentication method")).not.toBeInTheDocument(),
+        expect(
+          screen.queryByText("Select at least one authentication method"),
+        ).not.toBeInTheDocument(),
       );
     });
   });
 });
-
