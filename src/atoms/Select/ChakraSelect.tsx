@@ -147,37 +147,3 @@ export const SelectRoot = React.forwardRef<
     </ChakraSelect.Root>
   );
 }) as ChakraSelect.RootComponent;
-
-interface SelectItemGroupProps extends ChakraSelect.ItemGroupProps {
-  label: React.ReactNode;
-}
-
-export const SelectItemGroup = React.forwardRef<
-  HTMLDivElement,
-  SelectItemGroupProps
->(function SelectItemGroup(props, ref) {
-  const { children, label, ...rest } = props;
-  return (
-    <ChakraSelect.ItemGroup {...rest} ref={ref}>
-      <ChakraSelect.ItemGroupLabel>{label}</ChakraSelect.ItemGroupLabel>
-      {children}
-    </ChakraSelect.ItemGroup>
-  );
-});
-
-type SelectLabelProps = React.ComponentProps<typeof ChakraSelect.Label>;
-type SelectItemTextProps = React.ComponentProps<typeof ChakraSelect.ItemText>;
-
-export const SelectLabel = React.forwardRef<
-  React.ElementRef<typeof ChakraSelect.Label>,
-  SelectLabelProps
->(function SelectLabel(props, ref) {
-  return <ChakraSelect.Label {...props} ref={ref} />;
-});
-
-export const SelectItemText = React.forwardRef<
-  React.ElementRef<typeof ChakraSelect.ItemText>,
-  SelectItemTextProps
->(function SelectItemText(props, ref) {
-  return <ChakraSelect.ItemText {...props} ref={ref} />;
-});

@@ -7,7 +7,7 @@ interface TokenExchangeProps {
   code: string;
 }
 
-export interface CodeExchangeParams {
+interface CodeExchangeParams {
   useClientSecret: boolean;
   clientSecret?: string;
   useCodeVerifier: boolean;

@@ -1,4 +1,4 @@
-export interface PrefillConfigItem<T> {
+interface PrefillConfigItem<T> {
   label: string;
   description?: string;
   data: T;

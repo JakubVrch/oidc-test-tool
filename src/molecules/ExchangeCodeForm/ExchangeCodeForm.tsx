@@ -10,7 +10,7 @@ import CheckboxInput from "@/molecules/CheckboxInput/CheckboxInput";
 import Button from "@/atoms/Button/Button";
 import { Stack } from "@chakra-ui/react";
 
-export interface ExchangeCodeFormData {
+interface ExchangeCodeFormData {
   useClientSecret: boolean;
   clientSecret?: string;
   useCodeVerifier: boolean;

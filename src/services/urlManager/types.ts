@@ -26,8 +26,3 @@ export interface UrlResult {
   url?: string;
   error?: string;
 }
-
-export interface ParseResult {
-  params?: UrlParams;
-  error?: string;
-}
