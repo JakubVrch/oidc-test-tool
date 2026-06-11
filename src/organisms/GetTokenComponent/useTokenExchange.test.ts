@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access -- Jest mock call tuples are untyped in this test setup.*/
 import { renderHook, act } from "@testing-library/react";
 import useTokenExchange from "./useTokenExchange";
 
@@ -190,7 +191,7 @@ describe("useTokenExchange", () => {
     );
 
     let exchangePromise: Promise<void> | undefined;
-    await act(async () => {
+    act(() => {
       exchangePromise = result.current.handleExchangeCode({
         useClientSecret: true,
         clientSecret: mockClientSecret,
@@ -230,7 +231,7 @@ describe("useTokenExchange", () => {
 
     let firstRequest: Promise<void> | undefined;
     let secondRequest: Promise<void> | undefined;
-    await act(async () => {
+    act(() => {
       firstRequest = result.current.handleExchangeCode({
         useClientSecret: true,
         clientSecret: mockClientSecret,

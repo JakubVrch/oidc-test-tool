@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
+import { FormProvider, SubmitHandler, useForm, useWatch } from "react-hook-form";
 import TextInput from "@/molecules/TextInput/TextInput";
 import CheckboxInput from "@/molecules/CheckboxInput/CheckboxInput";
 import Button from "@/atoms/Button/Button";
@@ -32,9 +32,15 @@ const ExchangeCodeForm: React.FC<ExchangeCodeFormProps> = ({
     },
   });
 
-  const { handleSubmit, watch, setError, clearErrors, trigger } = methods;
-  const useClientSecretChecked = watch("useClientSecret");
-  const useCodeVerifierChecked = watch("useCodeVerifier");
+  const { handleSubmit, control, setError, clearErrors, trigger } = methods;
+  const useClientSecretChecked = useWatch({
+    control,
+    name: "useClientSecret",
+  });
+  const useCodeVerifierChecked = useWatch({
+    control,
+    name: "useCodeVerifier",
+  });
 
   useEffect(() => {
     if (codeVerifier != null) {
