@@ -54,7 +54,34 @@ The dev container post-create step configures Corepack and installs the Yarn ver
 yarn dev
 yarn test
 yarn lint
+yarn prettier:check
+yarn knip
+yarn tsc -b
 yarn build
+```
+
+### Pull Request Quality Gates
+
+Pull requests to `main` run parallel CI checks for code quality and release safety:
+
+- `typecheck`: `tsc -b`
+- `lint`: `eslint .`
+- `prettier`: `prettier --check .`
+- `knip`: `knip`
+- `test`: `jest --maxWorkers=4 --coverage`
+- `build`: `vite build`
+
+The `test` job publishes a coverage summary and uploads the `coverage/` artifact. Failed checks block PR merge once configured as required status checks in branch protection.
+
+Local preflight (same order as CI intent):
+
+```bash
+yarn tsc -b
+yarn eslint .
+yarn prettier:check
+yarn knip
+yarn test --maxWorkers=4 --coverage
+yarn vite build
 ```
 
 ### Configuration
