@@ -3,8 +3,10 @@ import { RegisterOptions, useFormContext } from "react-hook-form";
 import FormControl from "@/molecules/FormControl/FormControl";
 import { Input as ChakraInput } from "@chakra-ui/react";
 
-interface TextInputProps
-  extends Omit<React.ComponentProps<typeof ChakraInput>, "name" | "defaultValue" | "type" | "id"> {
+interface TextInputProps extends Omit<
+  React.ComponentProps<typeof ChakraInput>,
+  "name" | "defaultValue" | "type" | "id"
+> {
   id: string;
   label: string;
   type?: string;

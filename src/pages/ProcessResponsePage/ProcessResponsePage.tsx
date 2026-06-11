@@ -11,7 +11,8 @@ import { Stack } from "@chakra-ui/react";
 const ProcessResponsePage: React.FC = () => {
   const { mode, responseType, code, id_token, access_token, params } =
     useOIDCResponseData();
-  const { tokenEndpoint, redirectUri, clientId, state, codeVerifier } = useStoredOidcParams();
+  const { tokenEndpoint, redirectUri, clientId, state, codeVerifier } =
+    useStoredOidcParams();
 
   return (
     <DefaultTemplate title="Inspect redirect">

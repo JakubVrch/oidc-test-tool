@@ -1,5 +1,10 @@
 import React, { useEffect } from "react";
-import { FormProvider, SubmitHandler, useForm, useWatch } from "react-hook-form";
+import {
+  FormProvider,
+  SubmitHandler,
+  useForm,
+  useWatch,
+} from "react-hook-form";
 import TextInput from "@/molecules/TextInput/TextInput";
 import CheckboxInput from "@/molecules/CheckboxInput/CheckboxInput";
 import Button from "@/atoms/Button/Button";
@@ -53,7 +58,14 @@ const ExchangeCodeForm: React.FC<ExchangeCodeFormProps> = ({
       }
     }
     void trigger("clientSecret");
-  }, [useClientSecretChecked, useCodeVerifierChecked, codeVerifier, setError, clearErrors, trigger]);
+  }, [
+    useClientSecretChecked,
+    useCodeVerifierChecked,
+    codeVerifier,
+    setError,
+    clearErrors,
+    trigger,
+  ]);
 
   useEffect(() => {
     void trigger("codeVerifier");
@@ -63,7 +75,11 @@ const ExchangeCodeForm: React.FC<ExchangeCodeFormProps> = ({
     data: ExchangeCodeFormData,
     event?: React.BaseSyntheticEvent,
   ) => {
-    if (codeVerifier != null && !data.useClientSecret && !data.useCodeVerifier) {
+    if (
+      codeVerifier != null &&
+      !data.useClientSecret &&
+      !data.useCodeVerifier
+    ) {
       return;
     }
     onSubmit(data, event);
@@ -79,7 +95,9 @@ const ExchangeCodeForm: React.FC<ExchangeCodeFormProps> = ({
             label="Client Secret:"
             type="password"
             registerOptions={{
-              required: useClientSecretChecked ? "Client Secret is required" : false,
+              required: useClientSecretChecked
+                ? "Client Secret is required"
+                : false,
             }}
           />
           {codeVerifier != null && (
@@ -90,7 +108,9 @@ const ExchangeCodeForm: React.FC<ExchangeCodeFormProps> = ({
                 label="Code Verifier:"
                 type="text"
                 registerOptions={{
-                  required: useCodeVerifierChecked ? "Code Verifier is required" : false,
+                  required: useCodeVerifierChecked
+                    ? "Code Verifier is required"
+                    : false,
                 }}
               />
             </>
@@ -110,4 +130,3 @@ const ExchangeCodeForm: React.FC<ExchangeCodeFormProps> = ({
 };
 
 export default ExchangeCodeForm;
-

@@ -1,5 +1,8 @@
 import { useLocation } from "react-router-dom";
-import { ResponseMode, ResponseType } from "@/services/types/oidcResponseTypeAndMode";
+import {
+  ResponseMode,
+  ResponseType,
+} from "@/services/types/oidcResponseTypeAndMode";
 
 function useOIDCResponseData() {
   const location = useLocation();

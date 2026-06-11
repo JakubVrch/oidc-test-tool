@@ -246,7 +246,9 @@ describe("ConstructRequestForm", () => {
       // PKCE fields should be hidden initially
       expect(screen.queryByLabelText(/PKCE Method/i)).not.toBeInTheDocument();
       expect(screen.queryByLabelText(/Code Verifier/i)).not.toBeInTheDocument();
-      expect(screen.queryByLabelText(/Code Challenge/i)).not.toBeInTheDocument();
+      expect(
+        screen.queryByLabelText(/Code Challenge/i),
+      ).not.toBeInTheDocument();
 
       // Enable PKCE
       await userEvent.click(screen.getByLabelText(/code/i));
@@ -278,14 +280,19 @@ describe("ConstructRequestForm", () => {
       await userEvent.click(screen.getByLabelText(/Enable PKCE/i));
 
       // Select S256 method
-      await userEvent.click(screen.getByRole("combobox", { name: /PKCE Method/i }));
+      await userEvent.click(
+        screen.getByRole("combobox", { name: /PKCE Method/i }),
+      );
       await userEvent.click(screen.getByRole("option", { name: "S256" }));
 
       // The challenge field should be populated automatically
       await waitFor(() => {
         const challengeInput = screen.getByLabelText(/Code Challenge/i);
         expect(challengeInput).toHaveValue("custom-challenge");
-        expect(generateCodeChallenge).toHaveBeenCalledWith("custom-value", "S256");
+        expect(generateCodeChallenge).toHaveBeenCalledWith(
+          "custom-value",
+          "S256",
+        );
       });
     });
 
@@ -295,7 +302,9 @@ describe("ConstructRequestForm", () => {
       await userEvent.click(screen.getByLabelText(/Enable PKCE/i));
 
       // Select plain method
-      await userEvent.click(screen.getByRole("combobox", { name: /PKCE Method/i }));
+      await userEvent.click(
+        screen.getByRole("combobox", { name: /PKCE Method/i }),
+      );
       await userEvent.click(screen.getByRole("option", { name: "plain" }));
 
       // The challenge should be the same as the verifier
@@ -305,7 +314,10 @@ describe("ConstructRequestForm", () => {
       await waitFor(() => {
         const challengeInput = screen.getByLabelText(/Code Challenge/i);
         expect(challengeInput).toHaveValue("custom-challenge");
-        expect(generateCodeChallenge).toHaveBeenCalledWith("custom-value", "plain");
+        expect(generateCodeChallenge).toHaveBeenCalledWith(
+          "custom-value",
+          "plain",
+        );
       });
     });
 
@@ -328,7 +340,9 @@ describe("ConstructRequestForm", () => {
       // Enable PKCE and set values
       await userEvent.click(screen.getByLabelText(/code/i));
       await userEvent.click(screen.getByLabelText(/Enable PKCE/i));
-      await userEvent.click(screen.getByRole("combobox", { name: /PKCE Method/i }));
+      await userEvent.click(
+        screen.getByRole("combobox", { name: /PKCE Method/i }),
+      );
       await userEvent.click(screen.getByRole("option", { name: "S256" }));
       const codeVerifierInput = screen.getByLabelText(/Code Verifier/i);
       await userEvent.clear(codeVerifierInput);
@@ -341,12 +355,16 @@ describe("ConstructRequestForm", () => {
       await userEvent.click(screen.getByLabelText(/Enable PKCE/i));
 
       // Values should be retained
-      const pkceMethodTrigger = await screen.findByRole("combobox", { name: /PKCE Method/i });
+      const pkceMethodTrigger = await screen.findByRole("combobox", {
+        name: /PKCE Method/i,
+      });
       await waitFor(() => {
         const node = within(pkceMethodTrigger);
         expect(node.getByText("S256")).toBeInTheDocument();
       });
-      expect(screen.getByLabelText(/Code Verifier/i)).toHaveValue("test-verifier");
+      expect(screen.getByLabelText(/Code Verifier/i)).toHaveValue(
+        "test-verifier",
+      );
     });
   });
 });

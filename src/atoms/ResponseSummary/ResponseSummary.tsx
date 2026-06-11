@@ -1,6 +1,9 @@
 import React from "react";
 import { Text, Heading } from "@chakra-ui/react";
-import { ResponseMode, ResponseType } from "@/services/types/oidcResponseTypeAndMode";
+import {
+  ResponseMode,
+  ResponseType,
+} from "@/services/types/oidcResponseTypeAndMode";
 
 interface ResponseSummaryProps {
   mode: ResponseMode | null;

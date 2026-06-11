@@ -14,10 +14,7 @@ interface PrefillFormValues {
   selectedConfig?: string;
 }
 
-const Prefill = <T,>({
-  onPrefill,
-  prefillConfig,
-}: PrefillProps<T>) => {
+const Prefill = <T,>({ onPrefill, prefillConfig }: PrefillProps<T>) => {
   const methods = useForm<PrefillFormValues>();
   const { handleSubmit, control } = methods;
   const selectedConfigLabel = useWatch({

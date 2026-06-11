@@ -71,7 +71,7 @@ describe("constructUrl", () => {
     };
     const result = constructUrl(params);
     expect(result.url).toBe(
-      "http://example.com/auth?client_id=client&redirect_uri=http%3A%2F%2Flocalhost&scope=openid&response_type=code&code_challenge=challenge&code_challenge_method=S256"
+      "http://example.com/auth?client_id=client&redirect_uri=http%3A%2F%2Flocalhost&scope=openid&response_type=code&code_challenge=challenge&code_challenge_method=S256",
     );
   });
 
@@ -89,7 +89,7 @@ describe("constructUrl", () => {
     };
     const result = constructUrl(params);
     expect(result.url).toBe(
-      "http://example.com/auth?client_id=client&redirect_uri=http%3A%2F%2Flocalhost&scope=openid&response_type=code&code_challenge=challenge&code_challenge_method=PLAIN"
+      "http://example.com/auth?client_id=client&redirect_uri=http%3A%2F%2Flocalhost&scope=openid&response_type=code&code_challenge=challenge&code_challenge_method=PLAIN",
     );
   });
 });

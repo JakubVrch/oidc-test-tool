@@ -19,7 +19,9 @@ describe("generateCodeVerifier", () => {
   let getRandomValuesSpy: jest.SpyInstance;
 
   beforeAll(() => {
-    const mockGetRandomValues: typeof window.crypto.getRandomValues = (array) => {
+    const mockGetRandomValues: typeof window.crypto.getRandomValues = (
+      array,
+    ) => {
       if (!array) {
         throw new Error("getRandomValues mock: array must be provided");
       }
@@ -104,7 +106,7 @@ describe("generateCodeChallenge", () => {
   });
 
   it("should handle long code verifier input", async () => {
-    const verifier = "A".repeat(128);  // RFC7636 allows up to 128 characters
+    const verifier = "A".repeat(128); // RFC7636 allows up to 128 characters
     const challenge = await generateCodeChallenge(verifier, "S256");
     expect(typeof challenge).toBe("string");
     // Base64url string should not contain +, / or =
