@@ -7,7 +7,7 @@ import {
 import { get } from "lodash";
 import { Fieldset } from "@chakra-ui/react/fieldset";
 import { CheckboxGroup } from "@chakra-ui/react";
-import { Checkbox } from "@/atoms/Checkbox/Checkbox";
+import Checkbox from "@/atoms/Checkbox/Checkbox";
 
 interface CheckboxInputProps {
   name: string;
