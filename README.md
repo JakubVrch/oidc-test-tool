@@ -19,6 +19,10 @@ A React-based debugging tool for OpenID Connect (OIDC) authentication flows. Thi
 
 You can try the application here: <https://calm-plant-0cc61d103.6.azurestaticapps.net/>
 
+Demo user credentials: user@example.com / abcdef
+
+Pick one pre-configured example from the dropdown and click **Redirect** to see the flow in action.
+
 ### Supported Environment
 
 - Dev Container in VS Code (this is the only supported setup)
@@ -90,10 +94,9 @@ The application is configured through `src/config/exampleConfig.ts`. This file c
 
 ## Roadmap
 
-2. TODO: Fully responsive layout (on mobile devices)
-3. TODO: Token introspection
-4. TODO: Logout
-5. TODO: UserInfo
-6. TODO: OpenID Connect discovery (.well-known/openid-configuration)
-7. TODO: Form POST response mode support (requires backend)
-8. TODO: Environment variable configuration and Docker image
+1. TODO: Token introspection
+2. TODO: Logout
+3. TODO: UserInfo
+4. TODO: OpenID Connect discovery (.well-known/openid-configuration)
+5. TODO: Form POST response mode support (requires backend)
+6. TODO: Environment variable configuration and Docker image
