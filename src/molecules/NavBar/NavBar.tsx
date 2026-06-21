@@ -1,5 +1,7 @@
 import { Link as RouterLink } from "react-router-dom";
 import { Box, Grid, Link as ChakraLink, Text, HStack } from "@chakra-ui/react";
+import { FaGithub } from "react-icons/fa";
+import ResponsiveLinkButton from "../../atoms/ResponsiveLinkButton/ResponsiveLinkButton";
 
 const Navbar = () => {
   return (
@@ -45,16 +47,27 @@ const Navbar = () => {
           </RouterLink>
         </HStack>
 
-        <ChakraLink
-          gridArea="author"
-          textAlign="right"
-          justifySelf="end"
-          as="span"
-          href="https://www.linkedin.com/in/vrchlabsky"
-          fontSize="sm"
-        >
-          By Jakub Vrchlabský
-        </ChakraLink>
+        <ResponsiveLinkButton
+          breakpoint="sm"
+          href="https://github.com/JakubVrch/oidc-test-tool"
+          target="_blank"
+          rel="noopener noreferrer"
+          commonProps={{
+            gridArea: "author",
+            textAlign: "right",
+            justifySelf: "end",
+          }}
+          desktopProps={{
+            label: "About",
+            fontSize: "sm",
+          }}
+          mobileProps={{
+            "aria-label": "GitHub",
+            variant: "ghost",
+            size: "xs",
+            icon: <FaGithub />,
+          }}
+        />
       </Grid>
     </Box>
   );

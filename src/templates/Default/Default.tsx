@@ -1,7 +1,7 @@
 import React from "react";
 import { Flex, Heading, VStack } from "@chakra-ui/react";
 
-import Navbar from "@/atoms/NavBar/NavBar";
+import Navbar from "@/molecules/NavBar/NavBar";
 import Footer from "@/atoms/Footer/Footer";
 
 interface DefaultTemplateProps {
