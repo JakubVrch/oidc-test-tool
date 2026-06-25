@@ -10,7 +10,7 @@ export const prefillConfig: PrefillConfig<ConstructRequestFormValues> = [
   {
     label: "PKCE with Authorization Code Flow",
     description:
-      "Gets an authorization code using PKCE, then allows exchanging it for tokens at the token endpoint. \n Login with the username: user@example.com and password: abcdedf",
+      "Gets an authorization code using PKCE, then allows exchanging it for tokens at the token endpoint. \n Login with the username: user@example.com and password: abcdef",
     data: {
       authEndpoint: "https://dev-bfpvq5utqmrksbsp.us.auth0.com/authorize",
       clientId: "DvJpXHCp2hmIC5F7OSEVAvgsm6IXiHDt",
@@ -28,7 +28,7 @@ export const prefillConfig: PrefillConfig<ConstructRequestFormValues> = [
   {
     label: "Implicit Flow",
     description:
-      "Gets an ID token directly from the authorization endpoint. \n Login with the username: user@example.com and password: abcdedf",
+      "Gets an ID token directly from the authorization endpoint. \n Login with the username: user@example.com and password: abcdef",
     data: {
       authEndpoint: "https://dev-bfpvq5utqmrksbsp.us.auth0.com/authorize",
       clientId: "DvJpXHCp2hmIC5F7OSEVAvgsm6IXiHDt",

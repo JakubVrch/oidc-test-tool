@@ -1,8 +1,26 @@
 {
   "name": "oidc-test-tool",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "license": "MIT",
+  "description": "A debugging tool for OpenID Connect (OIDC) authentication flows.",
+  "homepage": "https://github.com/JakubVrch/oidc-test-tool",
+  "bugs": {
+    "url": "https://github.com/JakubVrch/oidc-test-tool/issues"
+  },
+  "author": {
+    "name": "Jakub Vrchlabský",
+    "url": "https://github.com/JakubVrch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JakubVrch/oidc-test-tool.git"
+  },
+  "keywords": [
+    "oidc",
+    "oidc-client"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -18,7 +36,6 @@
     "@chakra-ui/react": "3.35.0",
     "@emotion/react": "11.14.0",
     "@fontsource/ibm-plex-mono": "5.2.7",
-    "eslint-plugin-react": "7.37.5",
     "jwt-decode": "4.0.0",
     "next-themes": "0.4.6",
     "react": "19.2.6",
@@ -41,6 +58,7 @@
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "6.0.2",
     "eslint": "10.4.0",
+    "eslint-plugin-react": "7.37.5",
     "eslint-plugin-react-hooks": "7.1.1",
     "eslint-plugin-react-refresh": "0.5.2",
     "globals": "17.6.0",
