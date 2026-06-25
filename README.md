@@ -2,6 +2,13 @@
 
 A React-based debugging tool for OpenID Connect (OIDC) authentication flows. This application helps developers test and inspect OIDC authentication requests and responses.
 
+## Interface
+
+<div align="center">
+  <img src="docs/demo.gif" alt="OIDC flow demo" width="600" />
+  <p>OIDC Test Tool in action</p>
+</div>
+
 ## Features
 
 - **Request Construction**
@@ -15,6 +22,12 @@ A React-based debugging tool for OpenID Connect (OIDC) authentication flows. Thi
   - Verify state parameter matches
   - Support for authorization code exchange and PKCE
 
+- **Security**
+  - All data is processed client-side and on the OIDC provider the user chooses
+  - Some data (except secrets) is stored in the browser's local storage
+  - Users are advised not to use production secrets or sensitive tenant data
+  - The project is intended for testing and debugging only
+
 ## Getting Started
 
 You can try the application here: <https://calm-plant-0cc61d103.6.azurestaticapps.net/>
@@ -23,13 +36,14 @@ Demo user credentials: user@example.com / abcdef
 
 Pick one pre-configured example from the dropdown and click **Redirect** to see the flow in action.
 
-### Supported Environment
+### Support
 
-- Dev Container in VS Code (this is the only supported setup)
+- Only supported environment is in VS Code and Dev Containers. Other environments may work but are not tested.
+- For issues, please use GitHub Issues: <https://github.com/JakubVrch/oidc-test-tool/issues>
 
 ### Installation and Development Setup
 
-There is no separate installation mode for this tool. Installation and development setup are the same process.
+There is no separate installation workflow for this tool. Installation and development setup are the same process.
 
 1. Clone the repository:
 
